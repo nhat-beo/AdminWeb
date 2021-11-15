@@ -41,7 +41,7 @@ router.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 // getting-started.js
 const mongoose = require('mongoose');
 const {float} = require("tailwindcss/lib/plugins");
-//TK Monggo---- TK: minhkhph10431@fpt.edu - Mk:minhminh@()%
+//TK Monggo---- TK: minhkhph10431@fpt.edu --Mk:minhminh@()%
 mongoose.connect('mongodb+srv://admin:minhminh@cluster0.hiqs0.mongodb.net/bFpolyHotel?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true
