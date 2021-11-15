@@ -290,7 +290,8 @@ router.post('/update_room.id=:id', upload, function (req, res, next) {
                 } else {
                     // res.send("Sửa thông tin thành công");
                     // res.json(room);
-                    res.render('Categories', {room: room});
+                    // res.render('SuaPhong', {room: room});
+                    res.redirect('/Categories');
                 }
             })
         }
