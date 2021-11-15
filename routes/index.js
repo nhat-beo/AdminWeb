@@ -1,10 +1,10 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
 //Multer
-var multer = require('multer');
+const multer = require('multer');
 
-var storage = multer.diskStorage({
+const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, './public/uploads/')
   },
@@ -12,9 +12,9 @@ var storage = multer.diskStorage({
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
     cb(null, file.originalname)
   }
-})
+});
 
-var upload = multer({
+const upload = multer({
   storage: storage,
   limits: {
     fileSize: 5 * 1024 * 1024,
@@ -31,7 +31,7 @@ var upload = multer({
 }).array('roomPhoto', 5);
 
 //Body parser
-var bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 router.use( bodyParser.json() );       // to support JSON-encoded bodies
 router.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
@@ -46,31 +46,31 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   // we're connected!
-  console.log('Succesfully');
+  console.log('Succesfully rồi thằng ngu ạ');
 });
 
 // Định nghĩa 1 collection trong schema
-var room_schema = new mongoose.Schema({
+const room_schema = new mongoose.Schema({
   roomPhoto: Array,
-  roomNumber : Number,
-  typeRoom : String,
-  rankRoom : String,
-  peopleRoom : String,
-  priceRoom : Number,
-  statusRoom : String,
-  description : String,
-  wifi : String,
-  parking : String,
-  receptionist : String,
-  gym : String,
-  roomMeeting : String,
-  laundry : String,
-  pool : String,
-  restaurant : String,
-  elevator : String,
-  wheelChairWay : String,
-  shuttle : String,
-  other : String,
+  roomNumber: Number,
+  typeRoom: String,
+  rankRoom: String,
+  peopleRoom: String,
+  priceRoom: Number,
+  statusRoom: String,
+  description: String,
+  wifi: String,
+  parking: String,
+  receptionist: String,
+  gym: String,
+  roomMeeting: String,
+  laundry: String,
+  pool: String,
+  restaurant: String,
+  elevator: String,
+  wheelChairWay: String,
+  shuttle: String,
+  other: String,
 });
 
 /* GET home page. */
@@ -89,7 +89,7 @@ router.get('/DatPhong', function(req, res, next) {
 });
 
 router.post('/add_room', upload, function(req, res, next) {
-  var room_model = db.model('room', room_schema);
+  const room_model = db.model('room', room_schema);
   room_model({
     roomPhoto: req.files,
     roomNumber : req.body.roomNumber,
