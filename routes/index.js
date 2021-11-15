@@ -54,7 +54,7 @@ db.once('open', function () {
     // we're connected!
     console.log('Succesfully');
 });
-
+// minh
 // Định nghĩa 1 collection trong schemasw
 var room_schema = new mongoose.Schema({
     roomPhoto: Array,
