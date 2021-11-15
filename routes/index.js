@@ -134,7 +134,7 @@ router.get('/', function (req, res, next) {
 //   res.render('Categories', );
 // });
 
-//Danh sach phong - chua hoat dong duoc
+//Danh sach phong - chua the hoat dong duoc
 router.get('/Categories', function (req, res, next) {
     var room_model = db.model('room', room_schema);
     room_model.find({}, function (error, roomlist) {
