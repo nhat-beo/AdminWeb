@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var datPhong = require('../model/dat_phong/Dat_phong');
 
 //Multer
 var multer = require('multer');
@@ -85,11 +86,8 @@ var account_schema = new mongoose.Schema({
 router.get('/addAccount', function (req, res) {
     res.send("aa")
 });
-//
 
-//
 router.post('/addAccount', createUser);
-
 
 function createUser(req, res) {
     var account = db.model('account', account_schema);
@@ -144,11 +142,63 @@ router.get('/Categories', function (req, res, next) {
         }
     })
 });
+
 //Dat phong
 router.get('/DatPhong', function (req, res, next) {
-    res.render('DatPhong',);
+    datPhong.find({}, function (err, datPhong) {
+        if (err) {
+            res.send('Lỗi lấy thông tin: ' + err.message);
+        } else {
+            res.render('DatPhong', {datPhong: datPhong})
+        }
+    })
 });
 
+router.get('/ThemHoaDon', function (req, res, next) {
+    datPhong.find({}, function (err, datPhong) {
+        if (err) {
+            res.send('Lỗi lấy thông tin: ' + err.message);
+        } else {
+            res.render('ThemHoaDon', {datPhong: datPhong})
+        }
+    })
+});
+router.post('/ThemHoaDon', function (req, res, next) {
+    datPhong({
+        maPhong: req.body.maPhong,
+        hoten: req.body.hoten,
+        loaiPhong: req.body.loaiPhong,
+        cmnd: req.body.cmnd,
+        email: req.body.email,
+        soPhong: req.body.soPhong,
+        giaPhong: req.body.giaPhong,
+        datChoMinh: req.body.datChoMinh == 'Đặt cho bản thân' ? true : false,
+        datChoNguoiKhac: req.body.datChoNguoiKhac == 'Đặt cho người khác' ? true : false,
+        ngayNhan: req.body.ngayNhan,
+        ngayTra: req.body.ngayTra,
+        soDem: req.body.soDem,
+        soNguoi: req.body.soNguoi,
+        gioNhanPhong: req.body.gioNhanPhong,
+        gioTraPhong: req.body.gioTraPhong,
+        sdt: req.body.sdt,
+    }).save(function (err) {
+        if (err) {
+            res.send("Thêm hoá đơn k thành công " + err);
+        } else {
+            res.redirect("/DatPhong");
+        }
+    })
+});
+//xoa hoa don
+router.get('/delete_bill_datPhong.id=:id', function (req, res, next) {
+    datPhong.findByIdAndRemove(req.params.id, function (error, account) {
+        if (error) {
+            res.send("Xoá không thành công" + error);
+        } else {
+            res.redirect('/DatPhong');
+        }
+    })
+});
 //Them phong
 router.post('/add_room', upload, function (req, res, next) {
     var room_model = db.model('room', room_schema);
@@ -238,8 +288,8 @@ router.post('/update_room.id=:id', upload, function (req, res, next) {
                 if (error) {
                     res.send("Lỗi sửa thông tin" + error);
                 } else {
-                    res.send("Sửa thông tin thành công");
-                    res.json(room);
+                    // res.send("Sửa thông tin thành công");
+                    // res.json(room);
                     res.render('Categories', {room: room});
                 }
             })
@@ -257,19 +307,25 @@ router.get('/TaiKhoan', function (req, res, next) {
     account.find({}, function (error, account) {
         if (error) {
             res.send("Lỗi sửa thông tin" + error);
-            console.log("looo" + account.toString());
         } else {
             res.render('TaiKhoan', {account: account});
         }
     })
 });
-
+// xoa tai khoan
+router.get('/delete_account.id=:id', function (req, res, next) {
+    var account = db.model('account', account_schema);
+    account.findByIdAndRemove(req.params.id, function (error, account) {
+        if (error) {
+            res.send("Xoá không thành công" + error);
+        } else {
+            res.redirect('/TaiKhoan');
+        }
+    })
+});
+//
 router.get('/ThongKe', function (req, res, next) {
     res.render('ThongKe',);
-});
-
-router.get('/ThemHoaDon', function (req, res, next) {
-    res.render('ThemHoaDon',);
 });
 
 router.get('/SuaHoaDon', function (req, res, next) {
