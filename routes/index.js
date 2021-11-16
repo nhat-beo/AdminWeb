@@ -1,10 +1,11 @@
-const express = require('express');
-const router = express.Router();
+var express = require('express');
+var router = express.Router();
+var datPhong = require('../model/dat_phong/Dat_phong');
 
 //Multer
-const multer = require('multer');
+var multer = require('multer');
 
-const storage = multer.diskStorage({
+var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './public/uploads/')
     },
@@ -12,9 +13,9 @@ const storage = multer.diskStorage({
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
         cb(null, file.originalname)
     }
-});
+})
 
-const upload = multer({
+var upload = multer({
     storage: storage,
     limits: {
         fileSize: 5 * 1024 * 1024,
@@ -31,7 +32,7 @@ const upload = multer({
 }).array('roomPhoto', 5);
 
 //Body parser
-const bodyParser = require('body-parser');
+var bodyParser = require('body-parser')
 router.use(bodyParser.json());       // to support JSON-encoded bodies
 router.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     extended: true
@@ -49,11 +50,11 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
     // we're connected!
-    console.log('Succesfully rồi thằng ngu ạ');
+    console.log('Succesfully');
 });
 
-// Định nghĩa 1 collection trong schema
-const room_schema = new mongoose.Schema({
+// Định nghĩa 1 collection trong schemasw
+var room_schema = new mongoose.Schema({
     roomPhoto: Array,
     roomNumber: Number,
     typeRoom: String,
@@ -62,38 +63,203 @@ const room_schema = new mongoose.Schema({
     priceRoom: Number,
     statusRoom: String,
     description: String,
-    wifi: String,
-    parking: String,
-    receptionist: String,
-    gym: String,
-    roomMeeting: String,
-    laundry: String,
-    pool: String,
-    restaurant: String,
-    elevator: String,
-    wheelChairWay: String,
-    shuttle: String,
-    other: String,
+    wifi: Boolean,
+    parking: Boolean,
+    receptionist: Boolean,
+    gym: Boolean,
+    roomMeeting: Boolean,
+    laundry: Boolean,
+    pool: Boolean,
+    restaurant: Boolean,
+    elevator: Boolean,
+    wheelChairWay: Boolean,
+    shuttle: Boolean,
+    other: Boolean,
 });
 
-/* GET home page. */
+// định nghĩa schmema account
+
+var account_schema = new mongoose.Schema({
+    gmail: String,
+    password: String,
+});
+router.get('/addAccount', function (req, res) {
+    res.send("aa")
+});
+
+router.post('/addAccount', createUser);
+
+function createUser(req, res) {
+    var account = db.model('account', account_schema);
+    console.log({
+        gmail: req.body.gmail,
+        password: req.body.password,
+    })
+
+    return account({
+        gmail: req.body.gmail,
+        password: req.body.password,
+    })
+        .save()
+        .then((newUser) => {
+            return res.status(201).json({
+                success: true,
+                message: 'New user created successfully',
+                gmail: newUser.gmail,
+                password: newUser.password,
+
+            });
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).json({
+                success: false,
+                message: 'Server error. Please try again.',
+                error: error.message,
+            });
+        });
+}
+
+
+/* GET login page. */
 router.get('/', function (req, res, next) {
     res.render('index',);
 });
 
 //Man hinh home
+// router.get('/Categories', function(req, res, next) {
+//   res.render('Categories', );
+// });
+
+//Danh sach phong - chua hoat dong duoc
 router.get('/Categories', function (req, res, next) {
-    res.render('Categories',);
+    var room_model = db.model('room', room_schema);
+    room_model.find({}, function (error, roomlist) {
+        if (error) {
+            res.send('Lỗi lấy thông tin: ' + error.message);
+        } else {
+            res.render('Categories', {room: roomlist});
+        }
+    })
 });
 
 //Dat phong
 router.get('/DatPhong', function (req, res, next) {
-    res.render('DatPhong',);
+    datPhong.find({}, function (err, datPhong) {
+        if (err) {
+            res.send('Lỗi lấy thông tin: ' + err.message);
+        } else {
+            res.render('DatPhong', {datPhong: datPhong})
+        }
+    })
 });
 
+router.get('/ThemHoaDon', function (req, res, next) {
+    datPhong.find({}, function (err, datPhong) {
+        if (err) {
+            res.send('Lỗi lấy thông tin: ' + err.message);
+        } else {
+            res.render('ThemHoaDon', {datPhong: datPhong})
+        }
+    })
+});
+router.post('/ThemHoaDon', function (req, res, next) {
+    datPhong({
+        maPhong: req.body.maPhong,
+        hoten: req.body.hoten,
+        loaiPhong: req.body.loaiPhong,
+        cmnd: req.body.cmnd,
+        email: req.body.email,
+        soPhong: req.body.soPhong,
+        giaPhong: req.body.giaPhong,
+        datChoMinh: req.body.datChoMinh == 'Đặt cho bản thân' ? true : false,
+        datChoNguoiKhac: req.body.datChoNguoiKhac == 'Đặt cho người khác' ? true : false,
+        ngayNhan: req.body.ngayNhan,
+        ngayTra: req.body.ngayTra,
+        soDem: req.body.soDem,
+        soNguoi: req.body.soNguoi,
+        gioNhanPhong: req.body.gioNhanPhong,
+        gioTraPhong: req.body.gioTraPhong,
+        sdt: req.body.sdt,
+    }).save(function (err) {
+        if (err) {
+            res.send("Thêm hoá đơn k thành công " + err);
+        } else {
+            res.redirect("/DatPhong");
+        }
+    })
+});
+//xoa hoa don
+router.get('/delete_bill_datPhong.id=:id', function (req, res, next) {
+    datPhong.findByIdAndRemove(req.params.id, function (error, account) {
+        if (error) {
+            res.send("Xoá không thành công" + error);
+        } else {
+            res.redirect('/DatPhong');
+        }
+    })
+});
+//Them phong
 router.post('/add_room', upload, function (req, res, next) {
-    const room_model = db.model('room', room_schema);
+    var room_model = db.model('room', room_schema);
     room_model({
+        roomPhoto: req.files,
+        roomNumber: req.body.roomNumber,
+        typeRoom: req.body.typeRoom,
+        rankRoom: req.body.rankRoom,
+        peopleRoom: req.body.peopleRoom,
+        priceRoom: req.body.priceRoom,
+        statusRoom: req.body.statusRoom,
+        description: req.body.description,
+        wifi: req.body.wifi === 'on' ? true : false,
+        parking: req.body.parking === 'on' ? true : false,
+        receptionist: req.body.receptionist === 'on' ? true : false,
+        gym: req.body.gym === 'on' ? true : false,
+        roomMeeting: req.body.roomMeeting === 'on' ? true : false,
+        laundry: req.body.laundry === 'on' ? true : false,
+        pool: req.body.pool === 'on' ? true : false,
+        restaurant: req.body.restaurant === 'on' ? true : false,
+        elevator: req.body.elevator === 'on' ? true : false,
+        wheelChairWay: req.body.wheelChairWay === 'on' ? true : false,
+        shuttle: req.body.shuttle === 'on' ? true : false,
+        other: req.body.other === 'on' ? true : false,
+    }).save(function (error) {
+        if (error) {
+            res.send("Lỗi thêm thông tin");
+        } else {
+            res.redirect("/Categories");
+        }
+    });
+});
+
+//Xoa phong
+router.get('/delete_room.id=:id', function (req, res, next) {
+    var room_model = db.model('room', room_schema);
+    room_model.findByIdAndRemove(req.params.id, function (error, room) {
+        if (error) {
+            res.send("Lỗi xóa thông tin");
+        } else {
+            res.redirect('/Categories');
+        }
+    })
+});
+
+//Sua phong
+/* Update */
+router.get('/update_room.id=:id', function (req, res, next) {
+    var room_model = db.model('room', room_schema);
+    room_model.findOne({_id: req.params.id}, function (error, room) {
+        if (error) {
+            res.send("Lỗi sửa thông tin" + error);
+        } else {
+            res.render('SuaPhong', {room: room});
+        }
+    })
+});
+
+router.post('/update_room.id=:id', upload, function (req, res, next) {
+    var room_model = db.model('room', room_schema);
+    room_model.findByIdAndUpdate(req.params.id, {
         roomPhoto: req.files,
         roomNumber: req.body.roomNumber,
         typeRoom: req.body.typeRoom,
@@ -114,29 +280,52 @@ router.post('/add_room', upload, function (req, res, next) {
         wheelChairWay: req.body.wheelChairWay,
         shuttle: req.body.shuttle,
         other: req.body.other,
-    }).save(function (error) {
+    }, function (error) {
         if (error) {
-            res.send("Lỗi thêm thông tin");
+            res.send("Lỗi sửa thông tin");
         } else {
-            res.redirect("/Categories");
+            room_model.findOne({_id: req.params.id}, function (error, room) {
+                if (error) {
+                    res.send("Lỗi sửa thông tin" + error);
+                } else {
+                    // res.send("Sửa thông tin thành công");
+                    // res.json(room);
+                    res.render('Categories', {room: room});
+                }
+            })
         }
     });
 });
 
+//Doi mat khau
 router.get('/DoiMatKhau', function (req, res, next) {
     res.render('DoiMatKhau',);
 });
 
 router.get('/TaiKhoan', function (req, res, next) {
-    res.render('TaiKhoan',);
+    var account = db.model('account', account_schema);
+    account.find({}, function (error, account) {
+        if (error) {
+            res.send("Lỗi sửa thông tin" + error);
+        } else {
+            res.render('TaiKhoan', {account: account});
+        }
+    })
 });
-
+// xoa tai khoan
+router.get('/delete_account.id=:id', function (req, res, next) {
+    var account = db.model('account', account_schema);
+    account.findByIdAndRemove(req.params.id, function (error, account) {
+        if (error) {
+            res.send("Xoá không thành công" + error);
+        } else {
+            res.redirect('/TaiKhoan');
+        }
+    })
+});
+//
 router.get('/ThongKe', function (req, res, next) {
     res.render('ThongKe',);
-});
-
-router.get('/ThemHoaDon', function (req, res, next) {
-    res.render('ThemHoaDon',);
 });
 
 router.get('/SuaHoaDon', function (req, res, next) {
