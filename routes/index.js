@@ -129,6 +129,10 @@ router.get('/', function (req, res, next) {
     res.render('index',);
 });
 
+//Man hinh home
+// router.get('/Categories', function(req, res, next) {
+//   res.render('Categories', );
+// });
 
 //Danh sach phong - chua the hoat dong duocc
 router.get('/Categories', function (req, res, next) {
