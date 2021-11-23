@@ -127,9 +127,9 @@ router.get('/', function (req, res, next) {
 });
 
 //Man hinh home
-// router.get('/Categories', function(req, res, next) {
-//   res.render('Categories', );
-// });
+router.get('/Categories', function (req, res, next) {
+    res.render('Categories',);
+});
 
 //Danh sach phong - chua hoat dong duoc
 router.get('/Categories', function (req, res, next) {
@@ -227,6 +227,7 @@ router.post('/add_room', upload, function (req, res, next) {
         if (error) {
             res.send("Lỗi thêm thông tin");
         } else {
+
             res.redirect("/Categories");
         }
     });
