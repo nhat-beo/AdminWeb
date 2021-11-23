@@ -8,7 +8,7 @@ const DatPhong = new Schema({
     loaiPhong: String,
     cmnd: String,
     email: String,
-    soPhong:Number,
+    soPhong:String,
     giaPhong: Number,
     datChoMinh: Boolean,
     datChoNguoiKhac: Boolean,
