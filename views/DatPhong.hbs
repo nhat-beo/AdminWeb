@@ -133,16 +133,11 @@
                     <h3 class="text-gray-700 text-3xl font-medium">Thông tin đặt phòng</h3>
 
                     <div class="flex items-end justify-between">
-                        <a href="ThemHoaDon">
-                            <button
-                                    class="bg-blue-900 px-2 py-2 rounded-lg text-white font-bold mt-4 hover:bg-indigo-700">
-                                Thêm
-                                hóa đơn
-                            </button>
-                        </a>
-
-                        <form class="lg:ml-0" action="">
-                            <input class="border-2 border-gray-300 pl-2 w-60" type="text" placeholder="Tìm kiếm">
+                        <div></div>
+                        <form class="lg:ml-0 ml-6" action="/search_bill" method="get">
+                            <input class="border-2 border-gray-300 pl-2 w-60" type="search"
+                                   name="name">
+                            <button type="submit">Search</button>
                         </form>
                     </div>
                     <div class="flex flex-col mt-4">
