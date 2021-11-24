@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Categories</title>
-    <link rel="stylesheet" href="./public/stylesheets/style.css">
+    <link rel="stylesheet" href="../../public/stylesheets/style.css">
 </head>
 
 <body>
@@ -157,13 +157,16 @@
                                         <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
                                         <th
                                                 class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Thời gian</th>
+                                            Thời gian
+                                        </th>
                                         <th
                                                 class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Lượt phòng đã đặt</th>
+                                            Lượt phòng đã đặt
+                                        </th>
                                         <th
                                                 class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Tổng số khách</th>
+                                            Tổng số khách
+                                        </th>
                                         <th
                                                 class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             Doanh Thu
@@ -172,32 +175,34 @@
                                     </thead>
 
                                     <tbody class="bg-white">
-                                    <tr>
-                                        <td
-                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">
-                                            0
-                                        </td>
+                                    {{#each thongKe}}
+                                        <tr>
+                                            <td
+                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">
+                                               {{this.index}}
+                                            </td>
 
-                                        <td
-                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">
+                                            <td
+                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">
+                                                112
+                                            </td>
 
-                                        </td>
+                                            <td
+                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
+                                                123123
+                                            </td>
 
-                                        <td
-                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
+                                            <td
+                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">
+                                                123123
+                                            </td>
 
-                                        </td>
-
-                                        <td
-                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">
-
-                                        </td>
-
-                                        <td
-                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
-
-                                        </td>
-                                    </tr>
+                                            <td
+                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
+                                                {{this.doanhThu}}
+                                            </td>
+                                        </tr>
+                                    {{/each}}
                                     </tbody>
                                 </table>
                             </div>
@@ -205,129 +210,129 @@
                     </div>
                     <!--Thống kê tuần-->
 
-<!--                    <div class="flex flex-col mt-10">-->
-<!--                        <h5 class="text-gray-700 text-xl font-medium mb-4">Thống kê theo tháng</h5>-->
-<!--                        <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">-->
-<!--                            <div-->
-<!--                                    class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">-->
-<!--                                <table class="min-w-full">-->
-<!--                                    <thead>-->
-<!--                                    <tr>-->
-<!--                                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>-->
-<!--                                        <th-->
-<!--                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">-->
-<!--                                            Thời gian-->
-<!--                                        </th>-->
-<!--                                        <th-->
-<!--                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">-->
-<!--                                            Lượt phòng đã đặt-->
-<!--                                        </th>-->
-<!--                                        <th-->
-<!--                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">-->
-<!--                                            Tổng số khách-->
-<!--                                        </th>-->
-<!--                                        <th-->
-<!--                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">-->
-<!--                                            Doanh Thu-->
-<!--                                        </th>-->
-<!--                                    </tr>-->
-<!--                                    </thead>-->
+                    <!--                    <div class="flex flex-col mt-10">-->
+                    <!--                        <h5 class="text-gray-700 text-xl font-medium mb-4">Thống kê theo tháng</h5>-->
+                    <!--                        <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">-->
+                    <!--                            <div-->
+                    <!--                                    class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">-->
+                    <!--                                <table class="min-w-full">-->
+                    <!--                                    <thead>-->
+                    <!--                                    <tr>-->
+                    <!--                                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>-->
+                    <!--                                        <th-->
+                    <!--                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">-->
+                    <!--                                            Thời gian-->
+                    <!--                                        </th>-->
+                    <!--                                        <th-->
+                    <!--                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">-->
+                    <!--                                            Lượt phòng đã đặt-->
+                    <!--                                        </th>-->
+                    <!--                                        <th-->
+                    <!--                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">-->
+                    <!--                                            Tổng số khách-->
+                    <!--                                        </th>-->
+                    <!--                                        <th-->
+                    <!--                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">-->
+                    <!--                                            Doanh Thu-->
+                    <!--                                        </th>-->
+                    <!--                                    </tr>-->
+                    <!--                                    </thead>-->
 
-<!--                                    <tbody class="bg-white">-->
-<!--                                    <tr>-->
-<!--                                        <td-->
-<!--                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">-->
-<!--                                            0-->
-<!--                                        </td>-->
+                    <!--                                    <tbody class="bg-white">-->
+                    <!--                                    <tr>-->
+                    <!--                                        <td-->
+                    <!--                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">-->
+                    <!--                                            0-->
+                    <!--                                        </td>-->
 
-<!--                                        <td-->
-<!--                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">-->
+                    <!--                                        <td-->
+                    <!--                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">-->
 
-<!--                                        </td>-->
+                    <!--                                        </td>-->
 
-<!--                                        <td-->
-<!--                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">-->
+                    <!--                                        <td-->
+                    <!--                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">-->
 
-<!--                                        </td>-->
+                    <!--                                        </td>-->
 
-<!--                                        <td-->
-<!--                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">-->
+                    <!--                                        <td-->
+                    <!--                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">-->
 
-<!--                                        </td>-->
+                    <!--                                        </td>-->
 
-<!--                                        <td-->
-<!--                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">-->
+                    <!--                                        <td-->
+                    <!--                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">-->
 
-<!--                                        </td>-->
-<!--                                    </tr>-->
-<!--                                    </tbody>-->
-<!--                                </table>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    &lt;!&ndash;Thống kê tháng&ndash;&gt;-->
+                    <!--                                        </td>-->
+                    <!--                                    </tr>-->
+                    <!--                                    </tbody>-->
+                    <!--                                </table>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <!--                    &lt;!&ndash;Thống kê tháng&ndash;&gt;-->
 
-<!--                    <div class="flex flex-col mt-10">-->
-<!--                        <h5 class="text-gray-700 text-xl font-medium mb-4">Thống kê theo năm</h5>-->
-<!--                        <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">-->
-<!--                            <div-->
-<!--                                    class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">-->
-<!--                                <table class="min-w-full">-->
-<!--                                    <thead>-->
-<!--                                    <tr>-->
-<!--                                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>-->
-<!--                                        <th-->
-<!--                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">-->
-<!--                                            Thời gian-->
-<!--                                        </th>-->
-<!--                                        <th-->
-<!--                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">-->
-<!--                                            Lượt phòng đã đặt-->
-<!--                                        </th>-->
-<!--                                        <th-->
-<!--                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">-->
-<!--                                            Tổng số khách-->
-<!--                                        </th>-->
-<!--                                        <th-->
-<!--                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">-->
-<!--                                            Doanh Thu-->
-<!--                                        </th>-->
-<!--                                    </tr>-->
-<!--                                    </thead>-->
+                    <!--                    <div class="flex flex-col mt-10">-->
+                    <!--                        <h5 class="text-gray-700 text-xl font-medium mb-4">Thống kê theo năm</h5>-->
+                    <!--                        <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">-->
+                    <!--                            <div-->
+                    <!--                                    class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">-->
+                    <!--                                <table class="min-w-full">-->
+                    <!--                                    <thead>-->
+                    <!--                                    <tr>-->
+                    <!--                                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>-->
+                    <!--                                        <th-->
+                    <!--                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">-->
+                    <!--                                            Thời gian-->
+                    <!--                                        </th>-->
+                    <!--                                        <th-->
+                    <!--                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">-->
+                    <!--                                            Lượt phòng đã đặt-->
+                    <!--                                        </th>-->
+                    <!--                                        <th-->
+                    <!--                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">-->
+                    <!--                                            Tổng số khách-->
+                    <!--                                        </th>-->
+                    <!--                                        <th-->
+                    <!--                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">-->
+                    <!--                                            Doanh Thu-->
+                    <!--                                        </th>-->
+                    <!--                                    </tr>-->
+                    <!--                                    </thead>-->
 
-<!--                                    <tbody class="bg-white">-->
-<!--                                    <tr>-->
-<!--                                        <td-->
-<!--                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">-->
-<!--                                            0-->
-<!--                                        </td>-->
+                    <!--                                    <tbody class="bg-white">-->
+                    <!--                                    <tr>-->
+                    <!--                                        <td-->
+                    <!--                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">-->
+                    <!--                                            0-->
+                    <!--                                        </td>-->
 
-<!--                                        <td-->
-<!--                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">-->
+                    <!--                                        <td-->
+                    <!--                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">-->
 
-<!--                                        </td>-->
+                    <!--                                        </td>-->
 
-<!--                                        <td-->
-<!--                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">-->
+                    <!--                                        <td-->
+                    <!--                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">-->
 
-<!--                                        </td>-->
+                    <!--                                        </td>-->
 
-<!--                                        <td-->
-<!--                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">-->
+                    <!--                                        <td-->
+                    <!--                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">-->
 
-<!--                                        </td>-->
+                    <!--                                        </td>-->
 
-<!--                                        <td-->
-<!--                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">-->
+                    <!--                                        <td-->
+                    <!--                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">-->
 
-<!--                                        </td>-->
-<!--                                    </tr>-->
-<!--                                    </tbody>-->
-<!--                                </table>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    &lt;!&ndash;Thống kê năm&ndash;&gt;-->
+                    <!--                                        </td>-->
+                    <!--                                    </tr>-->
+                    <!--                                    </tbody>-->
+                    <!--                                </table>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <!--                    &lt;!&ndash;Thống kê năm&ndash;&gt;-->
                 </div>
 
                 <div onclick="closeNav()" id="notificationBg" style="display: none;"

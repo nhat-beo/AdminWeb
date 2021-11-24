@@ -324,9 +324,24 @@ router.get('/delete_account.id=:id', function (req, res, next) {
         }
     })
 });
-//
+//thong ke
 router.get('/ThongKe', function (req, res, next) {
-    res.render('ThongKe',);
+    var listPhong=[];
+    datPhong.find({}, function (err, datPhong) {
+        if (err) {
+            res.send('Lỗi lấy thông tin: ' + err.message);
+        } else {
+            var index=0;
+            datPhong.forEach((value)=>{
+                console.log(value.soDem);
+                const doanhThu=value.soDem * value.giaPhong;
+                   listPhong.push({'doanhThu':doanhThu,'index':index});
+                   index++;
+            });
+            res.render('ThongKe', {thongKe: listPhong})
+        }
+    })
+
 });
 
 router.get('/SuaHoaDon', function (req, res, next) {
