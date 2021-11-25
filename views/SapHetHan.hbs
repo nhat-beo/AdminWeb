@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Categories</title>
-    <link rel="stylesheet" href="../../public/stylesheets/style.css">
+    <link rel="stylesheet" href="../public/stylesheets/style.css">
 </head>
 
 <body>
@@ -48,7 +48,7 @@
                     <span class="mx-3">Thống Kê</span>
                 </a>
 
-                <a class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+                <a class="flex items-center mt-4 py-2 px-6 bg-gray-700 bg-opacity-25 text-gray-100"
                    href="Categories">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                          stroke="currentColor">
@@ -70,7 +70,7 @@
                     <span class="mx-3">Đặt Phòng</span>
                 </a>
 
-                <a class="flex items-center mt-4 py-2 px-6 bg-gray-700 bg-opacity-25 text-gray-100"
+                <a class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
                    href="TaiKhoan">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                          stroke="currentColor">
@@ -130,11 +130,37 @@
 
             <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
                 <div class="container mx-auto px-6 py-8 mt-3">
-                    <h3 class="text-gray-700 text-3xl font-medium">Thông tin tài khoản</h3>
+                    <h3 class="text-gray-700 text-3xl font-medium">Phòng sắp hết hạn</h3>
 
                     <div class="flex items-end justify-between">
-                        <div></div>
-                        <form class="lg:ml-0 ml-6" action="">
+                        <div>
+                            <a href="ThemPhong">
+                                <button
+                                        class="bg-blue-900 px-2 py-2 rounded-lg text-white font-bold mt-4 hover:bg-indigo-700">
+                                    Thêm phòng mới
+                                </button>
+                            </a>
+                            <a href="PhongTrong">
+                                <button
+                                        class="bg-blue-900 px-2 py-2 rounded-lg text-white font-bold mt-4 ml-2 hover:bg-indigo-700">
+                                    Phòng Trống
+                                </button>
+                            </a>
+                            <a href="HetHanTrongNgay">
+                                <button
+                                        class="bg-blue-900 px-2 py-2 rounded-lg text-white font-bold mt-4 ml-2 hover:bg-indigo-700">
+                                    Phòng Hết
+                                </button>
+                            </a>
+                            <a href="SapHetHan">
+                                <button
+                                        class="bg-blue-900 px-2 py-2 rounded-lg text-white font-bold mt-4 ml-2 hover:bg-indigo-700">
+                                    Phòng Sắp Hết Hạn
+                                </button>
+                            </a>
+                        </div>
+
+                        <form class="lg:ml-0" action="">
                             <input class="border-2 border-gray-300 pl-2 w-60" type="text" placeholder="Tìm kiếm">
                         </form>
                     </div>
@@ -149,30 +175,38 @@
                                         <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
                                         <th
                                                 class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Họ và Tên
+                                            Số phòng
                                         </th>
                                         <th
                                                 class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Ngày sinh
+                                            Ảnh phòng
                                         </th>
                                         <th
                                                 class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Số điện thoại
+                                            Giá phòng
                                         </th>
                                         <th
                                                 class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            CMND/CCCD
+                                            Hạng phòng
                                         </th>
                                         <th
                                                 class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Email
+                                            Loại phòng
+                                        </th>
+                                        <th
+                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Mô tả
+                                        </th>
+                                        <th
+                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Trạng thái
                                         </th>
                                         <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
                                     </tr>
                                     </thead>
 
                                     <tbody class="bg-white">
-                                    {{#each account}}
+                                    {{#each datPhong}}
                                         <tr>
                                             <td
                                                     class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">
@@ -181,30 +215,44 @@
 
                                             <td
                                                     class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">
-                                                luc
+                                                {{this.soPhong}}
+                                            </td>
+
+                                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <img width="150px" src="/assets/image/Image 7.png" alt="">
                                             </td>
 
                                             <td
+                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-red-500">
+                                                {{this.giaPhong}}
+                                            </td>
+                                            <td
                                                     class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
-                                                22/01/2002
+                                                {{this.loaiPhong}}
+                                            </td>
+                                            <td
+                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
+                                                Phòng 2 giường
+                                            </td>
+                                            <td
+                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
+                                                <ul>
+                                                    <li>- Tủ lạnh</li>
+                                                    <li>- Ban công</li>
+                                                    <li>- Phòng đôi</li>
+                                                </ul>
                                             </td>
 
                                             <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">
-                                                0123456789
+                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-green-600">
+                                                Sắp hết hạn
                                             </td>
 
-                                            <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
-                                                01234567896325
-                                            </td>
-                                            <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
-                                                {{this.gmail}}
-                                            </td>
                                             <td
                                                     class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
-                                                <a href="delete_account.id={{this._id}}" class="ml-6 text-red-500 hover:text-red-600">Xóa</a>
+                                                <a href="SuaPhong"
+                                                   class="text-indigo-600 hover:text-indigo-900">Sửa</a>
+                                                <a href="" class="ml-6 text-red-500 hover:text-red-600">Xóa</a>
                                             </td>
                                         </tr>
                                     {{/each}}

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Categories</title>
-    <link rel="stylesheet" href="../../public/stylesheets/style.css">
+    <link rel="stylesheet" href="../public/stylesheets/style.css">
 </head>
 
 <body>
@@ -36,7 +36,7 @@
 
             <nav class="mt-10">
                 <a class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-                   href="../thong-ke.html">
+                   href="ThongKe">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                          stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -49,7 +49,7 @@
                 </a>
 
                 <a class="flex items-center mt-4 py-2 px-6 bg-gray-700 bg-opacity-25 text-gray-100"
-                   href="../categories.html">
+                   href="Categories">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                          stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -60,7 +60,7 @@
                 </a>
 
                 <a class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-                   href="../dat-phong.html">
+                   href="DatPhong">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                          stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -71,7 +71,7 @@
                 </a>
 
                 <a class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-                   href="../tai-khoan.html">
+                   href="TaiKhoan">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                          stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -82,7 +82,7 @@
                 </a>
 
                 <a class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-                   href="../doi-mat-khau.html">
+                   href="DoiMatKhau">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                          stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -103,9 +103,6 @@
                                   stroke-linecap="round" stroke-linejoin="round"></path>
                         </svg>
                     </button>
-                    <form class="lg:ml-0 ml-6" action="">
-                        <input class="border-2 border-gray-300 pl-2 w-60" type="text" placeholder="Tìm kiếm">
-                    </form>
                 </div>
 
                 <div class="flex items-center">
@@ -132,59 +129,56 @@
             </header>
 
             <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
-                {{#room}}
-                    <div class="container mx-auto px-6 py-8 mt-3">
-                        <h3 class="text-gray-700 text-3xl font-medium">Sửa thông tin phòng</h3>
-                        <form action="update_room.id={{this._id}}" enctype="multipart/form-data" method="post"
-                        name="update_room" class="mt-8 mx-auto flex justify-around px-20">
+                <div class="container mx-auto px-6 py-8 mt-3">
+                    <h3 class="text-gray-700 text-3xl font-medium">Thêm phòng mới</h3>
+                    <form action="add_room" class="mt-8 mx-auto flex justify-around px-20" enctype="multipart/form-data"
+                          method="post" name="add_room">
                         <div class="w-1/3">
                             <div class="my-5 text-sm">
                                 <label class="block text-gray-500">Phòng số</label>
                                 <input type="text" autofocus
                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                       placeholder="Phòng số" value="{{this.roomNumber}}" name="roomNumber" readonly/>
+                                       placeholder="Phòng số" name="roomNumber"/>
                             </div>
                             <div class="my-5 text-sm">
                                 <label class="block text-gray-500">Loại phòng</label>
                                 <input type="text"
                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                       placeholder="Loại phòng" value="{{this.typeRoom}}" name="typeRoom" required/>
+                                       placeholder="Loại phòng" name="typeRoom"/>
                             </div>
                             <div class="my-5 text-sm">
                                 <label class="block text-gray-500">Hạng phòng</label>
                                 <input type="text"
                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                       placeholder="Hạng phòng" value="{{this.rankRoom}}" name="rankRoom" required/>
+                                       placeholder="Hạng phòng" name="rankRoom"/>
                             </div>
                             <div class="my-5 text-sm">
                                 <label class="block text-gray-500">Số người/phòng</label>
                                 <input type="number"
                                        class="rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                       placeholder="Số người/phòng" value="{{this.peopleRoom}}" name="peopleRoom"
-                                       required/>
+                                       placeholder="Số người/phòng" name="peopleRoom"/>
                             </div>
                             <div class="my-5 text-sm">
                                 <label class="block text-gray-500">Giá phòng</label>
                                 <input type="number"
                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                       placeholder="Giá phòng" value="{{this.priceRoom}}" name="priceRoom" required/>
+                                       placeholder="Giá phòng" name="priceRoom"/>
                             </div>
                             <div class="my-5 text-sm">
-                                <label class="block text-gray-500" required>Tình trạng</label>
+                                <label class="block text-gray-500">Tình trạng</label>
                                 <select
                                         class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                        value="{{this.statusRoom}}" name="statusRoom" id="status">
+                                        name="statusRoom" id="status">
                                     <option name="vacancies" value="Còn phòng">Còn phòng</option>
                                     <option name="outOfRoom" value="Hết phòng">Hết phòng</option>
                                     <option name="outOfRoom" value="Đã đặt">Đã đặt</option>
                                 </select>
                             </div>
                             <div class="my-5 text-sm">
-                                <label class="block text-gray-500" required>Mô tả chi tiết</label>
+                                <label class="block text-gray-500">Mô tả chi tiết</label>
                                 <textarea
                                         class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full cursor-pointer resize-none"
-                                        value="{{this.description}}" name="description" id="" cols="30"
-                                        rows="8"></textarea>
+                                        name="description" id="" cols="30" rows="8"></textarea>
                             </div>
                         </div>
 
@@ -202,10 +196,7 @@
                                      class="wrapper_up_image relative w-full bg-white flex items-center justify-center">
                                     <div onclick="defaultBtnActive()"
                                          class="image_upload absolute w-full h-full flex items-center justify-center cursor-pointer">
-
-                                        <img class="image_preview h-full object-cover" src="uploads/{{this.filename}}"
-                                             alt="">
-
+                                        <img class="image_preview h-full object-cover" src="" alt="">
                                     </div>
                                     <div class="content_up_image">
                                         <div style="font-size: 100px; color: #9658fe;" class="icon">
@@ -252,134 +243,67 @@
                             </script>
                             <!---End script preview img upload-->
 
+                            <!--                            Các tiện ích khác-->
                             <div>
                                 <label class="block text-gray-500">Tiện ích</label>
                                 <div class="mt-3 grid grid-cols-2 gap-2">
                                     <div>
-                                        {{#if this.wifi }}
-                                            <input type="checkbox" name="{{this.wifi}}" id="wifi"
-                                                   value="{{this.wifi}}" checked>
-                                        {{else}}
-                                            <input type="checkbox" name="{{this.wifi}}" id="wifi" value="{{this.wifi}}">
-                                        {{/if}}
+                                        <input type="checkbox" name="wifi" id="wifi">
                                         <label class="cursor-pointer" for="wifi">Wifi</label>
-
                                     </div>
 
-
                                     <div>
-                                        {{#if this.pool }}
-                                            <input type="checkbox" name="pool" id="pool" value="{{this.pool}}" checked>
-                                        {{else}}
-                                            <input type="checkbox" name="pool" id="pool" value="{{this.pool}}">
-                                        {{/if}}
+                                        <input type="checkbox" name="pool" id="pool">
                                         <label class="cursor-pointer" for="pool">Hồ bơi</label>
                                     </div>
 
                                     <div>
-                                        {{#if this.parking }}
-                                            <input type="checkbox" name="parking" id="parking" value="{{this.parking}}"
-                                                   checked>
-                                        {{else}}
-                                            <input type="checkbox" name="parking" id="parking" value="{{this.parking}}">
-                                        {{/if}}
+                                        <input type="checkbox" name="parking" id="parking">
                                         <label class="cursor-pointer" for="parking">Đỗ xe</label>
                                     </div>
 
                                     <div>
-                                        {{#if this.restaurant }}
-                                            <input type="checkbox" name="restaurant" id="restaurant"
-                                                   value="{{this.restaurant}}" checked>
-                                        {{else}}
-                                            <input type="checkbox" name="restaurant" id="restaurant"
-                                                   value="{{this.restaurant}}">
-                                        {{/if}}
+                                        <input type="checkbox" name="restaurant" id="restaurant">
                                         <label class="cursor-pointer" for="restaurant">Nhà hàng</label>
                                     </div>
 
                                     <div>
-                                        {{#if this.receptionist }}
-                                            <input type="checkbox" name="receptionist" id="receptionist"
-                                                   value="{{this.receptionist}}" checked>
-                                        {{else}}
-                                            <input type="checkbox" name="receptionist" id="receptionist"
-                                                   value="{{this.receptionist}}">
-                                        {{/if}}
+                                        <input type="checkbox" name="receptionist" id="receptionist">
                                         <label class="cursor-pointer" for="receptionist">Lễ tân</label>
                                     </div>
 
                                     <div>
-
-                                        {{#if this.elevator }}
-                                            <input type="checkbox" name="elevator" id="elevator"
-                                                   value="{{this.elevator}}" checked>
-                                        {{else}}
-                                            <input type="checkbox" name="elevator" id="elevator"
-                                                   value="{{this.elevator}}">
-                                        {{/if}}
+                                        <input type="checkbox" name="elevator" id="elevator">
                                         <label class="cursor-pointer" for="elevator">Thang máy</label>
                                     </div>
 
                                     <div>
-
-                                        {{#if this.gym }}
-                                            <input type="checkbox" name="gym" id="gym" value="{{this.gym}}" checked>
-                                        {{else}}
-                                            <input type="checkbox" name="gym" id="gym" value="{{this.gym}}">
-                                        {{/if}}
+                                        <input type="checkbox" name="gym" id="gym">
                                         <label class="cursor-pointer" for="gym">Gym</label>
                                     </div>
 
                                     <div>
-
-                                        {{#if this.wheelChairWay }}
-                                            <input type="checkbox" name="wheelChairWay" id="wheelChairWay"
-                                                   value="{{this.wheelChairWay}}" checked>
-                                        {{else}}
-                                            <input type="checkbox" name="wheelChairWay" id="wheelChairWay"
-                                                   value="{{this.wheelChairWay}}">
-                                        {{/if}}
-                                        <label class="cursor-pointer" for="wheelchair">Lối xe lăn</label>
+                                        <input type="checkbox" name="wheelChairWay" id="wheelChairWay">
+                                        <label class="cursor-pointer" for="wheelChairWay">Lối xe lăn</label>
                                     </div>
 
                                     <div>
-
-                                        {{#if this.roomMeeting }}
-                                            <input type="checkbox" name="roomMeeting" id="roomMeeting"
-                                                   value="{{this.roomMeeting}}" checked>
-                                        {{else}}
-                                            <input type="checkbox" name="roomMeeting" id="roomMeeting"
-                                                   value="{{this.roomMeeting}}">
-                                        {{/if}}
+                                        <input type="checkbox" name="roomMeeting" id="roomMeeting">
                                         <label class="cursor-pointer" for="meeting">Phòng họp</label>
                                     </div>
 
                                     <div>
-                                        {{#if this.shuttle }}
-                                            <input type="checkbox" name="shuttle" id="shuttle" value="{{this.shuttle}}"
-                                                   checked>
-                                        {{else}}
-                                            <input type="checkbox" name="shuttle" id="shuttle" value="{{this.shuttle}}">
-                                        {{/if}}
+                                        <input type="checkbox" name="shuttle" id="shuttle">
                                         <label class="cursor-pointer" for="shuttle">Đưa đón</label>
                                     </div>
 
                                     <div>
-                                        {{#if this.laundry }}
-                                            <input type="checkbox" name="laundry" id="laundry" value="{{this.laundry}}"
-                                                   checked>
-                                        {{else}}
-                                            <input type="checkbox" name="laundry" id="laundry" value="{{this.laundry}}">
-                                        {{/if}}
+                                        <input type="checkbox" name="laundry" id="laundry">
                                         <label class="cursor-pointer" for="laundry">Giặt là</label>
                                     </div>
 
                                     <div onclick="checkedClick()">
-                                        {{#if this.other }}
-                                            <input type="checkbox" name="other" id="other" value="{{this.other}}" checked>
-                                        {{else}}
-                                            <input type="checkbox" name="other" id="other" value="{{this.other}}">
-                                        {{/if}}
+                                        <input type="checkbox" name="other" id="other">
                                         <label class="cursor-pointer" for="other">Khác</label>
                                     </div>
                                 </div>
@@ -406,7 +330,9 @@
                             <div class="mt-5 flex">
                                 <button type="submit"
                                         class="block text-center text-white bg-yellow-600 p-3 duration-300 rounded-xl hover:bg-yellow-800 w-full mr-2">
-                                    Sửa Phòng
+                                    <a>
+                                        Thêm mới
+                                    </a>
                                 </button>
                                 <button type="reset"
                                         class="block text-center text-white bg-green-600 p-3 duration-300 rounded-xl hover:bg-green-800 w-full ml-2">
@@ -414,9 +340,8 @@
                                 </button>
                             </div>
                         </div>
-                        </form>
-                    </div>
-                {{/room}}
+                    </form>
+                </div>
             </main>
         </div>
     </div>
