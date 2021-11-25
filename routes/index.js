@@ -148,9 +148,9 @@ router.get('/', function (req, res, next) {
 });
 
 //Man hinh home
-// router.get('/Categories', function(req, res, next) {
-//   res.render('Categories', );
-// });
+router.get('/Categories', function (req, res, next) {
+    res.render('Categories',);
+});
 
 //Danh sach phong - chua hoat dong duoc
 router.get('/Categories', function (req, res, next) {
@@ -276,6 +276,7 @@ router.post('/add_room', upload, function (req, res, next) {
         if (error) {
             res.send("Lỗi thêm thông tin");
         } else {
+
             res.redirect("/Categories");
         }
     });
@@ -373,6 +374,7 @@ router.get('/delete_account.id=:id', function (req, res, next) {
         }
     })
 });
+
 // tim kiem tai khoan
 router.get('/search', function (req, res) {
     var account = db.model('account', account_schema);
@@ -400,7 +402,22 @@ router.get('/update_bill.id=:id', function (req, res, next) {
 });
 
 router.get('/ThongKe', function (req, res, next) {
-    res.render('ThongKe',);
+    var listPhong=[];
+    datPhong.find({}, function (err, datPhong) {
+        if (err) {
+            res.send('Lỗi lấy thông tin: ' + err.message);
+        } else {
+            var index=0;
+            datPhong.forEach((value)=>{
+                console.log(value.soDem);
+                const doanhThu=value.soDem * value.giaPhong;
+                   listPhong.push({'doanhThu':doanhThu,'index':index});
+                   index++;
+            });
+            res.render('ThongKe', {thongKe: listPhong})
+        }
+    })
+
 });
 
 router.get('/SuaHoaDon', function (req, res, next) {
