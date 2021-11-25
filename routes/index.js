@@ -411,7 +411,7 @@ router.get('/ThongKe', function (req, res, next) {
             datPhong.forEach((value)=>{
                 console.log(value.soDem);
                 const doanhThu=value.soDem * value.giaPhong;
-                   listPhong.push({'doanhThu':doanhThu,'index':index,'soNguoi':soNguoi});
+                   listPhong.push({'doanhThu':doanhThu,'index':index});
                    index++;
             });
             res.render('ThongKe', {thongKe: listPhong})
