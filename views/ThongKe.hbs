@@ -215,9 +215,10 @@
 
                 </div>
                 <script>
-                    var xValues = ["Lượt đã đặt", "Số lượt khách", "số lượng quay lại", "doanh thu", "tăng trưởng"];
-                    var yValues = [100, 49, 44, 24, 15];
-                    var barColors = ["red", "green", "blue", "orange", "brown"];
+                    const xValues = ["Lượt đã đặt", "Số lượt khách", "số lượng quay lại", "doanh thu", "tăng trưởng"];
+                    const yValues = [100, 49, 44, 24, 15];
+                    yValues.splice(3,0,{{this.tongdoanhThu}});
+                    const barColors = ["red", "green", "blue", "orange", "brown"];
 
                     new Chart("myChart", {
                         type: "bar",
@@ -237,7 +238,6 @@
                         }
                     });
                 </script>
-
 
 
                 <div onclick="closeNav()" id="notificationBg" style="display: none;"
@@ -293,18 +293,18 @@
                 const notificationSidebar = document.getElementById('notificationSidebar')
 
                 function openNav() {
-                    if (notificationSidebar.style.right == "-400px") {
+                    if (notificationSidebar.style.right == "-800px") {
                         notificationBg.style.display = "block";
                         notificationSidebar.style.right = "0";
                     } else if (notificationSidebar.style.right = "0") {
                         notificationBg.style.display = "none";
-                        notificationSidebar.style.right = "-400px";
+                        notificationSidebar.style.right = "-800px";
                     }
                 }
 
                 function closeNav() {
                     notificationBg.style.display = "none";
-                    notificationSidebar.style.right = "-400px";
+                    notificationSidebar.style.right = "-800px";
                 }
             </script>
         </div>

@@ -402,7 +402,8 @@ router.get('/update_bill.id=:id', function (req, res, next) {
 });
 
 router.get('/ThongKe', function (req, res, next) {
-    var listPhong=[];
+    let listPhong = [];
+    let Sum = 0;
     datPhong.find({}, function (err, datPhong) {
         if (err) {
             res.send('Lỗi lấy thông tin: ' + err.message);
@@ -410,11 +411,12 @@ router.get('/ThongKe', function (req, res, next) {
             var index=0;
             datPhong.forEach((value)=>{
                 console.log(value.soDem);
-                const doanhThu=value.soDem * value.giaPhong;
-                   listPhong.push({'doanhThu':doanhThu,'index':index});
+                var doanhThu=value.soDem * value.giaPhong;
+                Sum += Number(doanhThu)
+                listPhong.push({'doanhThu':doanhThu,'index':index,'soNguoi':value.soNguoi});
                    index++;
             });
-            res.render('ThongKe', {thongKe: listPhong})
+            res.render('ThongKe', {thongKe: listPhong,tongdoanhThu: Sum})
         }
     })
 
