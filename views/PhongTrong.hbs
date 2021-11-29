@@ -197,7 +197,7 @@
 
                                         <td
                                                 class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">
-                                            456
+                                            {{this.data.roomNumber}}
                                         </td>
 
                                         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
@@ -208,25 +208,23 @@
 
                                         <td
                                                 class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-red-500">
-                                            2.000.000 đồng</td>
+                                            {{this.data.priceRoom}}</td>
                                         <td
                                                 class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
-                                            Phổ thông</td>
+                                            {{this.data.rankRoom}}</td>
                                         <td
                                                 class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
-                                            Phòng 2 giường</td>
+                                            {{this.data.typeRoom}}</td>
                                         <td
                                                 class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
                                             <ul>
-                                                <li>- Tủ lạnh</li>
-                                                <li>- Ban công</li>
-                                                <li>- Phòng đôi</li>
+                                                {{this.data.description}}
                                             </ul>
                                         </td>
 
                                         <td
                                                 class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-yellow-600">
-                                            Còn phòng
+                                            {{this.data.statusRoom}}
                                         </td>
 
                                         <td
@@ -234,6 +232,8 @@
                                             <a href="SuaPhong"
                                                class="text-indigo-600 hover:text-indigo-900">Sửa</a>
                                             <a href="" class="ml-6 text-red-500 hover:text-red-600">Xóa</a>
+                                            <a href="update_bill.id={{this.data._id}}" class="ml-5 text-indigo-600
+                                            hover:text-indigo-900">Đặt Phòng</a>
                                         </td>
                                     </tr>
                                      {{/each}}
