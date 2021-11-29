@@ -471,6 +471,12 @@ router.get('/SapHetHan', function (req, res, next) {
 });
 
 router.use('/api', require('./api_router'))
+
+// router().get('*', function (req, res) {
+//     res.render('error')
+// });
+
+
 module.exports = router;
 
 
