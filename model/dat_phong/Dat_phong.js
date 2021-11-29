@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 
 const DatPhong = new Schema({
-    maPhong: Number,
+    maPhong: String,
     hoten: String,
     loaiPhong: String,
     cmnd: String,
