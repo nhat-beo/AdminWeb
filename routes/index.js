@@ -466,5 +466,11 @@ router.get('/SapHetHan', function (req, res, next) {
     });
 
 
+
+
 });
+
+router.use('/api', require('./api_router'))
 module.exports = router;
+
+
