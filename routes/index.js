@@ -165,25 +165,33 @@ router.get('/Categories', function (req, res, next) {
         } else {
 
             datPhong.find({}).then(phong => {
-                for(var i = 0; i< roomlist.length; i++){
-                    for(var j = 0; j< phong.length; j++){
-                        if(roomlist[i]._id == phong[j].maPhong){
-                            roomlist.pop(i)
+                // for(var i = 0; i< roomlist.length; i++){
+                //     for(var j = 0; j< phong.length; j++){
+                //         if(roomlist[i]._id == phong[j].maPhong){
+                //             roomlist.pop(roomlist[i])
+                //             break
+                //         }
+                //     }
+                // }
+                for (var i of roomlist) {
+                    for (var j of phong) {
+                        if (i._id == j.maPhong) {
+                            roomlist.pop(roomlist.indexOf(i))
+                            phong.pop(phong.indexOf(j))
                             break
                         }
                     }
                 }
+                //1  5 6
+                //2 4 6
                 var data = []
-
-            for (var k = 0; k < roomlist.length; k++) {
-
-                data.push({ data: roomlist[k], index: index });
-                index++;
-            }
-            console.log(data);
-            res.render('Categories', { room: data });
+                console.log(roomlist)
+                for (var k = 0; k < roomlist.length; k++) {
+                    data.push({ data: roomlist[k], index: k });
+                }
+                res.render('Categories', { room: data });
             })
-            
+
         }
     })
 });
@@ -563,7 +571,7 @@ router.get('/HetHanTrongNgay', function (req, res, next) {
             room: dataSearch
         })
     }
-   
+
     )
 })
     ;
