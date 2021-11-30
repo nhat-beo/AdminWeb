@@ -9,4 +9,6 @@ route.get('/get-all-list-account',apiController.getAllAccount)
 
 route.get('/get-all-list-room',apiController.getAllRooms)
 
+route.post('/book-room', )
+
 module.exports = route
