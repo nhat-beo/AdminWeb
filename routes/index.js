@@ -167,33 +167,11 @@ router.get('/Categories', function (req, res, next) {
                     message: 'Không có dữ liệu ...'
                 });
             }
-            datPhong.find({}).then(phong => {
-                console.log(roomlist.length)
-                console.log(phong.length)
-             
-                for(var i = 0; i< roomlist.length; i++){
-                    console.log('>>>>>i='+i)
-
-                    for(var j = 0; j < phong.length; j++){
-                        console.log('>>>>>j='+j)
-                        if(roomlist[i]._id == phong[j].maPhong){
-                            roomlist.splice(roomlist[i],1)
-                            phong.splice(phong[j],1)
-                        }
-                    }
-                    console.log('----------------------')
-
-                }
-            
-                //1  5 6
-                //2 4 6
-                var data = []
-                for (var k = 0; k < roomlist.length; k++) {
-                    data.push({ data: roomlist[k], index: k });
-                }
-                res.render('Categories', { room: data });
-            })
-
+            var data = []
+            for (var k = 0; k < roomlist.length; k++) {
+                data.push({ data: roomlist[k], index: k });
+            }
+            res.render('Categories', { room: data });
         }
     })
 });
@@ -522,6 +500,8 @@ router.get('/update_bill.id=:id', function (req, res, next) {
         if (error) {
             res.send("Lỗi thêm thông tin" + error);
         } else {
+            room.statusRoom = 'Hết phòng'
+            room.save()
             res.render('ThemHoaDon', { room: room });
         }
     })
