@@ -178,8 +178,7 @@ router.get('/Categories', function (req, res, next) {
                         console.log('>>>>>j='+j)
                         if(roomlist[i]._id == phong[j].maPhong){
                             roomlist.splice(roomlist[i],1)
-                            phong.splice(phong[i],1)
-
+                            phong.splice(phong[j],1)
                         }
                     }
                     console.log('----------------------')
@@ -589,6 +588,7 @@ router.get('/PhongTrong', function (req, res, next) {
         res.render('PhongTrong', {
             room: dataSearch
         })
+
     }
     )
 });

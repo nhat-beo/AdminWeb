@@ -9,7 +9,6 @@
 </head>
 
 <body>
-    <!-- component -->
     <div>
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 
@@ -158,90 +157,87 @@
                             <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
                                 <div
                                     class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
-                                    <table class="min-w-full">
-                                        <thead>
-                                            <tr>
-                                                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
-                                                <th
-                                                    class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                                    Số phòng</th>
-                                                <th
-                                                    class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                                    Ảnh phòng</th>
-                                                <th
-                                                    class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                                    Giá phòng</th>
-                                                <th
-                                                    class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                                    Hạng phòng</th>
-                                                <th
-                                                    class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                                    Loại phòng</th>
-                                                <th
-                                                    class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                                    Mô tả</th>
-                                                <th
-                                                    class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                                    Trạng thái</th>
-                                                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
-                                            </tr>
-                                        </thead>
+                                <table class="min-w-full">
+                                    <thead>
+                                    <tr>
+                                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
+                                        <th
+                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Số phòng</th>
+                                        <th
+                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Ảnh phòng</th>
+                                        <th
+                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Giá phòng</th>
+                                        <th
+                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Hạng phòng</th>
+                                        <th
+                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Loại phòng</th>
+                                        <th
+                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Mô tả</th>
+                                        <th
+                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Trạng thái</th>
+                                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
+                                    </tr>
+                                    </thead>
 
-                                        <tbody class="bg-white">
-                                            {{#each room}}
-                                            <tr>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">
-                                                    {{this.index}}
-                                                </td>
+                                    <tbody class="bg-white">
+                                        {{#each room}}
+                                    <tr>
+                                        <td
+                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">
+                                            {{this.index}}
+                                        </td>
 
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">
-                                                    456
-                                                </td>
+                                        <td
+                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">
+                                            {{this.data.roomNumber}}
+                                        </td>
 
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    {{#each this.data.roomPhoto}}
+                                        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                 {{#each this.data.roomPhoto}}
                                                     <img width="150px" src="uploads/{{this.filename}}" alt="">
-                                                    {{/each}}
-                                                </td>
+                                                {{/each}}
+                                        </td>
 
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-red-500">
-                                                    2.000.000 đồng</td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
-                                                    Phổ thông</td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
-                                                    Phòng 2 giường</td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
-                                                    <ul>
-                                                        <li>- Tủ lạnh</li>
-                                                        <li>- Ban công</li>
-                                                        <li>- Phòng đôi</li>
-                                                    </ul>
-                                                </td>
+                                        <td
+                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-red-500">
+                                            {{this.data.priceRoom}}</td>
+                                        <td
+                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
+                                            {{this.data.rankRoom}}</td>
+                                        <td
+                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
+                                            {{this.data.typeRoom}}</td>
+                                        <td
+                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
+                                            <ul>
+                                                {{this.data.description}}
+                                            </ul>
+                                        </td>
 
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-yellow-600">
-                                                    Còn phòng
-                                                </td>
+                                        <td
+                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-yellow-600">
+                                            {{this.data.statusRoom}}
+                                        </td>
 
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
-                                                    <a href="SuaPhong"
-                                                        class="text-indigo-600 hover:text-indigo-900">Sửa</a>
-                                                    <a href="" class="ml-6 text-red-500 hover:text-red-600">Xóa</a>
-                                                    <a href="update_bill.id={{this.data._id}}" class="ml-5 text-indigo-600
-                                                hover:text-indigo-900">Đặt Phòng</a>
-                                                </td>
-                                            </tr>
-                                            {{/each}}
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        <td
+                                                class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
+                                            <a href="SuaPhong"
+                                               class="text-indigo-600 hover:text-indigo-900">Sửa</a>
+                                            <a href="" class="ml-6 text-red-500 hover:text-red-600">Xóa</a>
+                                            <a href="update_bill.id={{this.data._id}}" class="ml-5 text-indigo-600
+                                            hover:text-indigo-900">Đặt Phòng</a>
+                                        </td>
+                                    </tr>
+                                     {{/each}}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
