@@ -36,7 +36,7 @@
 
                 <nav class="mt-10">
                     <a class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-                        href="../thong-ke.html">
+                        href="ThongKe">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -48,8 +48,8 @@
                         <span class="mx-3">Thống Kê</span>
                     </a>
 
-                    <a class="flex items-center mt-4 py-2 px-6 bg-gray-700 bg-opacity-25 text-gray-100"
-                        href="../categories.html">
+                    <a class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+                        href="Categories">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -59,8 +59,7 @@
                         <span class="mx-3">Quản lý phòng</span>
                     </a>
 
-                    <a class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-                        href="../dat-phong.html">
+                    <a class="flex items-center mt-4 py-2 px-6 bg-gray-700 bg-opacity-25 text-gray-100" href="DatPhong">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -71,7 +70,7 @@
                     </a>
 
                     <a class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-                        href="../tai-khoan.html">
+                        href="TaiKhoan">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -169,23 +168,24 @@
                                     <label class="block text-gray-500" required>Mô tả chi tiết</label>
                                     <textarea
                                         class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full cursor-pointer resize-none"
-                                        value="{{this.description}}" name="description" id="" cols="30"
-                                        rows="8"></textarea>
+                                        name="description" id="" cols="30" rows="8">{{this.description}}</textarea>
                                 </div>
                             </div>
 
                             <div>
                                 <div class="my-5 text-sm">
                                     <label class="block text-gray-500">Ảnh</label>
+                                    {{#each this.roomPhoto}}
                                     <input id="default-btn" type="file"
                                         class="img-upload border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full cursor-pointer"
-                                        name="roomPhoto" multiple required>
-
+                                        value="{{this.originalname}}
+                                        name="roomPhoto">
+                                    {{/each}}
 
                                 </div>
 
                                 <!---Upload Image-->
-                                <div style="height: 350px; width: 430px;" class="container_up_image relative">
+                                <div style=" height: 350px; width: 430px;" class="container_up_image relative">
                                     <div style="height: 300px; border-radius: 10px; border: 2px dashed #c2cdda;"
                                         class="wrapper_up_image relative w-full bg-white flex items-center justify-center">
                                         <div onclick="defaultBtnActive()"
@@ -365,24 +365,31 @@
 
                                         <div onclick="checkedClick()">
                                             {{#if this.other }}
-                                            <input type="checkbox" name="other" id="other" value="{{this.other}}"
-                                                checked>
+                                            <input type="checkbox" name="other" id="other" checked>
                                             {{else}}
-                                            <input type="checkbox" name="other" id="other" value="{{this.other}}">
+                                            <input type="checkbox" name="other" id="other">
                                             {{/if}}
+
                                             <label class="cursor-pointer" for="other">Khác</label>
                                         </div>
                                     </div>
-
+                                    {{#if this.other }}
                                     <textarea
                                         class="hidden text-sm border-2 border-gray-300 rounded-xl px-2 py-1 mt-3 focus:outline-none bg-gray-100 w-full cursor-pointer resize-none"
-                                        id="textareaValue" cols="30" rows="2"></textarea>
+                                        id="textareaValue" cols="30" rows="2"
+                                        style="display: block;">{{this.otherText}}</textarea>
+                                    {{else}}
+                                    <textarea
+                                        class="hidden text-sm border-2 border-gray-300 rounded-xl px-2 py-1 mt-3 focus:outline-none bg-gray-100 w-full cursor-pointer resize-none"
+                                        id="textareaValue" cols="30" rows="2" style="display: none;"></textarea>
+                                    {{/if}}
 
                                     <script>
                                         function checkedClick() {
                                             var inputChecked = document.querySelector('#other');
                                             var textareaValue = document.querySelector('#textareaValue');
-                                            if (inputChecked.checked == true) {
+
+                                            if (inputChecked.checked) {
                                                 textareaValue.style.display = "block";
                                                 textareaValue.value = ''
                                             } else {
@@ -391,6 +398,7 @@
                                             }
                                         }
                                     </script>
+
                                 </div>
 
                                 <div class="mt-5 flex">

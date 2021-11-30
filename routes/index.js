@@ -75,6 +75,7 @@ var room_schema = new mongoose.Schema({
     wheelChairWay: Boolean,
     shuttle: Boolean,
     other: Boolean,
+    otherText: String
 });
 
 // định nghĩa schmema account
@@ -309,12 +310,14 @@ router.post('/add_room', upload, function (req, res, next) {
         wheelChairWay: req.body.wheelChairWay === 'on' ? true : false,
         shuttle: req.body.shuttle === 'on' ? true : false,
         other: req.body.other === 'on' ? true : false,
-    }).save(function (error) {
+        otherText: req.body.otherText
+    }).save(function (error, r) {
         if (error) {
             res.send("Lỗi thêm thông tin");
         } else {
 
             res.redirect("/Categories");
+
         }
     });
 });
@@ -355,21 +358,22 @@ router.post('/update_room.id=:id', upload, function (req, res, next) {
         priceRoom: req.body.priceRoom,
         statusRoom: req.body.statusRoom,
         description: req.body.description,
-        wifi: req.body.wifi,
-        parking: req.body.parking,
-        receptionist: req.body.receptionist,
-        gym: req.body.gym,
-        roomMeeting: req.body.roomMeeting,
-        laundry: req.body.laundry,
-        pool: req.body.pool,
-        restaurant: req.body.restaurant,
-        elevator: req.body.elevator,
-        wheelChairWay: req.body.wheelChairWay,
-        shuttle: req.body.shuttle,
-        other: req.body.other,
+        wifi: req.body.wifi === 'on' ? true : false,
+        parking: req.body.parking === 'on' ? true : false,
+        receptionist: req.body.receptionist === 'on' ? true : false,
+        gym: req.body.gym === 'on' ? true : false,
+        roomMeeting: req.body.roomMeeting === 'on' ? true : false,
+        laundry: req.body.laundry === 'on' ? true : false,
+        pool: req.body.pool === 'on' ? true : false,
+        restaurant: req.body.restaurant === 'on' ? true : false,
+        elevator: req.body.elevator === 'on' ? true : false,
+        wheelChairWay: req.body.wheelChairWay === 'on' ? true : false,
+        shuttle: req.body.shuttle === 'on' ? true : false,
+        other: req.body.other === 'on' ? true : false,
+        otherText: req.body.otherText
     }, function (error) {
         if (error) {
-            res.send("Lỗi sửa thông tin");
+            res.send("Lỗi sửa thông tin "+error.message);
         } else {
             room_model.findOne({ _id: req.params.id }, function (error, room) {
                 if (error) {
