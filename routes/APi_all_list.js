@@ -33,6 +33,7 @@ class APi_all_list {
     }
 
     getAllRooms(req, res, next) {
+        
         Rooms.find({}).then(Rooms => res.json({
             isSuccess: true,
             code: 200,
