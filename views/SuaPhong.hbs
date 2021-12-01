@@ -175,12 +175,9 @@
                             <div>
                                 <div class="my-5 text-sm">
                                     <label class="block text-gray-500">Ảnh</label>
-                                    {{#each this.roomPhoto}}
                                     <input id="default-btn" type="file"
                                         class="img-upload border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full cursor-pointer"
-                                        value="{{this.originalname}}
-                                        name="roomPhoto">
-                                    {{/each}}
+                                        name="roomPhoto"/>
 
                                 </div>
 
@@ -377,7 +374,7 @@
                                     <textarea
                                         class="hidden text-sm border-2 border-gray-300 rounded-xl px-2 py-1 mt-3 focus:outline-none bg-gray-100 w-full cursor-pointer resize-none"
                                         id="textareaValue" cols="30" rows="2"
-                                        style="display: block;">{{this.otherText}}</textarea>
+                                        style="display: block;" name="otherText">{{this.otherText}}</textarea>
                                     {{else}}
                                     <textarea
                                         class="hidden text-sm border-2 border-gray-300 rounded-xl px-2 py-1 mt-3 focus:outline-none bg-gray-100 w-full cursor-pointer resize-none"
