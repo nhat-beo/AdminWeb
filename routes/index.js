@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var datPhong = require('../model/dat_phong/Dat_phong');
+var Rooms = require('../model/room')
 
 //Multer
 var multer = require('multer');
@@ -401,22 +402,35 @@ router.get('/update_bill.id=:id', function (req, res, next) {
     })
 });
 
-router.get('/ThongKe', function (req, res, next) {
-    let listPhong = [];
-    let Sum = 0;
+router.get('/ThongKe', async function (req, res, next) {
+    let listPhongDaDat = [];
+    let Revenue = 0;
+    let RevPAR = 0;
+    let ALOS = 0
+    let LuotKhach = 0;
+    let listPhong = await Rooms.find({})
     datPhong.find({}, function (err, datPhong) {
         if (err) {
             res.send('Lỗi lấy thông tin: ' + err.message);
         } else {
-            var index=0;
-            datPhong.forEach((value)=>{
+            var index = 0;
+            datPhong.forEach((value) => {
                 console.log(value.soDem);
-                var doanhThu=value.soDem * value.giaPhong;
-                Sum += Number(doanhThu)
-                listPhong.push({'doanhThu':doanhThu,'index':index,'soNguoi':value.soNguoi});
-                   index++;
+                var doanhThu = value.soDem * value.giaPhong + (value.soDem * value.giaPhong * 0.1);
+                Revenue += Number(doanhThu)
+                LuotKhach += Number(value.soNguoi)
+
+                RevPAR = Revenue / listPhong.length;
+                ALOS += value.soDem / listPhongDaDat.length
+                listPhongDaDat.push({
+                    'doanhThu': doanhThu,
+                    'index': index,
+                    'soNguoi': value.soNguoi,
+                    'thoiGian': value.ngayTra
+                });
+                index++;
             });
-            res.render('ThongKe', {thongKe: listPhong,tongdoanhThu: Sum})
+            res.render('ThongKe', {thongKe: listPhongDaDat, tongdoanhThu: Revenue, LuotKhach: LuotKhach,RevPAR : RevPAR, ALOS: ALOS})
         }
     })
 
@@ -464,8 +478,6 @@ router.get('/SapHetHan', function (req, res, next) {
         }
         res.render('SapHetHan', {datPhong: listRoomExpired});
     });
-
-
 
 
 });

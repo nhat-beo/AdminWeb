@@ -3,8 +3,7 @@ const Taikhoans = require('../model/tai_khoan')
 const Rooms = require('../model/room')
 
 
-
-class APi {
+class APi_all_list {
 
 
     getAlllistromed(req, res, next) {
@@ -34,7 +33,7 @@ class APi {
     }
 
     getAllRooms(req, res, next) {
-        Rooms.find({statusRoom : 'Hết phòng'}).then(Rooms => res.json({
+        Rooms.find({statusRoom : ''}).then(Rooms => res.json({
             isSuccess: true,
             code: 200,
             message: "success",
@@ -48,4 +47,4 @@ class APi {
 
 }
 
-module.exports = new APi()
+module.exports = new APi_all_list()
