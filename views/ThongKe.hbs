@@ -244,7 +244,7 @@
                      class="fixed left-0 right-0 bottom-0 top-16 bg-white opacity-50 transition-opacity">
                 </div>
 
-                <div id="notificationSidebar" style="right: -400px; transition: 0.7s;"
+                <div id="notificationSidebar" style="right: -1500px; transition: 0.7s;"
                      class="w-1/4 top-16 mt-1 fixed">
                     <div class="h-screen bg-gray-200 opacity-100 overflow-y-auto">
                         <div class="flex items-center justify-center py-4 bg-blue-900">
@@ -293,18 +293,18 @@
                 const notificationSidebar = document.getElementById('notificationSidebar')
 
                 function openNav() {
-                    if (notificationSidebar.style.right == "-800px") {
+                    if (notificationSidebar.style.right == "-1500px") {
                         notificationBg.style.display = "block";
                         notificationSidebar.style.right = "0";
                     } else if (notificationSidebar.style.right = "0") {
                         notificationBg.style.display = "none";
-                        notificationSidebar.style.right = "-800px";
+                        notificationSidebar.style.right = "-1500px";
                     }
                 }
 
                 function closeNav() {
                     notificationBg.style.display = "none";
-                    notificationSidebar.style.right = "-800px";
+                    notificationSidebar.style.right = "-1500px";
                 }
             </script>
         </div>
