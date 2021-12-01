@@ -165,7 +165,7 @@
                                         </th>
                                         <th
                                                 class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Tổng số khách
+                                            Số lượng khách
                                         </th>
                                         <th
                                                 class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
@@ -184,7 +184,7 @@
 
                                             <td
                                                     class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">
-                                                112
+                                                {{this.thoiGian}}
                                             </td>
 
                                             <td
@@ -215,9 +215,12 @@
 
                 </div>
                 <script>
-                    const xValues = ["Lượt đã đặt", "Số lượt khách", "số lượng quay lại", "doanh thu", "tăng trưởng"];
-                    const yValues = [100, 49, 44, 24, 15];
-                    yValues.splice(3,0,{{this.tongdoanhThu}});
+                    const xValues = ["RevPAR (triệu đồng) ", "Tổng số khách", "Doanh thu(triệu đồng)", "ALOS (đêm)"];
+                    const yValues = [0,0,0,0];
+                    yValues.splice(0,0,{{this.RevPAR}});
+                    yValues.splice(1,0,{{this.LuotKhach}});
+                    yValues.splice(2,0,{{this.tongdoanhThu}});
+                    yValues.splice(3,0,{{this.ALOS}});
                     const barColors = ["red", "green", "blue", "orange", "brown"];
 
                     new Chart("myChart", {
