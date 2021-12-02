@@ -80,7 +80,6 @@ var room_schema = new mongoose.Schema({
     other: Boolean,
     otherText: String
 });
-
 // định nghĩa schmema account
 
 var account_schema = new mongoose.Schema({
@@ -279,6 +278,7 @@ router.post('/ThemHoaDon', function (req, res, next) {
                 if (err) {
                     res.send("Thêm hoá đơn k thành công " + err);
                 } else {
+                    console.log(">>>>" + req.body.id_phong)
                     res.redirect("/DatPhong");
                 }
             })
@@ -693,7 +693,6 @@ router.get('/search_phong_trong', function (req, res) {
         });
     })
 })
-// xoa phong trong
 //Xoa phong
 router.get('/delete_room_trong.id=:id', function (req, res, next) {
     var room_model = db.model('room', room_schema);
@@ -753,15 +752,27 @@ router.get('/search_phong_het_han', function (req, res) {
     })
 
 })
-//xoa phong het 
+//xoa phong het
 router.get('/delete_phong_sap_het.id=:id', function (req, res, next) {
-    datPhong.findByIdAndRemove(req.params.id, function (error, account) {
-        if (error) {
-            res.send("Xoá không thành công" + error);
-        } else {
-            res.redirect('/SapHetHan');
+    datPhong.findOne({_id: req.params.id}).then(dp =>{
+        if(dp != null){
+            var room_model = db.model('room', room_schema);
+            room_model.findOne({_id: dp.maPhong}).then(r =>{
+                r.statusRoom = 'Còn phòng'
+                r.save().then(r => {
+                    datPhong.findByIdAndRemove(req.params.id, function (error, account) {
+                        if (error) {
+                            res.send("Xoá không thành công" + error);
+                        } else {
+                            res.redirect('/SapHetHan');
+                        }
+                    })
+                }).catch(e => res.send('Lỗi '+e.message))
+            })
         }
     })
+
+
 });
 router.use('/api', require('./api_router'))
 
