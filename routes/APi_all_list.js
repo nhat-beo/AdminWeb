@@ -3,8 +3,7 @@ const Taikhoans = require('../model/tai_khoan')
 const Rooms = require('../model/room')
 
 
-
-class APi {
+class APi_all_list {
 
 
     getAlllistromed(req, res, next) {
@@ -48,4 +47,4 @@ class APi {
 
 }
 
-module.exports = new APi()
+module.exports = new APi_all_list()
