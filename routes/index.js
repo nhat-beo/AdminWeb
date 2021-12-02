@@ -97,15 +97,6 @@ router.post('/addAccount', createUser);
 
 function createUser(req, res) {
     var account = db.model('account', account_schema);
-    console.log({
-        gmail: req.body.gmail,
-        password: req.body.password,
-        name: req.body.name,
-        birthday: req.body.birthday,
-        phoneNumber: req.body.phoneNumber,
-        cccd: req.body.cccd,
-    })
-
     return account({
         gmail: req.body.gmail,
         password: req.body.password,
