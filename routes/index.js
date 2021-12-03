@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 var datPhong = require('../model/dat_phong/Dat_phong');
 var lichSuDatPhong = require('../model/lich_su_dat_phong');
-var Rooms = require('../model/room')
+var Rooms = require('../model/room');
+var ThongBaoDatPhong = require('../model/thong_bao_dat_phong');
 //Multer
 var multer = require('multer');
 
@@ -579,6 +580,7 @@ router.get('/ThongKe', async function (req, res, next) {
         }
     })
 });
+//get thong bao dat phong
 
 router.get('/SuaHoaDon', function (req, res, next) {
     res.render('SuaHoaDon',);
@@ -765,6 +767,45 @@ router.get('/delete_phong_sap_het.id=:id', function (req, res, next) {
 
 
 });
+
+// thong bao 
+router.post('/ThongKe', createUser);
+
+function createUser(req, res) {
+    return ThongBaoDatPhong({
+        sophong: req.body.soPhong,
+        hoten: req.body.hoten,
+        sdt: req.body.sdt,
+        cccd: req.body.cccd,
+        email: req.body.email,
+        ngaynhan: req.body.ngayNhan,
+        ngayTra: req.body.ngayTra,
+        sodem: req.body.soDem,
+        soNguoi:req.body.soNguoi,
+        datChoMinh:req.body.datChoMinh,
+        datChoNguoiKhac:req.body.datChoNguoiKhac,
+        gioNhanPhong:req.body.gioNhanPhong,
+        gioTra:req.body.gioTra,
+        giaPhong:req.body.giaPhong,
+    })
+        .save()
+        .then((newUser) => {
+            return res.status(201).json({
+                success: true,
+                message: 'New user created successfully',
+                data: newUser
+            });
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).json({
+                success: false,
+                message: 'Server error. Please try again.',
+                error: error.message,
+            });
+        });
+}
+
 router.use('/api', require('./api_router'))
 
 // router().get('*', function (req, res) {
