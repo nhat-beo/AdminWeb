@@ -80,17 +80,6 @@
 
                     <span class="mx-3">Tài Khoản</span>
                 </a>
-
-                <a class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-                   href="DoiMatKhau">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                    </svg>
-
-                    <span class="mx-3">Đổi Mật Khẩu</span>
-                </a>
             </nav>
         </div>
 
@@ -103,9 +92,6 @@
                                   stroke-linecap="round" stroke-linejoin="round"></path>
                         </svg>
                     </button>
-                    <form class="lg:ml-0 ml-6" action="">
-                        <input class="border-2 border-gray-300 pl-2 w-60" type="text" placeholder="Tìm kiếm">
-                    </form>
                 </div>
 
                 <div class="flex items-center">
@@ -123,7 +109,7 @@
                         <div x-show="dropdownOpen"
                              class="absolute right-0 mt-2 w-48 bg-white rounded-md overflow-hidden shadow-xl z-10"
                              style="display: none;">
-                            <a href=""
+                            <a href="/"
                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">Đăng
                                 xuất</a>
                         </div>
@@ -134,52 +120,48 @@
             <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
                 <div class="container mx-auto px-6 py-8 mt-3">
                     <h3 class="text-gray-700 text-3xl font-medium">Sửa thông tin hóa đơn</h3>
-                    <form action="" class="mt-8 mx-auto flex justify-around px-20">
+                    {{#room}}
+                    <form action="sua_hoadon.id={{this._id}}" class="mt-8 mx-auto flex justify-around px-20" method="post">
                         <div class="w-1/3">
                             <div class="my-5 text-sm">
-                                <label class="block text-gray-500">Mã đặt phòng</label>
+                                <label class="block text-gray-500">Số phòng</label>
                                 <input type="text" autofocus
                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                       placeholder="Mã đặt phòng" />
+                                       placeholder="Mã đặt phòng" value="{{this.soPhong}}" name="soPhong" readonly/>
                             </div>
                             <div class="my-5 text-sm">
                                 <label class="block text-gray-500">Họ và Tên</label>
                                 <input type="text"
                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                       placeholder="Họ và Tên" />
+                                       placeholder="Họ và Tên" name="hoten" />
                             </div>
-                            <div class="my-5 text-sm">
-                                <label class="block text-gray-500">Loại Phòng</label>
-                                <input type="text"
-                                       class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                       placeholder="Loại Phòng" />
-                            </div>
+                    
                             <div class="my-5 text-sm">
                                 <label class="block text-gray-500">CMND/CCCD</label>
                                 <input type="number"
                                        class="rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                       placeholder="CMND/CCCD" />
+                                       placeholder="CMND/CCCD" name="cmnd"/>
                             </div>
                             <div class="my-5 text-sm">
                                 <label class="block text-gray-500">Email</label>
                                 <input type="email"
                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                       placeholder="Email" />
+                                       placeholder="Email" name="email" />
                             </div>
                             <div class="my-5 text-sm">
                                 <label class="block text-gray-500">Giá Phòng</label>
                                 <input type="number"
                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                       placeholder="Giá Phòng" />
+                                       placeholder="Giá Phòng" name="giaPhong"/>
                             </div>
                             <div>
                                 <div class="mt-10 flex justify-between text-gray-500">
                                     <div>
-                                        <input type="radio" id="billForMe" name="bill" value="Đặt cho bản thân">
+                                        <input type="radio" id="billForMe" name="datChoMinh" value="Đặt cho bản thân">
                                         <label for="billForMe">Đặt cho bản thân</label>
                                     </div>
                                     <div>
-                                        <input type="radio" id="billForYou" name="bill" value="Đặt cho người khác">
+                                        <input type="radio" id="billForYou" name="datChoNguoiKhac" value="Đặt cho người khác">
                                         <label for="billForYou">Đặt cho người khác</label>
                                     </div>
                                 </div>
@@ -191,37 +173,37 @@
                                 <label class="block text-gray-500">Ngày Nhận Phòng</label>
                                 <input type="date" autofocus
                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                       placeholder="Ngày Nhận Phòng" />
+                                       placeholder="Ngày Nhận Phòng" name="ngayNhan"/>
                             </div>
                             <div class="my-5 text-sm">
                                 <label class="block text-gray-500">Ngày Trả Phòng</label>
                                 <input type="date"
                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                       placeholder="Ngày Trả Phòng" />
+                                       placeholder="Ngày Trả Phòng" name="ngayTra"/>
                             </div>
                             <div class="my-5 text-sm">
                                 <label class="block text-gray-500">Số Đêm</label>
                                 <input type="number"
                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                       placeholder="Số đêm" />
+                                       placeholder="Số đêm" name="soDem" />
                             </div>
                             <div class="my-5 text-sm">
                                 <label class="block text-gray-500">Số Người</label>
                                 <input type="number"
                                        class="rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                       placeholder="Số Người" />
+                                       placeholder="Số Người" name="soNguoi" />
                             </div>
                             <div class="my-5 text-sm">
                                 <label class="block text-gray-500">Giờ Nhận Phòng</label>
                                 <input type="time"
                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                       placeholder="Giờ Nhận Phòng" />
+                                       placeholder="Giờ Nhận Phòng" name="gioNhanPhong" />
                             </div>
                             <div class="my-5 text-sm">
                                 <label class="block text-gray-500">Giờ Trả Phòng</label>
                                 <input type="time"
                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                       placeholder="Giờ Trả Phòng" />
+                                       placeholder="Giờ Trả Phòng" name="gioTraPhong"/>
                             </div>
 
                             <div class="mt-10 flex">
@@ -236,6 +218,7 @@
                             </div>
                         </div>
                     </form>
+                    {{/room}}
                 </div>
             </main>
         </div>
