@@ -1,6 +1,5 @@
 const ListAllRoom = require('../model/room')
 const Listbill = require('../model/dat_phong/Dat_phong')
-const ListUser = require('../model/tai_khoan')
 
 
 class UpdateRoomController {
@@ -14,33 +13,51 @@ class UpdateRoomController {
             })
             return
         }
-        //var user = await ListUser.findOne({_id: req.body.userid})
+
 
         ListAllRoom.findOne({
             _id: req.body.Roomid
         }).then(r => {
-            console.log('user:'+r + '>>>>'+req.body.Roomid)
-            r.maPhong = req.body.maPhong
+            if (r == null) {
+                res.json({
+                    message: 'Không tìm thấy room'
+                })
+                return;
+            }
+            if (r.statusRoom == 'Hết phòng') {
+                res.json({
+                    message: 'Không tìm thấy room'
+                })
+                return;
+            }
+            r.statusRoom = 'Hết Phòng'
+            r.save().then(StatusRoomUpdate => {
+                Listbill({
+                    maPhong: StatusRoomUpdate._id,
+                    hoten: req.body.hoten,
+                    loaiPhong: req.body.loaiPhong,
+                    cmnd: req.body.cmnd,
+                    email: req.body.email,
+                    soPhong: req.body.soPhong,
+                    giaPhong: req.body.giaPhong,
+                    datChoMinh: req.body.datChoMinh,
+                    datChoNguoiKhac: req.body.datChoNguoiKhac,
+                    ngayNhan: req.body.ngayNhan,
+                    ngayTra: req.body.ngayTra,
+                    soDem: req.body.soDem,
+                    soNguoi: req.body.soNguoi,
+                    gioNhanPhong: req.body.gioNhanPhong,
+                    gioTraPhong: req.body.gioTraPhong,
+                    sdt: req.body.sdt,
+                })
+            }).catch(e => res.json({
+                code: 404,
+                message: e.message,
+                isSuccess: false
+            }));
+            console.log('user:' + r + '>>>>' + req.body.Roomid)
 
-            r.save()
-            // Listbill({
-            //     maPhong: r._id,
-            //     hoten: req.body,
-            //     loaiPhong: String,
-            //     cmnd: String,
-            //     email: String,
-            //     soPhong:String,
-            //     giaPhong: Number,
-            //     datChoMinh: Boolean,
-            //     datChoNguoiKhac: Boolean,
-            //     ngayNhan: String,
-            //     ngayTra: String,
-            //     soDem: Number,
-            //     soNguoi: Number,
-            //     gioNhanPhong: String,
-            //     gioTraPhong: String,
-            //     sdt: Number,
-            // })
+
         }).catch(e => {
             res.json({
                 code: 404,

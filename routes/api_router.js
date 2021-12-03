@@ -3,6 +3,8 @@ const route = express.Router()
 const apiController = require('./APi_all_list')
 const AcountController = require('./AcountController')
 const UpdateRoomController = require('./UpdateRoomController')
+const HistoryByUser = require('./HistoryUserControler')
+
 
 
 
@@ -20,5 +22,7 @@ route.post('/insert-acount', AcountController.insertAcount)
 route.post('/update-acount', AcountController.updateAcount)
 
 route.post('/moi-cmm-dat-phong', UpdateRoomController.insertRoom)
+
+route.get('/get-history-by-user', HistoryByUser.getHistoryUser)
 
 module.exports = route
