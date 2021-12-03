@@ -3,7 +3,6 @@ var router = express.Router();
 var datPhong = require('../model/dat_phong/Dat_phong');
 var lichSuDatPhong = require('../model/lich_su_dat_phong');
 var Rooms = require('../model/room')
-
 //Multer
 var multer = require('multer');
 
@@ -98,15 +97,6 @@ router.post('/addAccount', createUser);
 
 function createUser(req, res) {
     var account = db.model('account', account_schema);
-    console.log({
-        gmail: req.body.gmail,
-        password: req.body.password,
-        name: req.body.name,
-        birthday: req.body.birthday,
-        phoneNumber: req.body.phoneNumber,
-        cccd: req.body.cccd,
-    })
-
     return account({
         gmail: req.body.gmail,
         password: req.body.password,
@@ -160,7 +150,6 @@ router.post('/Login', function (req, res, next) {
         })
     }
 });
-
 
 //Danh sach phong - chua hoat dong duoc
 router.get('/Categories', function (req, res, next) {
@@ -726,6 +715,8 @@ router.get('/SapHetHan', function (req, res, next) {
         }
         res.render('SapHetHan', {datPhong: dataSearch});
     });
+
+
 
 
 });
