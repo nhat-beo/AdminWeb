@@ -3,13 +3,14 @@ const Schema = mongoose.Schema
 
 
 const Rooms = new Schema({
+    _id: Number,
     roomNumber: String,
-    typeRoom: Number,
+    typeRoom: String,
     rankRoom: String,
     peopleRoom: Number,
     priceRoom: Number,
     statusRoom: String,
-    description: String,
+    description: Boolean,
     wifi: Boolean,
     receptionist: Boolean,
     gym: Boolean,
@@ -21,8 +22,5 @@ const Rooms = new Schema({
     wheelChairWay: Boolean,
     shuttle: Boolean,
     other: String,
-
-
-
 })
 module.exports = mongoose.model('rooms', Rooms)

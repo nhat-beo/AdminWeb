@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 
-const DatPhong = new Schema({
+const LichSuDatPhong = new Schema({
     maPhong: String,
     hoten: String,
     loaiPhong: String,
@@ -20,4 +20,4 @@ const DatPhong = new Schema({
     gioTraPhong: String,
     sdt: Number,
 })
-module.exports = mongoose.model('DatPhong', DatPhong)
+module.exports = mongoose.model('LichSuDatPhong', LichSuDatPhong)
