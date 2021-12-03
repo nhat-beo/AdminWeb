@@ -10,7 +10,7 @@ const Rooms = new Schema({
     peopleRoom: Number,
     priceRoom: Number,
     statusRoom: String,
-    description: String,
+    description: Boolean,
     wifi: Boolean,
     receptionist: Boolean,
     gym: Boolean,
