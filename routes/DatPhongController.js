@@ -28,7 +28,7 @@ class DatPhongController {
                 })
                 return;
             }
-            r.statusRoom = 'Hết Phòng'
+            r.statusRoom = 'Hết phòng'
             r.save().then(StatusRoomUpdate => {
                 Listbill({
                     sophong: req.body.sophong,
@@ -45,12 +45,13 @@ class DatPhongController {
                     gioNhanPhong: req.body.gioNhanPhong,
                     gioTra: req.body.gioTra,
                     giaPhong: req.body.giaPhong,
-                }).save()
-                res.json({
-                    message: 'post thành công',
-                    isSuccess: true,
-                    code: 200,
-                })
+                }).save().then(res.json({
+                        message: 'post thành công',
+                        isSuccess: true,
+                        code: 200,
+                    })
+                )
+
             }).catch(e => res.json({
                 code: 404,
                 message: e.message,
