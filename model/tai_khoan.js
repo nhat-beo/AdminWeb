@@ -3,7 +3,6 @@ const Schema = mongoose.Schema
 
 
 const TaiKhoan = new Schema({
-    _id: String,
     gmail: String,
     password: String,
     name: String,

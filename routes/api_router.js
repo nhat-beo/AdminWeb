@@ -2,8 +2,9 @@ const express = require('express')
 const route = express.Router()
 const apiController = require('./APi_all_list')
 const AcountController = require('./AcountController')
-const UpdateRoomController = require('./UpdateRoomController')
+const UpdateRoomController = require('./DatPhongController')
 const HistoryByUser = require('./HistoryUserControler')
+const TopFavorrite = require('./GetTopRoom')
 
 
 
@@ -21,8 +22,10 @@ route.post('/insert-acount', AcountController.insertAcount)
 
 route.post('/update-acount', AcountController.updateAcount)
 
-route.post('/moi-cmm-dat-phong', UpdateRoomController.insertRoom)
+route.post('/wait-to-accept-room', UpdateRoomController.insertRoom)
 
 route.get('/get-history-by-user', HistoryByUser.getHistoryUser)
+
+route.get('/get-top-10-favorite', TopFavorrite.getTopRoom)
 
 module.exports = route

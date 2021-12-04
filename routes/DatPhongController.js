@@ -2,7 +2,7 @@ const ListAllRoom = require('../model/room')
 const Listbill = require('../model/dat_phong/Dat_phong')
 
 
-class UpdateRoomController {
+class DatPhongController {
     async insertRoom(req, res) {
 
         if (req.body.Roomid == null) {
@@ -13,8 +13,6 @@ class UpdateRoomController {
             })
             return
         }
-
-
         ListAllRoom.findOne({
             _id: req.body.Roomid
         }).then(r => {
@@ -26,7 +24,7 @@ class UpdateRoomController {
             }
             if (r.statusRoom == 'Hết phòng') {
                 res.json({
-                    message: 'Không tìm thấy room'
+                    message: 'Phòng này đã hết, mời đặt phòng khác'
                 })
                 return;
             }
@@ -50,6 +48,11 @@ class UpdateRoomController {
                     gioTraPhong: req.body.gioTraPhong,
                     sdt: req.body.sdt,
                 })
+                res.json({
+                    message: 'Cập nhật trạng thái thành công',
+                    isSuccess: true,
+                    code: 200,
+                })
             }).catch(e => res.json({
                 code: 404,
                 message: e.message,
@@ -70,4 +73,4 @@ class UpdateRoomController {
 }
 
 
-module.exports = new UpdateRoomController()
+module.exports = new DatPhongController()

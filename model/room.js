@@ -3,14 +3,13 @@ const Schema = mongoose.Schema
 
 
 const Rooms = new Schema({
-    _id: Number,
     roomNumber: String,
     typeRoom: String,
     rankRoom: String,
     peopleRoom: Number,
     priceRoom: Number,
     statusRoom: String,
-    description: Boolean,
+    description: String,
     wifi: Boolean,
     receptionist: Boolean,
     gym: Boolean,
