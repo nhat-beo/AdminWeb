@@ -1,5 +1,5 @@
 const ListAllRoom = require('../model/room')
-const Listbill = require('../model/dat_phong/Dat_phong')
+const Listbill = require('../model/thong_bao_dat_phong')
 
 
 class DatPhongController {
@@ -31,25 +31,23 @@ class DatPhongController {
             r.statusRoom = 'Hết Phòng'
             r.save().then(StatusRoomUpdate => {
                 Listbill({
-                    maPhong: StatusRoomUpdate._id,
+                    sophong: req.body.sophong,
                     hoten: req.body.hoten,
-                    loaiPhong: req.body.loaiPhong,
-                    cmnd: req.body.cmnd,
+                    sdt: req.body.sdt,
+                    cccd: req.body.cccd,
                     email: req.body.email,
-                    soPhong: req.body.soPhong,
-                    giaPhong: req.body.giaPhong,
+                    ngaynhan: req.body.ngaynhan,
+                    ngayTra: req.body.ngayTra,
+                    sodem: req.body.sodem,
+                    soNguoi: req.body.soNguoi,
                     datChoMinh: req.body.datChoMinh,
                     datChoNguoiKhac: req.body.datChoNguoiKhac,
-                    ngayNhan: req.body.ngayNhan,
-                    ngayTra: req.body.ngayTra,
-                    soDem: req.body.soDem,
-                    soNguoi: req.body.soNguoi,
                     gioNhanPhong: req.body.gioNhanPhong,
-                    gioTraPhong: req.body.gioTraPhong,
-                    sdt: req.body.sdt,
-                })
+                    gioTra: req.body.gioTra,
+                    giaPhong: req.body.giaPhong,
+                }).save()
                 res.json({
-                    message: 'Cập nhật trạng thái thành công',
+                    message: 'post thành công',
                     isSuccess: true,
                     code: 200,
                 })
