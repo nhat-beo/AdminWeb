@@ -57,8 +57,6 @@ class DatPhongController {
                 isSuccess: false
             }));
             console.log('user:' + r + '>>>>' + req.body.Roomid)
-
-
         }).catch(e => {
             res.json({
                 code: 404,
