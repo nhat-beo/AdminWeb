@@ -1,7 +1,7 @@
 const ListAllRoom = require('../model/room')
 const Listbill = require('../model/thong_bao_dat_phong')
 
-
+// todo api
 class DatPhongController {
     async insertRoom(req, res) {
 
