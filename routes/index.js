@@ -234,8 +234,6 @@ router.post('/ThemHoaDon', function (req, res, next) {
         email: req.body.email,
         soPhong: req.body.soPhong,
         giaPhong: req.body.giaPhong,
-        datChoMinh: req.body.datChoMinh == 'Đặt cho bản thân' ? true : false,
-        datChoNguoiKhac: req.body.datChoNguoiKhac == 'Đặt cho người khác' ? true : false,
         ngayNhan: req.body.ngayNhan,
         ngayTra: req.body.ngayTra,
         soDem: req.body.soDem,
@@ -255,8 +253,6 @@ router.post('/ThemHoaDon', function (req, res, next) {
                 email: req.body.email,
                 soPhong: req.body.soPhong,
                 giaPhong: req.body.giaPhong,
-                datChoMinh: req.body.datChoMinh == 'Đặt cho bản thân' ? true : false,
-                datChoNguoiKhac: req.body.datChoNguoiKhac == 'Đặt cho người khác' ? true : false,
                 ngayNhan: req.body.ngayNhan,
                 ngayTra: req.body.ngayTra,
                 soDem: req.body.soDem,
@@ -768,8 +764,41 @@ router.get('/delete_phong_sap_het.id=:id', function (req, res, next) {
 
 
 });
+// xac nhan thong bao
+router.post('/xacNhan_thong_bao.id=:id', function (req, res, next) {
+    lichSuDatPhong({
+        maPhong: req.body.id,
+        hoten: req.body.hoten,
+        loaiPhong: req.body.loaiPhong,
+        cmnd: req.body.cmnd,
+        email: req.body.email,
+        soPhong: req.body.soPhong,
+        giaPhong: req.body.giaPhong,
+        ngayNhan: req.body.ngayNhan,
+        ngayTra: req.body.ngayTra,
+        soDem: req.body.soDem,
+        soNguoi: req.body.soNguoi,
+        gioNhanPhong: req.body.gioNhanPhong,
+        gioTraPhong: req.body.gioTraPhong,
+        sdt: req.body.sdt,
+    }).save(function (err) {
+        if (err) {
+            res.send("Thêm hoá đơn k thành công " + err);
+        } else {
+            console.log(">>>>" + req.body.id_phong)
+            ThongBaoDatPhong.findByIdAndRemove(req.params.id, function (error, room) {
+                if (error) {
+                    res.send("Lỗi xóa thông tin");
+                } else {
+                    res.redirect("/DatPhong");
+                }
+            })
 
-// xoa thong bao
+        }
+    })
+
+});
+// huy thong bao
 router.get('/delete_thong_bao.id=:id', function (req, res, next) {
     ThongBaoDatPhong.findByIdAndRemove(req.params.id, function (error, room) {
         if (error) {
