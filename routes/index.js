@@ -796,7 +796,7 @@ router.get('/xacNhan_thong_bao', function (req, res, next) {
             loaiPhong: tb.loaiPhong,
             cmnd: tb.cccd,
             email: tb.email,
-            soPhong: tb.soPhong,
+            soPhong: tb.sophong,
             giaPhong: tb.giaPhong,
             ngayNhan: tb.ngaynhan,
             ngayTra: tb.ngayTra,
