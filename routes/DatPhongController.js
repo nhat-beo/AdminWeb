@@ -31,6 +31,7 @@ class DatPhongController {
             r.statusRoom = 'Hết Phòng'
             r.save().then(StatusRoomUpdate => {
                 Listbill({
+                    Roomid:req.body.Roomid,
                     sophong: req.body.sophong,
                     hoten: req.body.hoten,
                     sdt: req.body.sdt,
