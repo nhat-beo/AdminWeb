@@ -40,8 +40,6 @@ class DatPhongController {
                     ngayTra: req.body.ngayTra,
                     sodem: req.body.sodem,
                     soNguoi: req.body.soNguoi,
-                    datChoMinh: req.body.datChoMinh,
-                    datChoNguoiKhac: req.body.datChoNguoiKhac,
                     gioNhanPhong: req.body.gioNhanPhong,
                     gioTra: req.body.gioTra,
                     giaPhong: req.body.giaPhong,
