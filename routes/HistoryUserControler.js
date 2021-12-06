@@ -27,16 +27,38 @@ class HistoryUserControler {
     }
 
     deleteHistory(req, res) {
-        if (req.body.id == null && req.body.email) {
-            res.json({message: 'Cần truyền đủ params id, và email', status: false})
+        if (req.body.id == null) {
+            res.json({message: 'Cần truyền params id', status: false, code: 200,})
             return
         }
-        QA.deleteOne({_id: req.body.id}, function (err) {
+        ListHistoryUser.deleteOne({_id: req.body.id}, function (err) {
             if (err) {
                 res.json({message: 'Delete failed', status: false, err: err})
                 return
             }
-            res.redirect('/pending_request')
+            res.json({
+                message: 'Delete success',
+                status: false,
+                code: 200
+            });
+        })
+    }
+
+    deleteAllHistory(req, res) {
+        if (req.body.email == null) {
+            res.json({message: 'Cần truyền params id', status: false, code: 200,})
+            return
+        }
+        ListHistoryUser.deleteOne({email: req.body.email}, function (err) {
+            if (err) {
+                res.json({message: 'Delete failed', status: false, err: err})
+                return
+            }
+            res.json({
+                message: 'Delete success',
+                status: false,
+                code: 200
+            });
         })
     }
 

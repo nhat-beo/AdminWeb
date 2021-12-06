@@ -28,6 +28,8 @@ route.get('/get-history-by-user', HistoryByUser.getHistoryUser)
 
 route.post('/delete-history-by-user', HistoryByUser.deleteHistory)
 
+route.post('/delete-all-history-by-user', HistoryByUser.deleteAllHistory)
+
 route.get('/get-top-favorite', TopFavorrite.getTopRoom)
 
 module.exports = route

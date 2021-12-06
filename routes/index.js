@@ -781,9 +781,9 @@ router.get('/delete_thong_bao.id=:id', function (req, res, next) {
 });
 router.use('/api', require('./api_router'))
 
-// router().get('*', function (req, res) {
-//     res.render('error')
-// });
+router.get('*', function (req, res) {
+    res.render('error')
+});
 
 
 module.exports = router;
