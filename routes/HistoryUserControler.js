@@ -1,8 +1,6 @@
 const ListHistoryUser = require('../model/lich_su_dat_phong')
 
 
-
-
 class HistoryUserControler {
 
     getHistoryUser(req, res, next) {
@@ -26,6 +24,20 @@ class HistoryUserControler {
             message: e.message,
             code: 404
         }))
+    }
+
+    deleteHistory(req, res) {
+        if (req.body.id == null && req.body.email) {
+            res.json({message: 'Cần truyền đủ params id, và email', status: false})
+            return
+        }
+        QA.deleteOne({_id: req.body.id}, function (err) {
+            if (err) {
+                res.json({message: 'Delete failed', status: false, err: err})
+                return
+            }
+            res.redirect('/pending_request')
+        })
     }
 
 }

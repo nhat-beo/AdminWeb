@@ -30,7 +30,15 @@ class DatPhongController {
                 })
                 return;
             }
-            r.statusRoom = 'Hết phòng'
+            if (r.statusRoom == 'Chờ Xác nhận') {
+                res.json({
+                    code: 200,
+                    message: 'Phòng này đang Chờ xác nhận từ khách sạn, mời đặt phòng khác',
+                    isSuccess: false
+                })
+                return;
+            }
+            r.statusRoom = 'Chờ Xác nhận'
             r.save().then(StatusRoomUpdate => {
                 Listbill({
                     sophong: req.body.sophong,
