@@ -3,6 +3,7 @@ const Schema = mongoose.Schema
 
 
 const ThongBaoDatPhong = new Schema({
+    Roomid:String,
     sophong: String,
     hoten: String,
     sdt: String,
