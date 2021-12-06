@@ -45,6 +45,7 @@ const mongoose = require('mongoose');
 const { float } = require("tailwindcss/lib/plugins");
 const { NetworkAuthenticationRequire } = require('http-errors');
 const thong_bao_dat_phong = require('../model/thong_bao_dat_phong');
+const lich_su_dat_phong = require('../model/lich_su_dat_phong');
 mongoose.connect('mongodb+srv://admin:minhminh@cluster0.hiqs0.mongodb.net/bFpolyHotel?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -420,19 +421,21 @@ router.post('/update_room.id=:id', upload, function (req, res, next) {
     });
 });
 // sua hoa don ssss
-router.get('/sua_hoadon.id=:id', function (req, res, next) {
+router.get('/sua_hoadon', function (req, res, next) {
     // var room_model = db.model('room', room_schema);
-    datPhong.findOne({ _id: req.params.id }, function (error, room) {
+    lich_su_dat_phong.findOne({ _id: req.query.id }, function (error, room) {
         if (error) {
             res.send("Lỗi sửa thông tin" + error);
         } else {
+            console.log(room)
+
             res.render('SuaHoaDon', { room: room });
         }
     })
 });
 /// posrt sua sss
 router.post('/sua_hoadon.id=:id', upload, function (req, res, next) {
-    datPhong.findByIdAndUpdate(req.params.id, {
+    lich_su_dat_phong.findByIdAndUpdate(req.params.id, {
         maPhong: req.body.maPhong,
         hoten: req.body.hoten,
         loaiPhong: req.body.loaiPhong,
@@ -453,10 +456,11 @@ router.post('/sua_hoadon.id=:id', upload, function (req, res, next) {
         if (error) {
             res.send("Lỗi sửa thông tin");
         } else {
-            datPhong.findOne({ _id: req.params.id }, function (error, room) {
+            lich_su_dat_phong.findOne({ _id: req.params.id }, function (error, room) {
                 if (error) {
                     res.send("Lỗi sửa thông tin" + error);
                 } else {
+                    console.log(req.params.id)
                     // res.send("Sửa thông tin thành công");
                     // res.json(room);
                     // res.render('SuaPhong', {room: room});
@@ -776,8 +780,15 @@ router.get('/delete_phong_sap_het.id=:id', function (req, res, next) {
 
 });
 // xac nhan thong bao
-router.get('/xacNhan_thong_bao.id=:id', function (req, res, next) {
-    thong_bao_dat_phong.findOne({ _id: req.params.id }).then(tb => {
+router.get('/xacNhan_thong_bao', function (req, res, next) {
+    var room_model = db.model('room', room_schema);
+    room_model.findOne({ _id: req.query.Roomid }).then(r => {
+        r.statusRoom = 'Hết phòng'
+        r.save().then(r => {
+
+        }).catch(e => res.send('Lỗi ' + e.message))
+    })
+    thong_bao_dat_phong.findOne({ _id: req.query.id }).then(tb => {
         console.log(tb)
         lichSuDatPhong({
             maPhong: tb.id,
@@ -798,7 +809,7 @@ router.get('/xacNhan_thong_bao.id=:id', function (req, res, next) {
             if (err) {
                 res.send("Thêm hoá đơn k thành công " + err);
             } else {
-                ThongBaoDatPhong.findByIdAndRemove(req.params.id, function (error, room) {
+                ThongBaoDatPhong.findByIdAndRemove(req.query.id, function (error, room) {
                     if (error) {
                         res.send("Lỗi xóa thông tin");
                     } else {
