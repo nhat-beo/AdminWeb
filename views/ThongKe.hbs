@@ -205,11 +205,11 @@
                 </div>
                 <script>
                     const xValues = ["RevPAR (triệu đồng) ", "Tổng số khách", "Doanh thu(triệu đồng)", "ALOS (đêm)"];
-                    const yValues = [0,0,0,0];
-                    yValues.splice(0,0,{{this.RevPAR}});
-                    yValues.splice(1,0,{{this.LuotKhach}});
-                    yValues.splice(2,0,{{this.tongdoanhThu}});
-                    yValues.splice(3,0,{{this.ALOS}});
+                    const yValues = [0, 0, 0, 0];
+                    yValues.splice(0, 0,{{this.RevPAR}});
+                    yValues.splice(1, 0,{{this.LuotKhach}});
+                    yValues.splice(2, 0,{{this.tongdoanhThu}});
+                    yValues.splice(3, 0,{{this.ALOS}});
                     const barColors = ["red", "green", "blue", "orange", "brown"];
 
                     new Chart("myChart", {
@@ -244,36 +244,40 @@
                         </div>
 
                         <div class="mt-2 flex-col overflow-y-auto" style="height: auto;">
-                            <div
-                                    class="flex-col mx-2 mb-4 border-t-2 border-l-2 border-r-2 border-b-2 border-gray-400 rounded-md">
-                                <div class="flex justify-between px-1 text-sm">
-                                    <ul class="w-1/2 mr-2">
-                                        <li>Họ và Tên: Khuất Hồng Minh</li>
-                                        <li>Số điện thoại: 0999999999</li>
-                                        <li>Số đêm: 5</li>
-                                        <li>Số người: 5</li>
-                                    </ul>
+                            {{#each thongBaoDatPhong}}
+                                <div
+                                        class="flex-col mx-2 mb-4 border-t-2 border-l-2 border-r-2 border-b-2 border-gray-400 rounded-md">
 
-                                    <ul class="pb-2 w-1/2 ml-2">
-                                        <li>Số phòng: 305</li>
-                                        <li>Hạng phòng: Phổ Thông</li>
-                                        <li>Ngày đặt: 13/08/2005</li>
-                                        <li>Ngày trả: 19/08/2005</li>
+                                    <div class="flex justify-between px-1 text-sm">
+                                        <ul class="w-1/2 mr-2">
+                                            <li>Họ và Tên: {{this.hoten}}</li>
+                                            <li>Số điện thoại: {{this.sdt}}</li>
+                                            <li>Số đêm: {{this.sodem}}</li>
+                                            <li>Số người: {{this.soNguoi}}</li>
+                                        </ul>
 
-                                    </ul>
+                                        <ul class="pb-2 w-1/2 ml-2">
+                                            <li>Số phòng: {{this.sophong}}</li>
+                                            <li>Hạng phòng: {{this.hangPhong}}</li>
+                                            <li>Ngày đặt: {{this.ngaynhan}}</li>
+                                            <li>Ngày trả: {{this.ngayTra}}</li>
+
+                                        </ul>
+
+                                    </div>
+
+                                    <p class="text-red-600 text-lg font-medium py-2 px-1">Số tiền: {{this.giaPhong}}</p>
+                                    <div class="flex justify-between" style="padding: 10px;">
+                                        <button type="submit"
+                                                class="block text-center text-white bg-green-600 p-2 duration-300 rounded-md hover:bg-green-800 w-full mr-2">
+                                            Xác nhận
+                                        </button>
+                                        <a href="delete_thong_bao.id={{this._id}}" class="block text-center
+                                        text-white
+                                        bg-red-600 p-2 duration-300 rounded-md hover:bg-red-800 w-full ml-2">Huỷ</a>
+                                    </div>
                                 </div>
-                                <p class="text-red-600 text-lg font-medium py-2 px-1">Số tiền: 2.000.000</p>
-                                <div class="flex justify-between" style="padding: 10px;"> 
-                                    <button type="submit"
-                                            class="block text-center text-white bg-green-600 p-2 duration-300 rounded-md hover:bg-green-800 w-full mr-2">
-                                        Xác nhận
-                                    </button>
-                                    <button type="reset"
-                                            class="block text-center text-white bg-red-600 p-2 duration-300 rounded-md hover:bg-red-800 w-full ml-2">
-                                        Hủy
-                                    </button>
-                                </div>
-                            </div>
+                            {{/each}}
                             <!--Thông tin đơn phòng-->
                         </div>
                     </div>

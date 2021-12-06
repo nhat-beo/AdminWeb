@@ -24,21 +24,11 @@ class DatPhongController {
             }
             if (r.statusRoom == 'Hết phòng') {
                 res.json({
-                    code: 200,
-                    message: 'Phòng này đã hết, mời đặt phòng khác',
-                    isSuccess: false
+                    message: 'Phòng này đã hết, mời đặt phòng khác'
                 })
                 return;
             }
-            if (r.statusRoom == 'Chờ Xác nhận') {
-                res.json({
-                    code: 200,
-                    message: 'Phòng này đang Chờ xác nhận từ khách sạn, mời đặt phòng khác',
-                    isSuccess: false
-                })
-                return;
-            }
-            r.statusRoom = 'Chờ Xác nhận'
+            r.statusRoom = 'Chờ đặt phòng'
             r.save().then(StatusRoomUpdate => {
                 Listbill({
                     sophong: req.body.sophong,
@@ -50,18 +40,15 @@ class DatPhongController {
                     ngayTra: req.body.ngayTra,
                     sodem: req.body.sodem,
                     soNguoi: req.body.soNguoi,
-                    datChoMinh: req.body.datChoMinh,
-                    datChoNguoiKhac: req.body.datChoNguoiKhac,
                     gioNhanPhong: req.body.gioNhanPhong,
                     gioTra: req.body.gioTra,
                     giaPhong: req.body.giaPhong,
-                }).save().then(res.json({
-                        message: 'post thành công',
-                        isSuccess: true,
-                        code: 200,
-                    })
-                )
-
+                }).save()
+                res.json({
+                    message: 'post thành công',
+                    isSuccess: true,
+                    code: 200,
+                })
             }).catch(e => res.json({
                 code: 404,
                 message: e.message,
@@ -71,7 +58,7 @@ class DatPhongController {
         }).catch(e => {
             res.json({
                 code: 404,
-                message: 'e',
+                message: e.message,
                 isSuccess: false
             })
         })

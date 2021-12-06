@@ -10,8 +10,6 @@ const DatPhong = new Schema({
     email: String,
     soPhong:String,
     giaPhong: Number,
-    datChoMinh: Boolean,
-    datChoNguoiKhac: Boolean,
     ngayNhan: String,
     ngayTra: String,
     soDem: Number,

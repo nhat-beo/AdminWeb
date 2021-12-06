@@ -549,6 +549,8 @@ router.get('/ThongKe', async function (req, res, next) {
     let ALOS = 0
     let LuotKhach = 0;
     let listPhong = await Rooms.find({})
+
+    var thongBaoDatPhong = await ThongBaoDatPhong.find({})
     datPhong.find({}, function (err, datPhong) {
         if (err) {
             res.send('Lỗi lấy thông tin: ' + err.message);
@@ -575,7 +577,8 @@ router.get('/ThongKe', async function (req, res, next) {
                 tongdoanhThu: Revenue,
                 LuotKhach: LuotKhach,
                 RevPAR: RevPAR,
-                ALOS: ALOS
+                ALOS: ALOS,
+                thongBaoDatPhong: thongBaoDatPhong
             })
         }
     })
@@ -719,8 +722,6 @@ router.get('/SapHetHan', function (req, res, next) {
     });
 
 
-
-
 });
 //search phong het han
 router.get('/search_phong_het_han', function (req, res) {
@@ -747,10 +748,10 @@ router.get('/search_phong_het_han', function (req, res) {
 })
 //xoa phong het
 router.get('/delete_phong_sap_het.id=:id', function (req, res, next) {
-    datPhong.findOne({_id: req.params.id}).then(dp =>{
-        if(dp != null){
+    datPhong.findOne({_id: req.params.id}).then(dp => {
+        if (dp != null) {
             var room_model = db.model('room', room_schema);
-            room_model.findOne({_id: dp.maPhong}).then(r =>{
+            room_model.findOne({_id: dp.maPhong}).then(r => {
                 r.statusRoom = 'Còn phòng'
                 r.save().then(r => {
                     datPhong.findByIdAndRemove(req.params.id, function (error, account) {
@@ -760,7 +761,7 @@ router.get('/delete_phong_sap_het.id=:id', function (req, res, next) {
                             res.redirect('/SapHetHan');
                         }
                     })
-                }).catch(e => res.send('Lỗi '+e.message))
+                }).catch(e => res.send('Lỗi ' + e.message))
             })
         }
     })
@@ -768,8 +769,16 @@ router.get('/delete_phong_sap_het.id=:id', function (req, res, next) {
 
 });
 
-// thong bao 
-
+// xoa thong bao
+router.get('/delete_thong_bao.id=:id', function (req, res, next) {
+    ThongBaoDatPhong.findByIdAndRemove(req.params.id, function (error, room) {
+        if (error) {
+            res.send("Lỗi xóa thông tin");
+        } else {
+            res.redirect('/ThongKe');
+        }
+    })
+});
 router.use('/api', require('./api_router'))
 
 // router().get('*', function (req, res) {
