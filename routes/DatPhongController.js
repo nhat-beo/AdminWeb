@@ -24,16 +24,27 @@ class DatPhongController {
             }
             if (r.statusRoom == 'Hết phòng') {
                 res.json({
-                    message: 'Phòng này đã hết, mời đặt phòng khác'
+                    message: 'Phòng này đã hết, mời đặt phòng khác',
+                    isSuccess: false
+                })
+                return;
+            }
+            if (r.statusRoom == 'Chờ xác nhận') {
+                res.json({
+                    message: 'Phòng này đang chờ xác nhận, mời đặt phòng khác',
+                    isSuccess: false
                 })
                 return;
             }
             r.statusRoom = 'Chờ đặt phòng'
             r.save().then(StatusRoomUpdate => {
                 Listbill({
+                    Roomid: req.body.Roomid,
                     sophong: req.body.sophong,
                     hoten: req.body.hoten,
                     sdt: req.body.sdt,
+                    loaiPhong: req.body.loaiPhong,
+                    hangPhong:req.body.hangPhong,
                     cccd: req.body.cccd,
                     email: req.body.email,
                     ngaynhan: req.body.ngaynhan,
