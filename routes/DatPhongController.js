@@ -24,7 +24,9 @@ class DatPhongController {
             }
             if (r.statusRoom == 'Hết phòng') {
                 res.json({
-                    message: 'Phòng này đã hết, mời đặt phòng khác'
+                    code: 200,
+                    message: 'Phòng này đã hết, mời đặt phòng khác',
+                    isSuccess: false
                 })
                 return;
             }
@@ -61,7 +63,7 @@ class DatPhongController {
         }).catch(e => {
             res.json({
                 code: 404,
-                message: e.message,
+                message: 'e',
                 isSuccess: false
             })
         })

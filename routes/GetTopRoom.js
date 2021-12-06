@@ -1,4 +1,4 @@
-const ListHistoryUser = require('../model/lich_su_dat_phong')
+const ListTopRoom = require('../model/room')
 
 
 class GetTopRoomFavorite {
@@ -6,7 +6,9 @@ class GetTopRoomFavorite {
 
     getTopRoom(req, res, next) {
 
-        ListHistoryUser.find({}).then(History => res.json({
+        ListTopRoom.find({
+
+        }).then(History => res.json({
             isSuccess: true,
             count: History.length,
             code: 200,
