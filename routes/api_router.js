@@ -26,6 +26,10 @@ route.post('/wait-to-accept-room', UpdateRoomController.insertRoom)
 
 route.get('/get-history-by-user', HistoryByUser.getHistoryUser)
 
-route.get('/get-top-10-favorite', TopFavorrite.getTopRoom)
+route.post('/delete-history-by-user', HistoryByUser.deleteHistory)
+
+route.post('/delete-all-history-by-user', HistoryByUser.deleteAllHistory)
+
+route.get('/get-top-favorite', TopFavorrite.getTopRoom)
 
 module.exports = route

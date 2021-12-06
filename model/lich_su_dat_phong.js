@@ -18,4 +18,4 @@ const LichSuDatPhong = new Schema({
     gioTraPhong: String,
     sdt: Number,
 })
-module.exports = mongoose.model('LichSuDatPhong', LichSuDatPhong)
+module.exports = mongoose.model('LichSuDatPhongs', LichSuDatPhong)
