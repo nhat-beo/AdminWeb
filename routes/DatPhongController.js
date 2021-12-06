@@ -28,7 +28,7 @@ class DatPhongController {
                 })
                 return;
             }
-            r.statusRoom = 'Hết Phòng'
+            r.statusRoom = 'Chờ đặt phòng'
             r.save().then(StatusRoomUpdate => {
                 Listbill({
                     sophong: req.body.sophong,
