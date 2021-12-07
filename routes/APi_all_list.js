@@ -37,8 +37,7 @@ class APi_all_list {
     getAllRooms(req, res, next) {
 
         Rooms.find({
-            wifi: req.query.wifi,
-            receptionist: req.query.receptionist,
+           
         }).then(Rooms => res.json({
             isSuccess: true,
             code: 200,
