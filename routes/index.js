@@ -555,8 +555,10 @@ router.get('/ThongKe', async function (req, res, next) {
     let ALOS = 0
     let LuotKhach = 0;
     let listPhong = await Rooms.find({})
+    let datThanhCong = 0;
+    let datKhongThanhCong = 0;
 
-    var thongBaoDatPhong = await ThongBaoDatPhong.find({})
+    var thongBaoDatPhong = await lichSuDatPhong.find({})
     datPhong.find({}, function (err, datPhong) {
         if (err) {
             res.send('Lỗi lấy thông tin: ' + err.message);
@@ -564,10 +566,9 @@ router.get('/ThongKe', async function (req, res, next) {
             var index = 0;
             datPhong.forEach((value) => {
                 console.log(value.soDem);
-                var doanhThu = value.soDem * value.giaPhong + (value.soDem * value.giaPhong * 0.1);
+                var doanhThu = (value.soDem * value.giaPhong + (value.soDem * value.giaPhong * 0.1))/1000000;
                 Revenue += Number(doanhThu)
                 LuotKhach += Number(value.soNguoi)
-
                 RevPAR = Revenue / listPhong.length;
                 ALOS += value.soDem / listPhongDaDat.length
                 listPhongDaDat.push({
