@@ -38,7 +38,7 @@ class HistoryUserControler {
             }
             res.json({
                 message: 'Delete success',
-                status: false,
+                status: true,
                 code: 200
             });
         })
@@ -56,7 +56,7 @@ class HistoryUserControler {
             }
             res.json({
                 message: 'Delete success',
-                status: false,
+                status: true,
                 code: 200
             });
         })
