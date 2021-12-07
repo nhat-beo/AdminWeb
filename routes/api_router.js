@@ -32,4 +32,6 @@ route.post('/delete-all-history-by-user', HistoryByUser.deleteAllHistory)
 
 route.get('/get-top-favorite', TopFavorrite.getTopRoom)
 
+route.get('/get-filter-Room', apiController.FilterRoom)
+
 module.exports = route
