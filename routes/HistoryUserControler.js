@@ -27,11 +27,11 @@ class HistoryUserControler {
     }
 
     deleteHistory(req, res) {
-        if (req.body.id == null) {
+        if (req.body.objects.id == null) {
             res.json({message: 'Cần truyền params id', status: false, code: 200,})
             return
         }
-        ListHistoryUser.deleteOne({_id: req.body.id}, function (err) {
+        ListHistoryUser.deleteOne({_id: req.body.objects.id}, function (err) {
             if (err) {
                 res.json({message: 'Delete failed', status: false, err: err})
                 return
@@ -49,7 +49,7 @@ class HistoryUserControler {
             res.json({message: 'Cần truyền params id', status: false, code: 200,})
             return
         }
-        ListHistoryUser.deleteOne({email: req.body.email}, function (err) {
+        ListHistoryUser.deleteMany({email: req.body.email}, function (err) {
             if (err) {
                 res.json({message: 'Delete failed', status: false, err: err})
                 return
