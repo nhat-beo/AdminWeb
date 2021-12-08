@@ -63,6 +63,7 @@ class APi_all_list {
             elevator: req.query.elevator,
             wheelChairWay: req.query.wheelChairWay,
             shuttle: req.query.shuttle,
+            parking : req.query.parking
         }).then(Rooms => res.json({
             isSuccess: true,
             code: 200,
