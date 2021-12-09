@@ -15,7 +15,11 @@ class UserController {
         }
         User({
             gmail: req.body.gmail,
-            name: name
+            name: name,
+            password: req.body.password,
+            birthday: req.body.birthday,
+            phoneNumber: req.body.phoneNumber,
+            cccd: req.body.cccd,
         }).save().then(user => {
             res.json({
                 message: "Thành công",
