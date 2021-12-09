@@ -86,7 +86,7 @@ var room_schema = new mongoose.Schema({
 
 var account_schema = new mongoose.Schema({
     gmail: String,
-    sword: String,
+    passsword: String,
     name: String,
     birthday: String,
     phoneNumber: String,

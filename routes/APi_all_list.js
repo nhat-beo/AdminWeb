@@ -53,17 +53,30 @@ class APi_all_list {
 
     FilterRoom(req, res, next) {
 
+        // var param =
+        // console.log(params)
+        // Rooms.find({ status: { $in: [ "A", "D" ] } }).then(Rooms => res.json({
+        //     isSuccess: true,
+        //     code: 200,
+        //     message: "success",
+        //     data: Rooms,
+        // })).catch(e => res.json({
+        //     status: false,
+        //     message: e.message,
+        //     code: 404
+        // }))
+
         Rooms.find({
-            wifi: req.query.wifi,
-            receptionist: req.query.receptionist,
-            gym: req.query.gym,
-            roomMeeting: req.query.roomMeeting,
-            laundry: req.query.laundry,
-            pool: req.query.pool,
-            restaurant: req.query.restaurant,
-            elevator: req.query.elevator,
-            wheelChairWay: req.query.wheelChairWay,
-            shuttle: req.query.shuttle,
+            wifi : req.query.wifi == null ? { $in: [ true, false ] } : req.query.wifi,
+            receptionist: req.query.receptionist == null ? { $in: [ true, false ] } : req.query.receptionist,
+            gym: req.query.gym == null ? { $in: [ true, false ] } : req.query.gym,
+            roomMeeting: req.query.roomMeeting == null ? { $in: [ true, false ] } : req.query.roomMeeting,
+            laundry: req.query.laundry == null ? { $in: [ true, false ] } : req.query.laundry,
+            pool: req.query.pool == null ? { $in: [ true, false ] } : req.query.pool,
+            restaurant: req.query.restaurant == null ? { $in: [ true, false ] } : req.query.restaurant,
+            elevator: req.query.elevator == null ? { $in: [ true, false ] } : req.query.elevator,
+            wheelChairWay: req.query.wheelChairWay == null ? { $in: [ true, false ] } : req.query.wheelChairWay,
+            shuttle: req.query.shuttle == null ? { $in: [ true, false ] } : req.query.shuttle,
         }).then(Rooms => res.json({
             isSuccess: true,
             code: 200,
@@ -76,6 +89,9 @@ class APi_all_list {
         }))
     }
 
+
+}
+class Param{
 
 }
 
