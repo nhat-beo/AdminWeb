@@ -1,6 +1,7 @@
 const ListAllRoom = require('../model/room')
 const Listbill = require('../model/thong_bao_dat_phong')
 const ListHistoryUser = require("../model/lich_su_dat_phong");
+const ThongBaoDatPhong = require("../model/thong_bao_dat_phong");
 
 // todo api
 class DatPhongController {
@@ -47,7 +48,7 @@ class DatPhongController {
                     hoten: req.body.hoten,
                     sdt: req.body.sdt,
                     loaiPhong: req.body.loaiPhong,
-                    hangPhong:req.body.hangPhong,
+                    hangPhong: req.body.hangPhong,
                     cccd: req.body.cccd,
                     email: req.body.email,
                     ngaynhan: req.body.ngaynhan,
@@ -111,35 +112,22 @@ class DatPhongController {
                 })
                 return;
             }
-            r.statusRoom = 'Còn phòng'
-            r.delete().then(StatusRoomUpdate => {
-                Listbill({
-                    Roomid: req.body.Roomid,
-                    sophong: req.body.sophong,
-                    hoten: req.body.hoten,
-                    sdt: req.body.sdt,
-                    loaiPhong: req.body.loaiPhong,
-                    hangPhong:req.body.hangPhong,
-                    cccd: req.body.cccd,
-                    email: req.body.email,
-                    ngaynhan: req.body.ngaynhan,
-                    ngayTra: req.body.ngayTra,
-                    sodem: req.body.sodem,
-                    soNguoi: req.body.soNguoi,
-                    gioNhanPhong: req.body.gioNhanPhong,
-                    gioTra: req.body.gioTra,
-                    giaPhong: req.body.giaPhong,
-                }).save()
-                res.json({
-                    message: 'post thành công',
-                    isSuccess: true,
-                    code: 200,
+            r.statusRoom = 'Còn phòng',
+            r.countCancel + 1
+            r.save().then(r => {
+                Listbill.findByIdAndRemove(req.query.id, function (error, room) {
+                    if (error) {
+                        res.send("Lỗi hủy đặt phòng");
+                    } else {
+                        res.json({
+                            message: 'Hủy thành công',
+                            isSuccess: true
+                        });
+                    }
                 })
-            }).catch(e => res.json({
-                code: 404,
-                message: e.message,
-                isSuccess: false
-            }));
+            }).catch(e => res.send('Lỗi ' + e.message))
+
+
             console.log('user:' + r + '>>>>' + req.body.Roomid)
         }).catch(e => {
             res.json({
@@ -150,28 +138,28 @@ class DatPhongController {
         })
     }
 
-        getWaitToAcceptUser(req, res, next) {
-            if (req.query.email == null) {
-                res.json({
-                    message: 'Cần truyền Email',
-                    status: false
-                })
-                return;
-            }
-            Listbill.find({
-                email: req.query.email
-            }).then(History => res.json({
-                isSuccess: true,
-                count: History.length,
-                code: 200,
-                message: "success",
-                data: History,
-            })).catch(e => res.json({
-                status: false,
-                message: e.message,
-                code: 404
-            }))
+    getWaitToAcceptUser(req, res, next) {
+        if (req.query.email == null) {
+            res.json({
+                message: 'Cần truyền Email',
+                status: false
+            })
+            return;
         }
+        Listbill.find({
+            email: req.query.email
+        }).then(History => res.json({
+            isSuccess: true,
+            count: History.length,
+            code: 200,
+            message: "success",
+            data: History,
+        })).catch(e => res.json({
+            status: false,
+            message: e.message,
+            code: 404
+        }))
+    }
 
 }
 
