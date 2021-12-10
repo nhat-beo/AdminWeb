@@ -7,9 +7,7 @@ class APi_all_list {
 
 
     getAlllistromed(req, res, next) {
-        Datphongs.find({
-
-        }).then(datphongs => res.json({
+        Datphongs.find({}).then(datphongs => res.json({
             isSuccess: true,
             code: 200,
             message: "success",
@@ -49,6 +47,7 @@ class APi_all_list {
             elevator: req.query.elevator == null ? { $in: [ true, false ] } : req.query.elevator,
             wheelChairWay: req.query.wheelChairWay == null ? { $in: [ true, false ] } : req.query.wheelChairWay,
             shuttle: req.query.shuttle == null ? { $in: [ true, false ] } : req.query.shuttle,
+           
         }).then(Rooms => res.json({
             isSuccess: true,
             code: 200,
@@ -62,19 +61,6 @@ class APi_all_list {
     }
 
     FilterRoom(req, res, next) {
-
-        // var param =
-        // console.log(params)
-        // Rooms.find({ status: { $in: [ "A", "D" ] } }).then(Rooms => res.json({
-        //     isSuccess: true,
-        //     code: 200,
-        //     message: "success",
-        //     data: Rooms,
-        // })).catch(e => res.json({
-        //     status: false,
-        //     message: e.message,
-        //     code: 404
-        // }))
 
         Rooms.find({
             wifi : req.query.wifi == null ? { $in: [ true, false ] } : req.query.wifi,
@@ -99,9 +85,6 @@ class APi_all_list {
         }))
     }
 
-
-}
-class Param{
 
 }
 
