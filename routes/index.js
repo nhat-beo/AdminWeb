@@ -83,6 +83,7 @@ var room_schema = new mongoose.Schema({
     otherText: String,
     countCancel: {type: Number, default: 0},
     countAccept: {type: Number, default: 0},
+    favorite: {type:Array, default: []}
 });
 // định nghĩa schmema account
 
