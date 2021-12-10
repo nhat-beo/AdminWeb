@@ -73,22 +73,22 @@ class APi_all_list {
 
 
     updateFavorite(req, res) {
-        if (req.body.idRoom == null || req.body.userId == null) {
+        if (req.body.idRoom == null || req.body.userEmail == null) {
             res.json({
-                message: 'Cần truyền idRoom, userId'
+                message: 'Cần truyền idRoom, userEmail'
             })
             return
         }
         Rooms.findOne({ _id: req.body.idRoom }).then(rooms => {
             if (rooms != null) {
                 var arr = rooms.favorite
-                if (rooms.favorite.includes(req.body.userId)) {
-                    var index = arr.indexOf(req.body.userId);
+                if (rooms.favorite.includes(req.body.userEmail)) {
+                    var index = arr.indexOf(req.body.userEmail);
                     if (index > -1) {
                         arr.splice(index, 1);
                     }
                 } else {
-                    arr.push(req.body.userId)
+                    arr.push(req.body.userEmail)
                 }
                 rooms.favorite = arr
                 rooms.save().then(c => res.json({
