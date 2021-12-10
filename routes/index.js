@@ -314,37 +314,49 @@ router.get('/delete_bill_datPhong.id=:id', function (req, res, next) {
 //Them phong
 router.post('/add_room', upload, function (req, res, next) {
     var room_model = db.model('room', room_schema);
-    room_model({
-        roomPhoto: req.files,
-        roomNumber: req.body.roomNumber,
-        typeRoom: req.body.typeRoom,
-        rankRoom: req.body.rankRoom,
-        peopleRoom: req.body.peopleRoom,
-        priceRoom: req.body.priceRoom,
-        statusRoom: req.body.statusRoom,
-        description: req.body.description,
-        wifi: req.body.wifi === 'on' ? true : false,
-        parking: req.body.parking === 'on' ? true : false,
-        receptionist: req.body.receptionist === 'on' ? true : false,
-        gym: req.body.gym === 'on' ? true : false,
-        roomMeeting: req.body.roomMeeting === 'on' ? true : false,
-        laundry: req.body.laundry === 'on' ? true : false,
-        pool: req.body.pool === 'on' ? true : false,
-        restaurant: req.body.restaurant === 'on' ? true : false,
-        elevator: req.body.elevator === 'on' ? true : false,
-        wheelChairWay: req.body.wheelChairWay === 'on' ? true : false,
-        shuttle: req.body.shuttle === 'on' ? true : false,
-        other: req.body.other === 'on' ? true : false,
-        otherText: req.body.otherText
-    }).save(function (error, r) {
-        if (error) {
-            res.send("Lỗi thêm thông tin");
-        } else {
-
-            res.redirect("/Categories");
-
+    room_model.find({}).then(r => {
+        for (var i of r) {
+            if (i.roomNumber == (req.body.roomNumber)) {
+                res.render('ThemPhong', {
+                    message: 'Phòng đã tồn tại.'
+                });
+                console.log('>>>>>>>>> ' + i.roomNumber + '>>>>>>>>>>>>' + req.body.roomNumber)
+                return
+            }
         }
-    });
+        room_model({
+            roomPhoto: req.files,
+            roomNumber: req.body.roomNumber,
+            typeRoom: req.body.typeRoom,
+            rankRoom: req.body.rankRoom,
+            peopleRoom: req.body.peopleRoom,
+            priceRoom: req.body.priceRoom,
+            statusRoom: req.body.statusRoom,
+            description: req.body.description,
+            wifi: req.body.wifi === 'on' ? true : false,
+            parking: req.body.parking === 'on' ? true : false,
+            receptionist: req.body.receptionist === 'on' ? true : false,
+            gym: req.body.gym === 'on' ? true : false,
+            roomMeeting: req.body.roomMeeting === 'on' ? true : false,
+            laundry: req.body.laundry === 'on' ? true : false,
+            pool: req.body.pool === 'on' ? true : false,
+            restaurant: req.body.restaurant === 'on' ? true : false,
+            elevator: req.body.elevator === 'on' ? true : false,
+            wheelChairWay: req.body.wheelChairWay === 'on' ? true : false,
+            shuttle: req.body.shuttle === 'on' ? true : false,
+            other: req.body.other === 'on' ? true : false,
+            otherText: req.body.otherText
+        }).save(function (error, r) {
+            if (error) {
+                res.send("Lỗi thêm thông tin");
+            } else {
+
+                res.redirect("/Categories");
+
+            }
+        });
+    }).catch(e => res.send('Lỗi'))
+
 });
 
 //Xoa phong
@@ -566,7 +578,7 @@ router.get('/ThongKe', async function (req, res, next) {
             var index = 0;
             datPhong.forEach((value) => {
                 console.log(value.soDem);
-                var doanhThu = (value.soDem * value.giaPhong + (value.soDem * value.giaPhong * 0.1))/1000000;
+                var doanhThu = (value.soDem * value.giaPhong + (value.soDem * value.giaPhong * 0.1)) / 1000000;
                 Revenue += Number(doanhThu)
                 LuotKhach += Number(value.soNguoi)
                 RevPAR = Revenue / listPhong.length;
