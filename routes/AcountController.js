@@ -15,7 +15,11 @@ class UserController {
         }
         User({
             gmail: req.body.gmail,
-            name: name
+            name: name,
+            password: req.body.password,
+            birthday: req.body.birthday,
+            phoneNumber: req.body.phoneNumber,
+            cccd: req.body.cccd,
         }).save().then(user => {
             res.json({
                 message: "Thành công",
@@ -31,11 +35,11 @@ class UserController {
 
     //update
     updateAcount(req, res, next) {
-        if (req.body._id == null) {
+        if (req.body.id == null) {
             res.json({ message: 'Cân truyền id' })
             return
         }
-        User.findOne({ _id: req.body._id }).then(user => {
+        User.findOne({ id: req.body.id }).then(user => {
             if (user == null) {
                 res.json({ message: "Acount không tồn tại, kiểm tra lại id", isSuccess: false })
             }

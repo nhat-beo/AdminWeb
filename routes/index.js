@@ -42,8 +42,8 @@ router.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 // getting-started.js
 const mongoose = require('mongoose');
-const { float } = require("tailwindcss/lib/plugins");
-const { NetworkAuthenticationRequire } = require('http-errors');
+const {float} = require("tailwindcss/lib/plugins");
+const {NetworkAuthenticationRequire} = require('http-errors');
 const thong_bao_dat_phong = require('../model/thong_bao_dat_phong');
 const lich_su_dat_phong = require('../model/lich_su_dat_phong');
 mongoose.connect('mongodb+srv://admin:minhminh@cluster0.hiqs0.mongodb.net/bFpolyHotel?retryWrites=true&w=majority', {
@@ -80,7 +80,9 @@ var room_schema = new mongoose.Schema({
     wheelChairWay: Boolean,
     shuttle: Boolean,
     other: Boolean,
-    otherText: String
+    otherText: String,
+    countCancel: {type: Number, default: 0},
+    countAccept: {type: Number, default: 0},
 });
 // định nghĩa schmema account
 
@@ -169,9 +171,9 @@ router.get('/Categories', function (req, res, next) {
             }
             var data = []
             for (var k = 0; k < roomlist.length; k++) {
-                data.push({ data: roomlist[k], index: k });
+                data.push({data: roomlist[k], index: k});
             }
-            res.render('Categories', { room: data });
+            res.render('Categories', {room: data});
         }
     })
 });
@@ -191,7 +193,7 @@ router.get('/search_categori', function (req, res) {
         }
         var dataSeach = [];
         for (var i = 0; i < data.length; i++) {
-            dataSeach.push({ data: data[i], index: i });
+            dataSeach.push({data: data[i], index: i});
         }
         res.render('Categories', {
             room: dataSeach
@@ -210,10 +212,10 @@ router.get('/DatPhong', function (req, res, next) {
             var data = []
             for (var i = 0; i < datPhong.length; i++) {
 
-                data.push({ data: datPhong[i], index: index });
+                data.push({data: datPhong[i], index: index});
                 index++;
             }
-            res.render('DatPhong', { datPhong: data })
+            res.render('DatPhong', {datPhong: data})
         }
     })
 });
@@ -223,7 +225,7 @@ router.get('/ThemHoaDon', function (req, res, next) {
         if (err) {
             res.send('Lỗi lấy thông tin: ' + err.message);
         } else {
-            res.render('ThemHoaDon', { datPhong: datPhong })
+            res.render('ThemHoaDon', {datPhong: datPhong})
         }
     })
 });
@@ -292,7 +294,7 @@ router.get('/search_bill', function (req, res) {
         }
         var dataSearch = [];
         for (var i = 0; i < data.length; i++) {
-            dataSearch.push({ data: data[i], index: i });
+            dataSearch.push({data: data[i], index: i});
         }
         res.render('DatPhong', {
             datPhong: dataSearch
@@ -301,7 +303,7 @@ router.get('/search_bill', function (req, res) {
     })
     //
 })
-//xoa hoa don
+//xoahoadon
 router.get('/delete_bill_datPhong.id=:id', function (req, res, next) {
     lichSuDatPhong.findByIdAndRemove(req.params.id, function (error, account) {
         if (error) {
@@ -311,7 +313,7 @@ router.get('/delete_bill_datPhong.id=:id', function (req, res, next) {
         }
     })
 });
-//Them phong
+//Themphong
 router.post('/add_room', upload, function (req, res, next) {
     var room_model = db.model('room', room_schema);
     room_model({
@@ -335,7 +337,7 @@ router.post('/add_room', upload, function (req, res, next) {
         wheelChairWay: req.body.wheelChairWay === 'on' ? true : false,
         shuttle: req.body.shuttle === 'on' ? true : false,
         other: req.body.other === 'on' ? true : false,
-        otherText: req.body.otherText
+        otherText: req.body.otherText,
     }).save(function (error, r) {
         if (error) {
             res.send("Lỗi thêm thông tin");
@@ -363,11 +365,11 @@ router.get('/delete_room.id=:id', function (req, res, next) {
 /* Update */
 router.get('/update_room.id=:id', function (req, res, next) {
     var room_model = db.model('room', room_schema);
-    room_model.findOne({ _id: req.params.id }, function (error, room) {
+    room_model.findOne({_id: req.params.id}, function (error, room) {
         if (error) {
             res.send("Lỗi sửa thông tin" + error);
         } else {
-            res.render('SuaPhong', { room: room });
+            res.render('SuaPhong', {room: room});
         }
     })
 });
@@ -401,7 +403,7 @@ router.post('/update_room.id=:id', upload, function (req, res, next) {
             res.send("Lỗi sửa thông tin " + error.message);
         } else {
 
-            room_model.findOne({ _id: req.params.id }, function (error, room) {
+            room_model.findOne({_id: req.params.id}, function (error, room) {
                 if (error) {
                     res.send("Lỗi sửa thông tin" + error);
                 } else {
@@ -423,13 +425,13 @@ router.post('/update_room.id=:id', upload, function (req, res, next) {
 // sua hoa don ssss
 router.get('/sua_hoadon', function (req, res, next) {
     // var room_model = db.model('room', room_schema);
-    lich_su_dat_phong.findOne({ _id: req.query.id }, function (error, room) {
+    lich_su_dat_phong.findOne({_id: req.query.id}, function (error, room) {
         if (error) {
             res.send("Lỗi sửa thông tin" + error);
         } else {
             console.log(room)
 
-            res.render('SuaHoaDon', { room: room });
+            res.render('SuaHoaDon', {room: room});
         }
     })
 });
@@ -456,7 +458,7 @@ router.post('/sua_hoadon.id=:id', upload, function (req, res, next) {
         if (error) {
             res.send("Lỗi sửa thông tin");
         } else {
-            lich_su_dat_phong.findOne({ _id: req.params.id }, function (error, room) {
+            lich_su_dat_phong.findOne({_id: req.params.id}, function (error, room) {
                 if (error) {
                     res.send("Lỗi sửa thông tin" + error);
                 } else {
@@ -488,10 +490,10 @@ router.get('/TaiKhoan', function (req, res, next) {
             var data = []
             for (var i = 0; i < account.length; i++) {
 
-                data.push({ data: account[i], index: index });
+                data.push({data: account[i], index: index});
                 index++;
             }
-            res.render('TaiKhoan', { account: data });
+            res.render('TaiKhoan', {account: data});
         }
     })
 });
@@ -524,7 +526,7 @@ router.get('/search', function (req, res) {
         var dataSearch = [];
         for (var i = 0; i < data.length; i++) {
             console.log(data[i]);
-            dataSearch.push({ data: data[i], index: i });
+            dataSearch.push({data: data[i], index: i});
         }
         res.render('TaiKhoan', {
             account: dataSearch
@@ -535,13 +537,13 @@ router.get('/search', function (req, res) {
 // hoa don
 router.get('/update_bill.id=:id', function (req, res, next) {
     var room_model = db.model('room', room_schema);
-    room_model.findOne({ _id: req.params.id }, function (error, room) {
+    room_model.findOne({_id: req.params.id}, function (error, room) {
         if (error) {
             res.send("Lỗi thêm thông tin" + error);
         } else {
             room.statusRoom = 'Hết phòng'
             room.save()
-            res.render('ThemHoaDon', { room: room });
+            res.render('ThemHoaDon', {room: room});
         }
     })
 });
@@ -566,7 +568,7 @@ router.get('/ThongKe', async function (req, res, next) {
             var index = 0;
             datPhong.forEach((value) => {
                 console.log(value.soDem);
-                var doanhThu = (value.soDem * value.giaPhong + (value.soDem * value.giaPhong * 0.1))/1000000;
+                var doanhThu = (value.soDem * value.giaPhong + (value.soDem * value.giaPhong * 0.1)) / 1000000;
                 Revenue += Number(doanhThu)
                 LuotKhach += Number(value.soNguoi)
                 RevPAR = Revenue / listPhong.length;
@@ -606,18 +608,18 @@ router.get('/SuaPhong', function (req, res, next) {
 
 router.get('/HetHanTrongNgay', function (req, res, next) {
     var room_model = db.model('room', room_schema);
-    room_model.find({ statusRoom: 'Hết phòng' }).then((room) => {
-        var dataSearch = [];
-        for (var i = 0; i < room.length; i++) {
-            dataSearch.push({ data: room[i], index: i });
+    room_model.find({statusRoom: 'Hết phòng'}).then((room) => {
+            var dataSearch = [];
+            for (var i = 0; i < room.length; i++) {
+                dataSearch.push({data: room[i], index: i});
+            }
+            res.render('PhongHet', {
+                room: dataSearch
+            })
         }
-        res.render('PhongHet', {
-            room: dataSearch
-        })
-    }
     )
 })
-    ;
+;
 //search phong het
 router.get('/search_phong_het', function (req, res) {
     var room_model = db.model('room', room_schema);
@@ -633,7 +635,7 @@ router.get('/search_phong_het', function (req, res) {
         }
         var dataSeach = [];
         for (var i = 0; i < data.length; i++) {
-            dataSeach.push({ data: data[i], index: i });
+            dataSeach.push({data: data[i], index: i});
         }
         res.render('PhongHet', {
             room: dataSeach
@@ -659,16 +661,16 @@ router.get('/delete_room_het.id=:id', function (req, res, next) {
 //
 router.get('/PhongTrong', function (req, res, next) {
     var room_model = db.model('room', room_schema);
-    room_model.find({ statusRoom: 'Còn phòng' }).then((room) => {
-        var dataSearch = [];
-        for (var i = 0; i < room.length; i++) {
-            dataSearch.push({ data: room[i], index: i });
-        }
-        res.render('PhongTrong', {
-            room: dataSearch
-        })
+    room_model.find({statusRoom: 'Còn phòng'}).then((room) => {
+            var dataSearch = [];
+            for (var i = 0; i < room.length; i++) {
+                dataSearch.push({data: room[i], index: i});
+            }
+            res.render('PhongTrong', {
+                room: dataSearch
+            })
 
-    }
+        }
     )
 });
 
@@ -687,7 +689,7 @@ router.get('/search_phong_trong', function (req, res) {
         }
         var dataSeach = [];
         for (var i = 0; i < data.length; i++) {
-            dataSeach.push({ data: data[i], index: i });
+            dataSeach.push({data: data[i], index: i});
         }
         res.render('PhongTrong', {
             room: dataSeach
@@ -728,9 +730,9 @@ router.get('/SapHetHan', function (req, res, next) {
         }
         var dataSearch = [];
         for (var i = 0; i < listRoomExpired.length; i++) {
-            dataSearch.push({ data: listRoomExpired[i], index: i });
+            dataSearch.push({data: listRoomExpired[i], index: i});
         }
-        res.render('SapHetHan', { datPhong: dataSearch });
+        res.render('SapHetHan', {datPhong: dataSearch});
     });
 
 
@@ -750,7 +752,7 @@ router.get('/search_phong_het_han', function (req, res) {
         var dataSearch = [];
         for (var i = 0; i < data.length; i++) {
             console.log(data[i]);
-            dataSearch.push({ data: data[i], index: i });
+            dataSearch.push({data: data[i], index: i});
         }
         res.render('SapHetHan', {
             datPhong: dataSearch
@@ -760,10 +762,10 @@ router.get('/search_phong_het_han', function (req, res) {
 })
 //xoa phong het
 router.get('/delete_phong_sap_het.id=:id', function (req, res, next) {
-    datPhong.findOne({ _id: req.params.id }).then(dp => {
+    datPhong.findOne({_id: req.params.id}).then(dp => {
         if (dp != null) {
             var room_model = db.model('room', room_schema);
-            room_model.findOne({ _id: dp.maPhong }).then(r => {
+            room_model.findOne({_id: dp.maPhong}).then(r => {
                 r.statusRoom = 'Còn phòng'
                 r.save().then(r => {
                     datPhong.findByIdAndRemove(req.params.id, function (error, account) {
@@ -783,13 +785,15 @@ router.get('/delete_phong_sap_het.id=:id', function (req, res, next) {
 // xac nhan thong bao
 router.get('/xacNhan_thong_bao', function (req, res, next) {
     var room_model = db.model('room', room_schema);
-    room_model.findOne({ _id: req.query.Roomid }).then(r => {
-        r.statusRoom = 'Hết phòng'
-        r.save().then(r => {
+    room_model.findOne({_id: req.query.Roomid}).then(r => {
+        r.statusRoom = 'Hết phòng',
+        r.countAccept + 1,
 
-        }).catch(e => res.send('Lỗi ' + e.message))
+            r.save().then(r => {
+
+            }).catch(e => res.send('Lỗi ' + e.message))
     })
-    thong_bao_dat_phong.findOne({ _id: req.query.id }).then(tb => {
+    thong_bao_dat_phong.findOne({_id: req.query.id}).then(tb => {
         console.log(tb)
         lichSuDatPhong({
             maPhong: tb.id,
@@ -806,6 +810,7 @@ router.get('/xacNhan_thong_bao', function (req, res, next) {
             gioNhanPhong: tb.gioNhanPhong,
             gioTraPhong: tb.gioTra,
             sdt: tb.sdt,
+
         }).save(function (err) {
             if (err) {
                 res.send("Thêm hoá đơn k thành công " + err);
@@ -828,8 +833,9 @@ router.get('/xacNhan_thong_bao', function (req, res, next) {
 router.get('/delete_thong_bao', function (req, res, next) {
     console.log(req.query)
     var room_model = db.model('room', room_schema);
-    room_model.findOne({ _id: req.query.Roomid }).then(r => {
-        r.statusRoom = 'Còn phòng'
+    room_model.findOne({_id: req.query.Roomid}).then(r => {
+        r.statusRoom = 'Còn phòng',
+        r.countCancel + 1
         r.save().then(r => {
             ThongBaoDatPhong.findByIdAndRemove(req.query.id, function (error, room) {
                 if (error) {
