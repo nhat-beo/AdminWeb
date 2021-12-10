@@ -561,7 +561,7 @@ router.get('/ThongKe', async function (req, res, next) {
     let datThanhCong = 0;
     let datKhongThanhCong = 0;
 
-    var thongBaoDatPhong = await lichSuDatPhong.find({})
+    var thongBaoDatPhong = await ThongBaoDatPhong.find({})
     datPhong.find({}, function (err, datPhong) {
         if (err) {
             res.send('Lỗi lấy thông tin: ' + err.message);
