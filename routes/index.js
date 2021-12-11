@@ -345,6 +345,7 @@ router.post('/add_room', upload, function (req, res, next) {
         } else {
 
             res.redirect("/Categories");
+            // res.json
 
         }
     });

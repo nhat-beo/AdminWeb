@@ -101,8 +101,20 @@ class APi_all_list {
                     message: e.message,
                     code: 404,
                     isSuccess: false,
-                }))
+                })).catch(err => {
+                    res.json({
+                        mes: err.message
+                    })
+                })
+            }else {
+                res.json({
+                    mes: 'khong tim thay'
+                })
             }
+        }).catch(e => {
+            res.json({
+                mes: e.message
+            })
         })
     }
 

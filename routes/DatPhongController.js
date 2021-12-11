@@ -84,12 +84,12 @@ class DatPhongController {
         if (req.body.Roomid == null) {
             res.json({
                 code: 404,
-                message: 'Thiếu params. Cần truyền ít nhất RoomsId',
+                message: 'Thiếu params. Cần truyền ít nhất Roomsid',
                 isSuccess: false
             })
             return
         }
-        ListAllRoom.findOne({
+        ThongBaoDatPhong.findOne({
             _id: req.body.Roomid
         }).then(r => {
             if (r == null) {
@@ -98,34 +98,41 @@ class DatPhongController {
                 })
                 return;
             }
-            if (r.statusRoom == 'Hết phòng') {
-                res.json({
-                    message: 'Phòng này đã Đặt, Không thể hủy',
-                    isSuccess: true
-                })
-                return;
-            }
-            if (r.statusRoom == 'Còn phòng') {
-                res.json({
-                    message: 'Phòng này chưa được đặt',
-                    isSuccess: true
-                })
-                return;
-            }
-            r.statusRoom = 'Còn phòng',
-            r.countCancel + 1
-            r.save().then(r => {
-                Listbill.findByIdAndRemove(req.query.id, function (error, room) {
-                    if (error) {
-                        res.send("Lỗi hủy đặt phòng");
-                    } else {
-                        res.json({
-                            message: 'Hủy thành công',
-                            isSuccess: true
-                        });
-                    }
-                })
-            }).catch(e => res.send('Lỗi ' + e.message))
+            ListAllRoom.findOne({_id: r.Roomid}).then(room =>{
+                if (room.statusRoom == 'Hết phòng') {
+                    res.json({
+                        message: 'Phòng này đã Đặt, Không thể hủy',
+                        isSuccess: true
+                    })
+                    return;
+                }
+                if (room.statusRoom == 'Còn phòng') {
+                    res.json({
+                        message: 'Phòng này chưa được đặt',
+                        isSuccess: true
+                    })
+                    return;
+                }
+                room.statusRoom = 'Còn phòng',
+                room.countCancel + 1
+                room.save().then(rom => {
+                    ThongBaoDatPhong.findByIdAndRemove(r._id, function (error, room) {
+                        if (error) {
+                            res.json({
+                                mes: 'Lỗi hủy đặt phòng'
+                            });
+                        } else {
+                            res.json({
+                                message: 'Hủy thành công',
+                                isSuccess: true
+                            });
+                        }
+                    })
+                }).catch(e => res.json({
+                    mes: 'Lỗi ' + e.message
+                }))
+            })
+
 
 
             console.log('user:' + r + '>>>>' + req.body.Roomid)
