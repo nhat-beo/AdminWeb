@@ -84,7 +84,7 @@ class DatPhongController {
         if (req.body.Roomid == null) {
             res.json({
                 code: 404,
-                message: 'Thiếu params. Cần truyền ít nhất Roomsid',
+                message: 'Thiếu params. Cần truyền ít nhất Roomid',
                 isSuccess: false
             })
             return
