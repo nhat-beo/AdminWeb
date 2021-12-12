@@ -611,7 +611,7 @@ router.get('/ThongKe', async function (req, res, next) {
                     LuotKhach: LuotKhach,
                     tongdoanhThu: Revenue.toFixed(2),
                     thongKe: listPhongDaDat,
-                    ALOS: ALOS,
+                    ALOS: ALOS.toFixed(1),
                     thongBaoDatPhong: thongBaoDatPhong,
                     tongLuotDatPhong: lichSuDatPhong.length,
                     tongLuotHuyPhong: tongLuotHuy,
