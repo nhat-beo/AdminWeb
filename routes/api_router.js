@@ -34,4 +34,10 @@ route.get('/get-top-favorite', TopFavorrite.getTopRoom)
 
 route.get('/get-filter-Room', apiController.FilterRoom)
 
+route.post('/update-favorite', apiController.updateFavorite)
+
+route.post('/cancel-wait-to-accept', UpdateRoomController.canceWaitlRoom)
+
+route.get('/get-list-wait-to-accept-room', UpdateRoomController.getWaitToAcceptUser)
+
 module.exports = route
