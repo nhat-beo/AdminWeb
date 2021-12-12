@@ -83,7 +83,7 @@ var room_schema = new mongoose.Schema({
     otherText: String,
     countCancel: {type: Number, default: 0},
     countAccept: {type: Number, default: 0},
-    favorite: {type:Array, default: []}
+    favorite: {type: Array, default: []}
 });
 // định nghĩa schmema account
 
@@ -558,38 +558,54 @@ router.get('/ThongKe', async function (req, res, next) {
     let RevPAR = 0;
     let ALOS = 0
     let LuotKhach = 0;
-    let listPhong = await Rooms.find({})
-    let datThanhCong = 0;
-    let datKhongThanhCong = 0;
-
+    var tongLuotDat = 0
+    var tongLuotHuy = 0
+    var tiLeThanhCong = 0
+    var tiLeHuy = 0
+    var listPhong = await Rooms.find({})
     var thongBaoDatPhong = await ThongBaoDatPhong.find({})
-    datPhong.find({}, function (err, datPhong) {
+    lich_su_dat_phong.find({}, function (err, lichSuDatPhong) {
+
         if (err) {
             res.send('Lỗi lấy thông tin: ' + err.message);
         } else {
-            var index = 0;
-            datPhong.forEach((value) => {
-                console.log(value.soDem);
-                var doanhThu = (value.soDem * value.giaPhong + (value.soDem * value.giaPhong * 0.1)) / 1000000;
-                Revenue += Number(doanhThu)
-                LuotKhach += Number(value.soNguoi)
-                RevPAR = Revenue / listPhong.length;
-                ALOS += value.soDem / listPhongDaDat.length
-                listPhongDaDat.push({
-                    'doanhThu': doanhThu,
-                    'index': index,
-                    'soNguoi': value.soNguoi,
-                    'thoiGian': value.ngayTra
+            Rooms.find({}, function (err, listAllRoom) {
+                if (err) {
+                    res.send('Lỗi lấy thông tin: ' + err.message);
+                } else {
+                    var index = 0;
+                    listAllRoom.forEach((value => {
+                        index++
+                        tongLuotDat += value.countAccept
+                        tongLuotHuy += value.countCancel
+                        console.log('tongLuotDat:' + tongLuotDat)
+                        console.log('tongLuotHuy' + tongLuotHuy)
+                        tiLeThanhCong = (tongLuotDat*100)/ (tongLuotDat + tongLuotHuy)
+                        tiLeHuy = (tongLuotDat*100)/ (tongLuotHuy + tongLuotHuy)
+                        console.log('tiLeThanhCong' + tiLeThanhCong)
+
+                    }))
+                }
+                var index = 0;
+                lichSuDatPhong.forEach((value) => {
+                    index++
+                    Revenue += (value.soDem * value.giaPhong + (value.soDem * value.giaPhong * 0.1)) / 100000;
+                    LuotKhach += Number(value.soNguoi)
+                    RevPAR = Revenue / listPhong.length;
+                    ALOS += value.soDem / listPhong.length
                 });
-                index++;
-            });
-            res.render('ThongKe', {
-                thongKe: listPhongDaDat,
-                tongdoanhThu: Revenue,
-                LuotKhach: LuotKhach,
-                RevPAR: RevPAR,
-                ALOS: ALOS,
-                thongBaoDatPhong: thongBaoDatPhong
+                res.render('ThongKe', {
+                    RevPAR: RevPAR,
+                    LuotKhach: LuotKhach,
+                    tongdoanhThu: Revenue.toFixed(2),
+                    thongKe: listPhongDaDat,
+                    ALOS: ALOS,
+                    thongBaoDatPhong: thongBaoDatPhong,
+                    tongLuotDatPhong: lichSuDatPhong.length,
+                    tongLuotHuyPhong: tongLuotHuy,
+                    tiLeThanhCong: tiLeThanhCong.toFixed(5),
+                    tiLeHuy:tiLeHuy.toFixed(5)
+                })
             })
         }
     })
@@ -789,7 +805,7 @@ router.get('/xacNhan_thong_bao', function (req, res, next) {
     var room_model = db.model('room', room_schema);
     room_model.findOne({_id: req.query.Roomid}).then(r => {
         r.statusRoom = 'Hết phòng',
-        r.countAccept + 1,
+            r.countAccept = Number(r.countAccept) + 1,
 
             r.save().then(r => {
 
@@ -837,7 +853,7 @@ router.get('/delete_thong_bao', function (req, res, next) {
     var room_model = db.model('room', room_schema);
     room_model.findOne({_id: req.query.Roomid}).then(r => {
         r.statusRoom = 'Còn phòng',
-        r.countCancel + 1
+            r.countCancel = Number(r.countCancel) + 1
         r.save().then(r => {
             ThongBaoDatPhong.findByIdAndRemove(req.query.id, function (error, room) {
                 if (error) {
