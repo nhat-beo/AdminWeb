@@ -84,7 +84,7 @@ class DatPhongController {
         if (req.body.Roomid == null) {
             res.json({
                 code: 404,
-                message: 'Thiếu params. Cần truyền ít nhất Roomsid',
+                message: 'Thiếu params. Cần truyền ít nhất Roomid',
                 isSuccess: false
             })
             return
@@ -98,7 +98,7 @@ class DatPhongController {
                 })
                 return;
             }
-            ListAllRoom.findOne({_id: r.Roomid}).then(room =>{
+            ListAllRoom.findOne({_id: r.Roomid}).then(room => {
                 if (room.statusRoom == 'Hết phòng') {
                     res.json({
                         message: 'Phòng này đã Đặt, Không thể hủy',
@@ -113,8 +113,10 @@ class DatPhongController {
                     })
                     return;
                 }
-                room.statusRoom = 'Còn phòng',
-                room.countCancel + 1
+                console.log('trước>>>>>>>>>>>>>>>' + room.countCancel)
+                room.statusRoom = 'Còn phòng'
+                room.countCancel = Number(room.countCancel) + 1
+                console.log('Sau>>>>>>>>>>>>>>>' + room.countCancel)
                 room.save().then(rom => {
                     ThongBaoDatPhong.findByIdAndRemove(r._id, function (error, room) {
                         if (error) {
@@ -132,7 +134,6 @@ class DatPhongController {
                     mes: 'Lỗi ' + e.message
                 }))
             })
-
 
 
             console.log('user:' + r + '>>>>' + req.body.Roomid)
