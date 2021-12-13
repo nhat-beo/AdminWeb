@@ -79,7 +79,7 @@ class APi_all_list {
             })
             return
         }
-        Rooms.findOne({ _id: req.body.idRoom }).then(rooms => {
+        Rooms.findOne({_id: req.body.idRoom}).then(rooms => {
             if (rooms != null) {
                 var arr = rooms.favorite
                 if (rooms.favorite.includes(req.body.userEmail)) {
@@ -106,7 +106,7 @@ class APi_all_list {
                         mes: err.message
                     })
                 })
-            }else {
+            } else {
                 res.json({
                     mes: 'khong tim thay'
                 })
@@ -118,8 +118,24 @@ class APi_all_list {
         })
     }
 
-
-
+    getListFavoriteByUser(req, res, next) {
+        if (req.query.email == null) {
+            res.json({message: 'Cần truyền params email', status: false, code: 200,})
+            return
+        }
+        Rooms.find({
+            favorite: { $all: [req.query.email] }
+        }).then(Rooms => res.json({
+            isSuccess: true,
+            code: 200,
+            message: "success",
+            data: Rooms,
+        })).catch(e => res.json({
+            status: false,
+            message: e.message,
+            code: 404
+        }))
+    }
 
 
 }

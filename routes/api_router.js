@@ -40,4 +40,6 @@ route.post('/cancel-wait-to-accept', UpdateRoomController.canceWaitlRoom)
 
 route.get('/get-list-wait-to-accept-room', UpdateRoomController.getWaitToAcceptUser)
 
+route.get('/get-list-favorite-by-user', apiController.getListFavoriteByUser)
+
 module.exports = route
