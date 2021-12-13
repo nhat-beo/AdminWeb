@@ -565,6 +565,31 @@ router.get('/update_bill.id=:id', function (req, res, next) {
 
 //
 router.get('/ThongKe', async function (req, res, next) {
+    var title = req.query.datefilter.trim();
+    // lichSuDatPhong.find({}, function (error, datPhong) {
+    //     if (error) {
+    //         res.send(error.message)
+    //         return
+    //     }
+    //     var data = datPhong.filter(function (item) {
+    //         return item.ngayNhan.toLowerCase().indexOf(title.toLowerCase()) !== -1
+    //     });
+    //     if (data.length == 0) {
+    //         res.render('DatPhong', {
+    //             message: 'Không có dữ liệu ...'
+    //         });
+    //         return
+    //     }
+    //     var dataSearch = [];
+    //     for (var i = 0; i < data.length; i++) {
+    //         dataSearch.push({data: data[i], index: i});
+    //     }
+    //     res.render('DatPhong', {
+    //         datPhong: dataSearch
+    //     });
+    //     return
+    // })
+    console.log(title)
     let listPhongDaDat = [];
     let Revenue = 0;
     let RevPAR = 0;
@@ -577,6 +602,19 @@ router.get('/ThongKe', async function (req, res, next) {
     var listPhong = await Rooms.find({})
     var thongBaoDatPhong = await ThongBaoDatPhong.find({})
     lich_su_dat_phong.find({}, function (err, lichSuDatPhong) {
+        var data = datPhong.filter(function (item) {
+            return item.ngayNhan.toLowerCase().indexOf(title.toLowerCase()) !== -1
+        });
+        if (data.length == 0) {
+            res.render('DatPhong', {
+                message: 'Không có dữ liệu ...'
+            });
+            return
+        }
+        var dataSearch = [];
+        for (var i = 0; i < data.length; i++) {
+            dataSearch.push({data: data[i], index: i});
+        }
 
         if (err) {
             res.send('Lỗi lấy thông tin: ' + err.message);
@@ -590,12 +628,8 @@ router.get('/ThongKe', async function (req, res, next) {
                         index++
                         tongLuotDat += value.countAccept
                         tongLuotHuy += value.countCancel
-                        console.log('tongLuotDat:' + tongLuotDat)
-                        console.log('tongLuotHuy' + tongLuotHuy)
-                        tiLeThanhCong = (tongLuotDat*100)/ (tongLuotDat + tongLuotHuy)
-                        tiLeHuy = (tongLuotDat*100)/ (tongLuotHuy + tongLuotHuy)
-                        console.log('tiLeThanhCong' + tiLeThanhCong)
-
+                        tiLeThanhCong = (tongLuotDat * 100) / (tongLuotDat + tongLuotHuy)
+                        tiLeHuy = (tongLuotDat * 100) / (tongLuotHuy + tongLuotHuy)
                     }))
                 }
                 var index = 0;
@@ -616,7 +650,7 @@ router.get('/ThongKe', async function (req, res, next) {
                     tongLuotDatPhong: lichSuDatPhong.length,
                     tongLuotHuyPhong: tongLuotHuy,
                     tiLeThanhCong: tiLeThanhCong.toFixed(5),
-                    tiLeHuy:tiLeHuy.toFixed(5)
+                    tiLeHuy: tiLeHuy.toFixed(5)
                 })
             })
         }
