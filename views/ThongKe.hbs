@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -93,9 +96,34 @@
                                   stroke-linecap="round" stroke-linejoin="round"></path>
                         </svg>
                     </button>
-<!--                    <form class="lg:ml-0 ml-6" action="">-->
-<!--                        <input class="border-2 border-gray-300 pl-2 w-60" type="text" placeholder="Tìm kiếm">-->
+
+<!--                    <form class="lg:ml-0 ml-6" action="/ThongKe" method="get">-->
+<!--                        <input type="text" class="border-2 border-gray-300 pl-2 w-60" name="datefilter" value=""/>-->
+<!--                        <button type="submit">Search</button>-->
 <!--                    </form>-->
+
+
+                    <script type="text/javascript">
+                        $(function () {
+
+                            $('input[name="datefilter"]').daterangepicker({
+                                autoUpdateInput: false,
+                                locale: {
+                                    cancelLabel: 'Clear'
+                                }
+                            });
+
+                            $('input[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) {
+                                $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+                            });
+
+                            $('input[name="datefilter"]').on('cancel.daterangepicker', function (ev, picker) {
+                                $(this).val('');
+                            });
+
+                        });
+                    </script>
+
                 </div>
 
                 <div class="flex items-center">
@@ -220,7 +248,7 @@
                     yValues.splice(3, 0, {{ this.ALOS }});
                     yValues.splice(4, 0, {{ this.tongLuotDatPhong }});
                     yValues.splice(5, 0, {{ this.tongLuotHuyPhong }});
-                    const barColors = ["red", "green", "blue", "orange", "brown",'gray'];
+                    const barColors = ["red", "green", "blue", "orange", "brown", 'gray'];
 
                     new Chart("myChart", {
                         type: "bar",

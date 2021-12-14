@@ -17,5 +17,6 @@ const LichSuDatPhong = new Schema({
     gioNhanPhong: String,
     gioTraPhong: String,
     sdt: Number,
+    acceptDate: {type: String, default: ''}
 })
 module.exports = mongoose.model('LichSuDatPhongs', LichSuDatPhong)

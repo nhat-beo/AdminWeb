@@ -124,7 +124,7 @@ class APi_all_list {
             return
         }
         Rooms.find({
-            favorite: { $all: [req.query.email] }
+            favorite: {$all: [req.query.email]}
         }).then(Rooms => res.json({
             isSuccess: true,
             code: 200,
