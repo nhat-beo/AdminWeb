@@ -46,6 +46,7 @@ const {float} = require("tailwindcss/lib/plugins");
 const {NetworkAuthenticationRequire} = require('http-errors');
 const thong_bao_dat_phong = require('../model/thong_bao_dat_phong');
 const lich_su_dat_phong = require('../model/lich_su_dat_phong');
+const text = require("body-parser/lib/types/text");
 mongoose.connect('mongodb+srv://admin:minhminh@cluster0.hiqs0.mongodb.net/bFpolyHotel?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -83,7 +84,8 @@ var room_schema = new mongoose.Schema({
     otherText: String,
     countCancel: {type: Number, default: 0},
     countAccept: {type: Number, default: 0},
-    favorite: {type: Array, default: []}
+    favorite: {type: Array, default: []},
+
 });
 // định nghĩa schmema account
 
@@ -278,8 +280,22 @@ router.post('/ThemHoaDon', function (req, res, next) {
 });
 // tim kiem bill 
 router.get('/search_bill', function (req, res) {
-    var title = req.query.name.trim();
-    lichSuDatPhong.find({}, function (error, datPhong) {
+    // var title = req.query.name;
+    // var allDate = null
+    // let startDay = null;
+    // let endDay = null;
+    // if (allDate != null) {
+    //     allDate = req.query.datefilter2;
+    //     console.log('allDate1>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + allDate)
+    //     startDay = allDate.slice(0, 10)
+    //     endDay = allDate.slice(-10)
+    // }
+    // console.log('allDate2>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + allDate)
+    // console.log('startDay>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + startDay)
+    // console.log('endDay>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + endDay)
+    lichSuDatPhong.find({
+        // ngayTra: {$gte: startDay, $lt: endDay}
+    }, function (error, datPhong) {
         if (error) {
             res.send(error.message)
             return
@@ -565,31 +581,15 @@ router.get('/update_bill.id=:id', function (req, res, next) {
 
 //
 router.get('/ThongKe', async function (req, res, next) {
-    var title = req.query.datefilter.trim();
-    // lichSuDatPhong.find({}, function (error, datPhong) {
-    //     if (error) {
-    //         res.send(error.message)
-    //         return
-    //     }
-    //     var data = datPhong.filter(function (item) {
-    //         return item.ngayNhan.toLowerCase().indexOf(title.toLowerCase()) !== -1
-    //     });
-    //     if (data.length == 0) {
-    //         res.render('DatPhong', {
-    //             message: 'Không có dữ liệu ...'
-    //         });
-    //         return
-    //     }
-    //     var dataSearch = [];
-    //     for (var i = 0; i < data.length; i++) {
-    //         dataSearch.push({data: data[i], index: i});
-    //     }
-    //     res.render('DatPhong', {
-    //         datPhong: dataSearch
-    //     });
-    //     return
-    // })
-    console.log(title)
+    // var allDate = req.query.datefilter;
+    // console.log('allDate>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + allDate)
+    //
+    // // let startDay = allDate.slice(0, 10);
+    // // let endDay = allDate.slice(-10);
+    // let startDay = ''
+    // let endDay = ''
+    // console.log('startDay>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + startDay)
+    // console.log('endDay>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + endDay)
     let listPhongDaDat = [];
     let Revenue = 0;
     let RevPAR = 0;
@@ -598,24 +598,12 @@ router.get('/ThongKe', async function (req, res, next) {
     var tongLuotDat = 0
     var tongLuotHuy = 0
     var tiLeThanhCong = 0
-    var tiLeHuy = 0
+    var tiLeHuy = 0// ngayTra: {$gte: startDay, $lt: endDay}
     var listPhong = await Rooms.find({})
     var thongBaoDatPhong = await ThongBaoDatPhong.find({})
-    lich_su_dat_phong.find({}, function (err, lichSuDatPhong) {
-        var data = datPhong.filter(function (item) {
-            return item.ngayNhan.toLowerCase().indexOf(title.toLowerCase()) !== -1
-        });
-        if (data.length == 0) {
-            res.render('DatPhong', {
-                message: 'Không có dữ liệu ...'
-            });
-            return
-        }
-        var dataSearch = [];
-        for (var i = 0; i < data.length; i++) {
-            dataSearch.push({data: data[i], index: i});
-        }
-
+    lich_su_dat_phong.find({
+        // ngayTra: {$gte: startDay, $lt: endDay}
+    }, function (err, lichSuDatPhong) {
         if (err) {
             res.send('Lỗi lấy thông tin: ' + err.message);
         } else {
@@ -628,8 +616,10 @@ router.get('/ThongKe', async function (req, res, next) {
                         index++
                         tongLuotDat += value.countAccept
                         tongLuotHuy += value.countCancel
-                        tiLeThanhCong = (tongLuotDat * 100) / (tongLuotDat + tongLuotHuy)
-                        tiLeHuy = (tongLuotDat * 100) / (tongLuotHuy + tongLuotHuy)
+                        tiLeThanhCong = (tongLuotDat * 100) / (Number(tongLuotDat) + Number(tongLuotHuy))
+                        tiLeHuy = (tongLuotHuy * 100) / (Number(tongLuotDat) + Number(tongLuotHuy))
+                        console.log('tongLuotDat.......................'+tongLuotDat)
+                        console.log('countCancel.......................'+tongLuotHuy)
                     }))
                 }
                 var index = 0;
@@ -647,7 +637,7 @@ router.get('/ThongKe', async function (req, res, next) {
                     thongKe: listPhongDaDat,
                     ALOS: ALOS.toFixed(1),
                     thongBaoDatPhong: thongBaoDatPhong,
-                    tongLuotDatPhong: lichSuDatPhong.length,
+                    tongLuotDatPhong: tongLuotDat,
                     tongLuotHuyPhong: tongLuotHuy,
                     tiLeThanhCong: tiLeThanhCong.toFixed(5),
                     tiLeHuy: tiLeHuy.toFixed(5)
@@ -849,16 +839,19 @@ router.get('/delete_phong_sap_het.id=:id', function (req, res, next) {
 // xac nhan thong bao
 router.get('/xacNhan_thong_bao', function (req, res, next) {
     var room_model = db.model('room', room_schema);
+    var today = new Date()
+    var time = today.getFullYear() + "/" + today.getMonth() + "/" + today.getDay() + " " + today.getHours() + ":" + (today.getMinutes() +10) ;
+    console.log('timmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmme'+time)
     room_model.findOne({_id: req.query.Roomid}).then(r => {
-        r.statusRoom = 'Hết phòng',
-            r.countAccept = Number(r.countAccept) + 1,
+        r.statusRoom = 'Hết phòng';
+        r.countAccept = Number(r.countAccept) + 1;
 
-            r.save().then(r => {
 
-            }).catch(e => res.send('Lỗi ' + e.message))
+        r.save().then(r => {
+
+        }).catch(e => res.send('Lỗi ' + e.message))
     })
     thong_bao_dat_phong.findOne({_id: req.query.id}).then(tb => {
-        console.log(tb)
         lichSuDatPhong({
             maPhong: tb.id,
             hoten: tb.hoten,
@@ -874,8 +867,10 @@ router.get('/xacNhan_thong_bao', function (req, res, next) {
             gioNhanPhong: tb.gioNhanPhong,
             gioTraPhong: tb.gioTra,
             sdt: tb.sdt,
+            acceptDate: time,
 
         }).save(function (err) {
+            console.log('timmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmeFinish'+time)
             if (err) {
                 res.send("Thêm hoá đơn k thành công " + err);
             } else {
