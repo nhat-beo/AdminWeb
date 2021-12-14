@@ -34,7 +34,7 @@ class APi_all_list {
     }
 
     getAllRooms(req, res, next) {
-        Rooms.find({}).then(Rooms => res.json({
+        Rooms.find({statusRoom: ['Còn phòng','Hết phòng'],}).then(Rooms => res.json({
             isSuccess: true,
             code: 200,
             message: "success",
