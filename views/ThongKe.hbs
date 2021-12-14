@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,8 +39,7 @@
             </div>
 
             <nav class="mt-10">
-                <a class="flex items-center mt-4 py-2 px-6 bg-gray-700 bg-opacity-25 text-gray-100"
-                   href="ThongKe">
+                <a class="flex items-center mt-4 py-2 px-6 bg-gray-700 bg-opacity-25 text-gray-100" href="ThongKe">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                          stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -93,9 +96,34 @@
                                   stroke-linecap="round" stroke-linejoin="round"></path>
                         </svg>
                     </button>
-                    <form class="lg:ml-0 ml-6" action="">
-                        <input class="border-2 border-gray-300 pl-2 w-60" type="text" placeholder="Tìm kiếm">
+
+                    <form class="lg:ml-0 ml-6" action="/ThongKe" method="get">
+                        <input type="text" class="border-2 border-gray-300 pl-2 w-60" name="datefilter" value=""/>
+                        <button type="submit">Search</button>
                     </form>
+
+
+                    <script type="text/javascript">
+                        $(function () {
+
+                            $('input[name="datefilter"]').daterangepicker({
+                                autoUpdateInput: false,
+                                locale: {
+                                    cancelLabel: 'Clear'
+                                }
+                            });
+
+                            $('input[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) {
+                                $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+                            });
+
+                            $('input[name="datefilter"]').on('cancel.daterangepicker', function (ev, picker) {
+                                $(this).val('');
+                            });
+
+                        });
+                    </script>
+
                 </div>
 
                 <div class="flex items-center">
@@ -146,52 +174,60 @@
                                         <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
                                         <th
                                                 class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Thời gian
+                                            Lượt phòng đã đặt - hủy
                                         </th>
                                         <th
                                                 class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Lượt phòng đã đặt
+                                            Tổng số khách
                                         </th>
                                         <th
                                                 class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Số lượng khách
+                                            Tỉ Đặt phòng thành công
                                         </th>
                                         <th
                                                 class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Doanh Thu
+                                            Tỷ lệ Hủy phòng
+                                        </th>
+                                        <th
+                                                class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Doanh thu
                                         </th>
                                     </tr>
                                     </thead>
 
                                     <tbody class="bg-white">
-                                    {{#each thongKe}}
-                                        <tr>
-                                            <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">
-                                                {{this.index}}
-                                            </td>
+                                    <!--                                            {#each thongKe}-->
+                                    <tr>
+                                        <td
+                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">
 
-                                            <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">
-                                                {{this.thoiGian}}
-                                            </td>
+                                        </td>
 
-                                            <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
-                                                123123
-                                            </td>
+                                        <td
+                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">
+                                            {{this.tongLuotDatPhong}} - {{this.tongLuotHuyPhong}} lượt
+                                        </td>
 
-                                            <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">
-                                                {{this.soNguoi}}
-                                            </td>
+                                        <td
+                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
+                                            {{this.LuotKhach}} khách
+                                        </td>
 
-                                            <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
-                                                {{this.doanhThu}}
-                                            </td>
-                                        </tr>
-                                    {{/each}}
+                                        <td
+                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-gray-700">
+                                            {{this.tiLeThanhCong}}%
+                                        </td>
+
+                                        <td
+                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
+                                            {{this.tiLeHuy}}%
+                                        </td>
+                                        <td
+                                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-700">
+                                            {{this.tongdoanhThu}} VND
+                                        </td>
+                                    </tr>
+                                    <!--                                            {/each}-->
                                     </tbody>
                                 </table>
                             </div>
@@ -204,13 +240,15 @@
 
                 </div>
                 <script>
-                    const xValues = ["RevPAR (triệu đồng) ", "Tổng số khách", "Doanh thu(triệu đồng)", "ALOS (đêm)"];
-                    const yValues = [0, 0, 0, 0];
-                    yValues.splice(0, 0,{{this.RevPAR}});
-                    yValues.splice(1, 0,{{this.LuotKhach}});
-                    yValues.splice(2, 0,{{this.tongdoanhThu}});
-                    yValues.splice(3, 0,{{this.ALOS}});
-                    const barColors = ["red", "green", "blue", "orange", "brown"];
+                    const xValues = ["RevPAR (triệu đồng) ", "Tổng số khách", "Doanh thu(triệu đồng)", "ALOS (đêm)", 'Số lượt đặt phòng', 'Số lượt hủy phòng'];
+                    const yValues = [];
+                    yValues.splice(0, 0, {{ this.RevPAR }});
+                    yValues.splice(1, 0, {{ this.LuotKhach }});
+                    yValues.splice(2, 0, {{ this.tongdoanhThu }});
+                    yValues.splice(3, 0, {{ this.ALOS }});
+                    yValues.splice(4, 0, {{ this.tongLuotDatPhong }});
+                    yValues.splice(5, 0, {{ this.tongLuotHuyPhong }});
+                    const barColors = ["red", "green", "blue", "orange", "brown", 'gray'];
 
                     new Chart("myChart", {
                         type: "bar",
@@ -245,11 +283,14 @@
 
                         <div class="mt-2 flex-col overflow-y-auto" style="height: auto;">
                             {{#each thongBaoDatPhong}}
+                                <form method="post" action="xacNhan_thong_bao.id={{this._id}}">
                                 <div
                                         class="flex-col mx-2 mb-4 border-t-2 border-l-2 border-r-2 border-b-2 border-gray-400 rounded-md">
 
                                     <div class="flex justify-between px-1 text-sm">
                                         <ul class="w-1/2 mr-2">
+                                            <input style="display: none;" value="{{this._id}}" name="idThongBao"/>
+
                                             <li>Họ và Tên: {{this.hoten}}</li>
                                             <li>Số điện thoại: {{this.sdt}}</li>
                                             <li>Số đêm: {{this.sodem}}</li>
@@ -266,17 +307,21 @@
 
                                     </div>
 
-                                    <p class="text-red-600 text-lg font-medium py-2 px-1">Số tiền: {{this.giaPhong}}</p>
+                                    <p class="text-red-600 text-lg font-medium py-2 px-1">Số tiền: {{this.giaPhong}}
+                                    </p>
                                     <div class="flex justify-between" style="padding: 10px;">
-                                        <button type="submit"
-                                                class="block text-center text-white bg-green-600 p-2 duration-300 rounded-md hover:bg-green-800 w-full mr-2">
-                                            Xác nhận
-                                        </button>
-                                        <a href="delete_thong_bao.id={{this._id}}" class="block text-center
+                                        <a href="xacNhan_thong_bao?id={{this._id}}&Roomid={{this.Roomid}}" class="block
+                                        text-center
                                         text-white
-                                        bg-red-600 p-2 duration-300 rounded-md hover:bg-red-800 w-full ml-2">Huỷ</a>
+                                        bg-green-600 p-2 duration-300 rounded-md hover:bg-green-800 w-full ml-2"> Xác
+                                        nhận</a>
+                                        <a href="delete_thong_bao?id={{this._id}}&Roomid={{this.Roomid}}" class="block
+                                        text-center
+                                        text-white
+                                        bg-red-600 p-2 duration-300 rounded-md hover:bg-red-800 w-full ml-2" >Huỷ</a>
                                     </div>
                                 </div>
+                                </form>
                             {{/each}}
                             <!--Thông tin đơn phòng-->
                         </div>

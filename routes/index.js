@@ -44,6 +44,8 @@ router.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 const mongoose = require('mongoose');
 const {float} = require("tailwindcss/lib/plugins");
 const {NetworkAuthenticationRequire} = require('http-errors');
+const thong_bao_dat_phong = require('../model/thong_bao_dat_phong');
+const lich_su_dat_phong = require('../model/lich_su_dat_phong');
 mongoose.connect('mongodb+srv://admin:minhminh@cluster0.hiqs0.mongodb.net/bFpolyHotel?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -78,13 +80,16 @@ var room_schema = new mongoose.Schema({
     wheelChairWay: Boolean,
     shuttle: Boolean,
     other: Boolean,
-    otherText: String
+    otherText: String,
+    countCancel: {type: Number, default: 0},
+    countAccept: {type: Number, default: 0},
+    favorite: {type: Array, default: []}
 });
 // định nghĩa schmema account
 
 var account_schema = new mongoose.Schema({
     gmail: String,
-    sword: String,
+    passsword: String,
     name: String,
     birthday: String,
     phoneNumber: String,
@@ -234,8 +239,6 @@ router.post('/ThemHoaDon', function (req, res, next) {
         email: req.body.email,
         soPhong: req.body.soPhong,
         giaPhong: req.body.giaPhong,
-        datChoMinh: req.body.datChoMinh == 'Đặt cho bản thân' ? true : false,
-        datChoNguoiKhac: req.body.datChoNguoiKhac == 'Đặt cho người khác' ? true : false,
         ngayNhan: req.body.ngayNhan,
         ngayTra: req.body.ngayTra,
         soDem: req.body.soDem,
@@ -255,8 +258,6 @@ router.post('/ThemHoaDon', function (req, res, next) {
                 email: req.body.email,
                 soPhong: req.body.soPhong,
                 giaPhong: req.body.giaPhong,
-                datChoMinh: req.body.datChoMinh == 'Đặt cho bản thân' ? true : false,
-                datChoNguoiKhac: req.body.datChoNguoiKhac == 'Đặt cho người khác' ? true : false,
                 ngayNhan: req.body.ngayNhan,
                 ngayTra: req.body.ngayTra,
                 soDem: req.body.soDem,
@@ -279,6 +280,10 @@ router.post('/ThemHoaDon', function (req, res, next) {
 router.get('/search_bill', function (req, res) {
     var title = req.query.name.trim();
     lichSuDatPhong.find({}, function (error, datPhong) {
+        if (error) {
+            res.send(error.message)
+            return
+        }
         var data = datPhong.filter(function (item) {
             return item.ngayNhan.toLowerCase().indexOf(title.toLowerCase()) !== -1
         });
@@ -295,10 +300,11 @@ router.get('/search_bill', function (req, res) {
         res.render('DatPhong', {
             datPhong: dataSearch
         });
+        return
     })
     //
 })
-//xoa hoa don
+//xoahoadon
 router.get('/delete_bill_datPhong.id=:id', function (req, res, next) {
     lichSuDatPhong.findByIdAndRemove(req.params.id, function (error, account) {
         if (error) {
@@ -308,40 +314,53 @@ router.get('/delete_bill_datPhong.id=:id', function (req, res, next) {
         }
     })
 });
-//Them phong
+//Themphong
 router.post('/add_room', upload, function (req, res, next) {
     var room_model = db.model('room', room_schema);
-    room_model({
-        roomPhoto: req.files,
-        roomNumber: req.body.roomNumber,
-        typeRoom: req.body.typeRoom,
-        rankRoom: req.body.rankRoom,
-        peopleRoom: req.body.peopleRoom,
-        priceRoom: req.body.priceRoom,
-        statusRoom: req.body.statusRoom,
-        description: req.body.description,
-        wifi: req.body.wifi === 'on' ? true : false,
-        parking: req.body.parking === 'on' ? true : false,
-        receptionist: req.body.receptionist === 'on' ? true : false,
-        gym: req.body.gym === 'on' ? true : false,
-        roomMeeting: req.body.roomMeeting === 'on' ? true : false,
-        laundry: req.body.laundry === 'on' ? true : false,
-        pool: req.body.pool === 'on' ? true : false,
-        restaurant: req.body.restaurant === 'on' ? true : false,
-        elevator: req.body.elevator === 'on' ? true : false,
-        wheelChairWay: req.body.wheelChairWay === 'on' ? true : false,
-        shuttle: req.body.shuttle === 'on' ? true : false,
-        other: req.body.other === 'on' ? true : false,
-        otherText: req.body.otherText
-    }).save(function (error, r) {
-        if (error) {
-            res.send("Lỗi thêm thông tin");
-        } else {
-
-            res.redirect("/Categories");
-
+    room_model.find({}).then(r => {
+        for (var i of r) {
+            if (i.roomNumber == (req.body.roomNumber)) {
+                res.render('ThemPhong', {
+                    message: 'Phòng đã tồn tại.'
+                });
+                console.log('>>>>>>>>> ' + i.roomNumber + '>>>>>>>>>>>>' + req.body.roomNumber)
+                return
+            }
         }
-    });
+        room_model({
+            roomPhoto: req.files,
+            roomNumber: req.body.roomNumber,
+            typeRoom: req.body.typeRoom,
+            rankRoom: req.body.rankRoom,
+            peopleRoom: req.body.peopleRoom,
+            priceRoom: req.body.priceRoom,
+            statusRoom: req.body.statusRoom,
+            description: req.body.description,
+            wifi: req.body.wifi === 'on' ? true : false,
+            parking: req.body.parking === 'on' ? true : false,
+            receptionist: req.body.receptionist === 'on' ? true : false,
+            gym: req.body.gym === 'on' ? true : false,
+            roomMeeting: req.body.roomMeeting === 'on' ? true : false,
+            laundry: req.body.laundry === 'on' ? true : false,
+            pool: req.body.pool === 'on' ? true : false,
+            restaurant: req.body.restaurant === 'on' ? true : false,
+            elevator: req.body.elevator === 'on' ? true : false,
+            wheelChairWay: req.body.wheelChairWay === 'on' ? true : false,
+            shuttle: req.body.shuttle === 'on' ? true : false,
+            other: req.body.other === 'on' ? true : false,
+            otherText: req.body.otherText
+        }).save(function (error, r) {
+            if (error) {
+                res.send("Lỗi thêm thông tin");
+            } else {
+
+                res.redirect("/Categories");
+
+            }
+        });
+    }).catch(e => res.send('Lỗi'))
+
+
 });
 
 //Xoa phong
@@ -418,19 +437,21 @@ router.post('/update_room.id=:id', upload, function (req, res, next) {
     });
 });
 // sua hoa don ssss
-router.get('/sua_hoadon.id=:id', function (req, res, next) {
+router.get('/sua_hoadon', function (req, res, next) {
     // var room_model = db.model('room', room_schema);
-    datPhong.findOne({_id: req.params.id}, function (error, room) {
+    lich_su_dat_phong.findOne({_id: req.query.id}, function (error, room) {
         if (error) {
             res.send("Lỗi sửa thông tin" + error);
         } else {
+            console.log(room)
+
             res.render('SuaHoaDon', {room: room});
         }
     })
 });
 /// posrt sua sss
 router.post('/sua_hoadon.id=:id', upload, function (req, res, next) {
-    datPhong.findByIdAndUpdate(req.params.id, {
+    lich_su_dat_phong.findByIdAndUpdate(req.params.id, {
         maPhong: req.body.maPhong,
         hoten: req.body.hoten,
         loaiPhong: req.body.loaiPhong,
@@ -451,10 +472,11 @@ router.post('/sua_hoadon.id=:id', upload, function (req, res, next) {
         if (error) {
             res.send("Lỗi sửa thông tin");
         } else {
-            datPhong.findOne({_id: req.params.id}, function (error, room) {
+            lich_su_dat_phong.findOne({_id: req.params.id}, function (error, room) {
                 if (error) {
                     res.send("Lỗi sửa thông tin" + error);
                 } else {
+                    console.log(req.params.id)
                     // res.send("Sửa thông tin thành công");
                     // res.json(room);
                     // res.render('SuaPhong', {room: room});
@@ -543,42 +565,93 @@ router.get('/update_bill.id=:id', function (req, res, next) {
 
 //
 router.get('/ThongKe', async function (req, res, next) {
+    var title = req.query.datefilter.trim();
+    // lichSuDatPhong.find({}, function (error, datPhong) {
+    //     if (error) {
+    //         res.send(error.message)
+    //         return
+    //     }
+    //     var data = datPhong.filter(function (item) {
+    //         return item.ngayNhan.toLowerCase().indexOf(title.toLowerCase()) !== -1
+    //     });
+    //     if (data.length == 0) {
+    //         res.render('DatPhong', {
+    //             message: 'Không có dữ liệu ...'
+    //         });
+    //         return
+    //     }
+    //     var dataSearch = [];
+    //     for (var i = 0; i < data.length; i++) {
+    //         dataSearch.push({data: data[i], index: i});
+    //     }
+    //     res.render('DatPhong', {
+    //         datPhong: dataSearch
+    //     });
+    //     return
+    // })
+    console.log(title)
     let listPhongDaDat = [];
     let Revenue = 0;
     let RevPAR = 0;
     let ALOS = 0
     let LuotKhach = 0;
-    let listPhong = await Rooms.find({})
-
+    var tongLuotDat = 0
+    var tongLuotHuy = 0
+    var tiLeThanhCong = 0
+    var tiLeHuy = 0
+    var listPhong = await Rooms.find({})
     var thongBaoDatPhong = await ThongBaoDatPhong.find({})
-    datPhong.find({}, function (err, datPhong) {
+    lich_su_dat_phong.find({}, function (err, lichSuDatPhong) {
+        var data = datPhong.filter(function (item) {
+            return item.ngayNhan.toLowerCase().indexOf(title.toLowerCase()) !== -1
+        });
+        if (data.length == 0) {
+            res.render('DatPhong', {
+                message: 'Không có dữ liệu ...'
+            });
+            return
+        }
+        var dataSearch = [];
+        for (var i = 0; i < data.length; i++) {
+            dataSearch.push({data: data[i], index: i});
+        }
+
         if (err) {
             res.send('Lỗi lấy thông tin: ' + err.message);
         } else {
-            var index = 0;
-            datPhong.forEach((value) => {
-                console.log(value.soDem);
-                var doanhThu = value.soDem * value.giaPhong + (value.soDem * value.giaPhong * 0.1);
-                Revenue += Number(doanhThu)
-                LuotKhach += Number(value.soNguoi)
-
-                RevPAR = Revenue / listPhong.length;
-                ALOS += value.soDem / listPhongDaDat.length
-                listPhongDaDat.push({
-                    'doanhThu': doanhThu,
-                    'index': index,
-                    'soNguoi': value.soNguoi,
-                    'thoiGian': value.ngayTra
+            Rooms.find({}, function (err, listAllRoom) {
+                if (err) {
+                    res.send('Lỗi lấy thông tin: ' + err.message);
+                } else {
+                    var index = 0;
+                    listAllRoom.forEach((value => {
+                        index++
+                        tongLuotDat += value.countAccept
+                        tongLuotHuy += value.countCancel
+                        tiLeThanhCong = (tongLuotDat * 100) / (tongLuotDat + tongLuotHuy)
+                        tiLeHuy = (tongLuotDat * 100) / (tongLuotHuy + tongLuotHuy)
+                    }))
+                }
+                var index = 0;
+                lichSuDatPhong.forEach((value) => {
+                    index++
+                    Revenue += (value.soDem * value.giaPhong + (value.soDem * value.giaPhong * 0.1)) / 100000;
+                    LuotKhach += Number(value.soNguoi)
+                    RevPAR = Revenue / listPhong.length;
+                    ALOS += value.soDem / listPhong.length
                 });
-                index++;
-            });
-            res.render('ThongKe', {
-                thongKe: listPhongDaDat,
-                tongdoanhThu: Revenue,
-                LuotKhach: LuotKhach,
-                RevPAR: RevPAR,
-                ALOS: ALOS,
-                thongBaoDatPhong: thongBaoDatPhong
+                res.render('ThongKe', {
+                    RevPAR: RevPAR,
+                    LuotKhach: LuotKhach,
+                    tongdoanhThu: Revenue.toFixed(2),
+                    thongKe: listPhongDaDat,
+                    ALOS: ALOS.toFixed(1),
+                    thongBaoDatPhong: thongBaoDatPhong,
+                    tongLuotDatPhong: lichSuDatPhong.length,
+                    tongLuotHuyPhong: tongLuotHuy,
+                    tiLeThanhCong: tiLeThanhCong.toFixed(5),
+                    tiLeHuy: tiLeHuy.toFixed(5)
+                })
             })
         }
     })
@@ -710,13 +783,18 @@ router.get('/SapHetHan', function (req, res, next) {
         for (var p of value) {
             var date = new Date(p.ngayTra).getTime();
             var dateExpired = date - dateNow;
+            console.log("1>>>" + date)
+            console.log("2>>>" + dateNow)
+            console.log("3>>>" + dateExpired)
+            console.log("\n \n \n \n\n \n\n \n\n \n\n \n")
+
             if (dateExpired < 0) {
                 listRoomExpired.push(p)
             }
         }
         var dataSearch = [];
-        for (var i = 0; i < value.length; i++) {
-            dataSearch.push({data: value[i], index: i});
+        for (var i = 0; i < listRoomExpired.length; i++) {
+            dataSearch.push({data: listRoomExpired[i], index: i});
         }
         res.render('SapHetHan', {datPhong: dataSearch});
     });
@@ -768,15 +846,69 @@ router.get('/delete_phong_sap_het.id=:id', function (req, res, next) {
 
 
 });
+// xac nhan thong bao
+router.get('/xacNhan_thong_bao', function (req, res, next) {
+    var room_model = db.model('room', room_schema);
+    room_model.findOne({_id: req.query.Roomid}).then(r => {
+        r.statusRoom = 'Hết phòng',
+            r.countAccept = Number(r.countAccept) + 1,
 
-// xoa thong bao
-router.get('/delete_thong_bao.id=:id', function (req, res, next) {
-    ThongBaoDatPhong.findByIdAndRemove(req.params.id, function (error, room) {
-        if (error) {
-            res.send("Lỗi xóa thông tin");
-        } else {
-            res.redirect('/ThongKe');
-        }
+            r.save().then(r => {
+
+            }).catch(e => res.send('Lỗi ' + e.message))
+    })
+    thong_bao_dat_phong.findOne({_id: req.query.id}).then(tb => {
+        console.log(tb)
+        lichSuDatPhong({
+            maPhong: tb.id,
+            hoten: tb.hoten,
+            loaiPhong: tb.loaiPhong,
+            cmnd: tb.cccd,
+            email: tb.email,
+            soPhong: tb.sophong,
+            giaPhong: tb.giaPhong,
+            ngayNhan: tb.ngaynhan,
+            ngayTra: tb.ngayTra,
+            soDem: tb.sodem,
+            soNguoi: tb.soNguoi,
+            gioNhanPhong: tb.gioNhanPhong,
+            gioTraPhong: tb.gioTra,
+            sdt: tb.sdt,
+
+        }).save(function (err) {
+            if (err) {
+                res.send("Thêm hoá đơn k thành công " + err);
+            } else {
+                ThongBaoDatPhong.findByIdAndRemove(req.query.id, function (error, room) {
+                    if (error) {
+                        res.send("Lỗi xóa thông tin");
+                    } else {
+                        res.redirect("/DatPhong");
+                    }
+                })
+
+            }
+        })
+    })
+
+
+});
+// huy thong bao
+router.get('/delete_thong_bao', function (req, res, next) {
+    console.log(req.query)
+    var room_model = db.model('room', room_schema);
+    room_model.findOne({_id: req.query.Roomid}).then(r => {
+        r.statusRoom = 'Còn phòng',
+            r.countCancel = Number(r.countCancel) + 1
+        r.save().then(r => {
+            ThongBaoDatPhong.findByIdAndRemove(req.query.id, function (error, room) {
+                if (error) {
+                    res.send("Lỗi xóa thông tin");
+                } else {
+                    res.redirect('/ThongKe');
+                }
+            })
+        }).catch(e => res.send('Lỗi ' + e.message))
     })
 });
 router.use('/api', require('./api_router'))

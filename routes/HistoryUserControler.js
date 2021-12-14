@@ -49,14 +49,14 @@ class HistoryUserControler {
             res.json({message: 'Cần truyền params id', status: false, code: 200,})
             return
         }
-        ListHistoryUser.deleteOne({email: req.body.email}, function (err) {
+        ListHistoryUser.deleteMany({email: req.body.email}, function (err) {
             if (err) {
                 res.json({message: 'Delete failed', status: false, err: err})
                 return
             }
             res.json({
                 message: 'Delete success',
-                status: false,
+                status: true,
                 code: 200
             });
         })

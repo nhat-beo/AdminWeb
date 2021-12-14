@@ -32,4 +32,14 @@ route.post('/delete-all-history-by-user', HistoryByUser.deleteAllHistory)
 
 route.get('/get-top-favorite', TopFavorrite.getTopRoom)
 
+route.get('/get-filter-Room', apiController.FilterRoom)
+
+route.post('/update-favorite', apiController.updateFavorite)
+
+route.post('/cancel-wait-to-accept', UpdateRoomController.canceWaitlRoom)
+
+route.get('/get-list-wait-to-accept-room', UpdateRoomController.getWaitToAcceptUser)
+
+route.get('/get-list-favorite-by-user', apiController.getListFavoriteByUser)
+
 module.exports = route
