@@ -282,6 +282,18 @@ router.post('/ThemHoaDon', function (req, res, next) {
 // tim kiem bill 
 router.get('/search_bill', function (req, res) {
     var title = req.query.name.trim();
+    // var allDate = null
+    // let startDay = null;
+    // let endDay = null;
+    // if (allDate != null) {
+    //     allDate = req.query.datefilter2;
+    //     console.log('allDate1>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + allDate)
+    //     startDay = allDate.slice(0, 10)
+    //     endDay = allDate.slice(-10)
+    // }
+    // console.log('allDate2>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + allDate)
+    // console.log('startDay>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + startDay)
+    // console.log('endDay>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + endDay)
     lichSuDatPhong.find({
         // ngayTra: {$gte: startDay, $lt: endDay}
         
