@@ -345,9 +345,9 @@ router.post('/add_room', upload, function (req, res, next) {
         }
         room_model({
             roomPhoto: req.files,
-            roomNumber: req.body.roomNumber,
-            typeRoom: req.body.typeRoom,
-            rankRoom: req.body.rankRoom,
+            roomNumber: req.body.roomNumber.trim(),
+            typeRoom: req.body.typeRoom.trim(),
+            rankRoom: req.body.rankRoom.trim(),
             peopleRoom: req.body.peopleRoom,
             priceRoom: req.body.priceRoom,
             statusRoom: req.body.statusRoom,

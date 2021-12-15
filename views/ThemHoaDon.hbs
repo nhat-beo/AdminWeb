@@ -9,154 +9,155 @@
 </head>
 
 <body>
-    <!-- component -->
-    <div>
-        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+<!-- component -->
+<div>
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 
-        <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200">
-            <div :class="sidebarOpen ? 'block' : 'hidden'" @click="sidebarOpen = false"
-                class="fixed z-20 inset-0 bg-black opacity-50 transition-opacity lg:hidden"></div>
+    <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200">
+        <div :class="sidebarOpen ? 'block' : 'hidden'" @click="sidebarOpen = false"
+             class="fixed z-20 inset-0 bg-black opacity-50 transition-opacity lg:hidden"></div>
 
-            <div :class="sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'"
-                class="fixed z-30 inset-y-0 left-0 w-64 transition duration-300 transform bg-gray-900 overflow-y-auto lg:translate-x-0 lg:static lg:inset-0">
-                <div class="flex items-center justify-center mt-3">
-                    <svg class="h-14 w-14" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
+        <div :class="sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'"
+             class="fixed z-30 inset-y-0 left-0 w-64 transition duration-300 transform bg-gray-900 overflow-y-auto lg:translate-x-0 lg:static lg:inset-0">
+            <div class="flex items-center justify-center mt-3">
+                <svg class="h-14 w-14" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
                             d="M364.61 390.213C304.625 450.196 207.37 450.196 147.386 390.213C117.394 360.22 102.398 320.911 102.398 281.6C102.398 242.291 117.394 202.981 147.386 172.989C147.386 230.4 153.6 281.6 230.4 307.2C230.4 256 256 102.4 294.4 76.7999C320 128 334.618 142.997 364.608 172.989C394.601 202.981 409.597 242.291 409.597 281.6C409.597 320.911 394.601 360.22 364.61 390.213Z"
                             fill="#4C51BF" stroke="#4C51BF" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round">
-                        </path>
-                        <path
+                    </path>
+                    <path
                             d="M201.694 387.105C231.686 417.098 280.312 417.098 310.305 387.105C325.301 372.109 332.8 352.456 332.8 332.8C332.8 313.144 325.301 293.491 310.305 278.495C295.309 263.498 288 256 275.2 230.4C256 243.2 243.201 320 243.201 345.6C201.694 345.6 179.2 332.8 179.2 332.8C179.2 352.456 186.698 372.109 201.694 387.105Z"
                             fill="white"></path>
-                    </svg>
+                </svg>
 
-                    <span class="text-white text-2xl mx-2 font-semibold">Dashboard</span>
-                </div>
-
-                <nav class="mt-10">
-                    <a class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-                        href="ThongKe">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-                        </svg>
-
-                        <span class="mx-3">Thống Kê</span>
-                    </a>
-
-                    <a class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-                        href="Categories">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                        </svg>
-
-                        <span class="mx-3">Quản lý phòng</span>
-                    </a>
-
-                    <a class="flex items-center mt-4 py-2 px-6 bg-gray-700 bg-opacity-25 text-gray-100" href="DatPhong">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
-                        </svg>
-
-                        <span class="mx-3">Đặt Phòng</span>
-                    </a>
-
-                    <a class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-                        href="TaiKhoan">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-
-                        <span class="mx-3">Tài Khoản</span>
-                    </a>
-                </nav>
+                <span class="text-white text-2xl mx-2 font-semibold">Dashboard</span>
             </div>
 
-            <div class="flex-1 flex flex-col overflow-hidden">
-                <header class="flex justify-between items-center py-4 px-6 bg-white border-b-4 border-indigo-600">
-                    <div class="flex items-center">
-                        <button @click="sidebarOpen = true" class="text-gray-500 focus:outline-none lg:hidden">
-                            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4 6H20M4 12H20M4 18H11" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                        </button>
-                    </div>
+            <nav class="mt-10">
+                <a class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+                   href="ThongKe">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/>
+                    </svg>
 
-                    <div class="flex items-center">
-                        <div x-data="{ dropdownOpen: false }" class="relative">
-                            <button @click="dropdownOpen = ! dropdownOpen"
+                    <span class="mx-3">Thống Kê</span>
+                </a>
+
+                <a class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+                   href="Categories">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                    </svg>
+
+                    <span class="mx-3">Quản lý phòng</span>
+                </a>
+
+                <a class="flex items-center mt-4 py-2 px-6 bg-gray-700 bg-opacity-25 text-gray-100" href="DatPhong">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/>
+                    </svg>
+
+                    <span class="mx-3">Đặt Phòng</span>
+                </a>
+
+                <a class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+                   href="TaiKhoan">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+
+                    <span class="mx-3">Tài Khoản</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <header class="flex justify-between items-center py-4 px-6 bg-white border-b-4 border-indigo-600">
+                <div class="flex items-center">
+                    <button @click="sidebarOpen = true" class="text-gray-500 focus:outline-none lg:hidden">
+                        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 6H20M4 12H20M4 18H11" stroke="currentColor" stroke-width="2"
+                                  stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="flex items-center">
+                    <div x-data="{ dropdownOpen: false }" class="relative">
+                        <button @click="dropdownOpen = ! dropdownOpen"
                                 class="relative block h-8 w-8 rounded-full overflow-hidden shadow focus:outline-none">
-                                <img class="h-full w-full object-cover"
-                                    src="https://images.unsplash.com/photo-1528892952291-009c663ce843?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=296&amp;q=80"
-                                    alt="Your avatar">
-                            </button>
+                            <img class="h-full w-full object-cover"
+                                 src="https://images.unsplash.com/photo-1528892952291-009c663ce843?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=296&amp;q=80"
+                                 alt="Your avatar">
+                        </button>
 
-                            <div x-show="dropdownOpen" @click="dropdownOpen = false"
-                                class="fixed inset-0 h-full w-full z-10" style="display: none;"></div>
+                        <div x-show="dropdownOpen" @click="dropdownOpen = false"
+                             class="fixed inset-0 h-full w-full z-10" style="display: none;"></div>
 
-                            <div x-show="dropdownOpen"
-                                class="absolute right-0 mt-2 w-48 bg-white rounded-md overflow-hidden shadow-xl z-10"
-                                style="display: none;">
-                                <a href="/"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">Đăng
-                                    xuất</a>
-                            </div>
+                        <div x-show="dropdownOpen"
+                             class="absolute right-0 mt-2 w-48 bg-white rounded-md overflow-hidden shadow-xl z-10"
+                             style="display: none;">
+                            <a href="/"
+                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">Đăng
+                                xuất</a>
                         </div>
                     </div>
-                </header>
+                </div>
+            </header>
 
-                <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
-                    {{#room}}
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
+                {{#room}}
                     <div class="container mx-auto px-6 py-8 mt-3">
                         <h3 class="text-gray-700 text-3xl font-medium">Thêm hóa đơn</h3>
-                        <form action="/ThemHoaDon" method="post" class="mt-8 mx-auto flex justify-around px-20">
+                        <form onsubmit="return is_phonenumber()" action="/ThemHoaDon" method="post"
+                              class="mt-8 mx-auto flex justify-around px-20">
                             <div class="w-1/3">
                                 <div class="my-5 text-sm">
                                     <input type="text"
-                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                        placeholder="" name="id_phong" value="{{this._id}}" readonly
-                                        style="display: none;" />
+                                           class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
+                                           placeholder="" name="id_phong" value="{{this._id}}" readonly
+                                           style="display: none;"/>
                                 </div>
                                 <div class="my-5 text-sm">
                                     <label class="block text-gray-500">Phòng Số</label>
                                     <input type="text"
-                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                        placeholder="Phòng Số" name="soPhong" value="{{this.roomNumber}}" readonly />
+                                           class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
+                                           placeholder="Phòng Số" name="soPhong" value="{{this.roomNumber}}" readonly/>
                                 </div>
                                 <div class="my-5 text-sm">
                                     <label class="block text-gray-500">Họ và Tên</label>
                                     <input type="text"
-                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                        placeholder="Họ và Tên" name="hoten" required />
+                                           class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
+                                           placeholder="Họ và Tên" name="hoten" required/>
                                 </div>
                                 <div class="my-5 text-sm">
                                     <label class="block text-gray-500">CMND/CCCD</label>
                                     <input type="number"
-                                        class="rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                        placeholder="CMND/CCCD" name="cmnd" required />
+                                           class="rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
+                                           placeholder="CMND/CCCD" name="cmnd" required/>
                                 </div>
                                 <div class="my-5 text-sm">
                                     <label class="block text-gray-500">Email</label>
                                     <input type="email"
-                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                        placeholder="Email" name="email" required />
+                                           class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
+                                           placeholder="Email" name="email" required/>
                                 </div>
                                 <div class="my-5 text-sm">
                                     <label class="block text-gray-500">Giá Phòng</label>
                                     <input type="number"
-                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                        placeholder="Giá Phòng" name="giaPhong" required />
+                                           class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
+                                           placeholder="Giá Phòng" name="giaPhong" required/>
                                 </div>
                             </div>
 
@@ -164,84 +165,86 @@
                                 <div class="my-5 text-sm">
                                     <label class="block text-gray-500">Ngày Nhận Phòng</label>
                                     <input type="date" autofocus
-                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                        placeholder="Ngày Nhận Phòng" name="ngayNhan" required />
+                                           class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
+                                           placeholder="Ngày Nhận Phòng" name="ngayNhan" required/>
                                 </div>
                                 <div class="my-5 text-sm">
                                     <label class="block text-gray-500">Ngày Trả Phòng</label>
                                     <input type="date"
-                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                        placeholder="Ngày Trả Phòng" name="ngayTra" required>
+                                           class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
+                                           placeholder="Ngày Trả Phòng" name="ngayTra" required>
                                 </div>
                                 <div class="my-5 text-sm">
                                     <label class="block text-gray-500">Số Đêm</label>
                                     <input type="number"
-                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                        placeholder="Số đêm" name="soDem" required />
+                                           class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
+                                           placeholder="Số đêm" name="soDem" required/>
                                 </div>
                                 <div class="my-5 text-sm">
                                     <label class="block text-gray-500">Số Người</label>
                                     <input type="number"
-                                        class="rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                        placeholder="Số Người" name="soNguoi" required />
+                                           class="rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
+                                           placeholder="Số Người" name="soNguoi" required/>
                                 </div>
                                 <div class="my-5 text-sm">
                                     <label class="block text-gray-500">Giờ Nhận Phòng</label>
                                     <input type="time"
-                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                        placeholder="Giờ Nhận Phòng" name="gioNhanPhong" required />
+                                           class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
+                                           placeholder="Giờ Nhận Phòng" name="gioNhanPhong" required/>
                                 </div>
                                 <div class="my-5 text-sm">
                                     <label class="block text-gray-500">Giờ Trả Phòng</label>
                                     <input type="time"
-                                        class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                        placeholder="Giờ Trả Phòng" name="gioTraPhong" required />
+                                           class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
+                                           placeholder="Giờ Trả Phòng" name="gioTraPhong" required/>
                                 </div>
                                 <div class="my-5 text-sm">
                                     <label class="block text-gray-500">Số điện thoại</label>
                                     <input type="number" id="mobile" class=" border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none
-                                        bg-gray-100 w-full" placeholder="Số điện thoại" name="sdt" required />
+                                        bg-gray-100 w-full" placeholder="Số điện thoại" name="sdt" required/>
+                                    <p id="err" style="color: red"></p>
                                 </div>
                                 <script>
 
                                     function is_phonenumber() {
-                                        var phonenumber = document.querySelector('#mobile');
+                                        var phonenumber = document.querySelector('#mobile').value.trim();
                                         var myPhoneRegex = /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/;
                                         if (myPhoneRegex.test(phonenumber)) {
                                             // Successful match
                                             console.log("sssssssssss")
                                             alert("dung")
-                                           
-                                            
+
+
                                         } else {
-                                            // Match attempt failed
-                                            console.log("ccccccccccccc")
-                                            alert("sai")
+                                            // Match attempt faile
+                                            var err = document.querySelector('#err');
+                                            err.innerHTML = "Nhập sai định dạng số điện thoại";
+                                            return false
                                         }
 
                                     }
                                 </script>
 
                                 <div class="mt-10 flex">
-                                    <button type="submit" onclick="is_phonenumber()"
-                                        class="block text-center text-white bg-yellow-600 p-3 duration-300 rounded-xl hover:bg-yellow-800 w-full mr-2"
-                                        id="btn">
+                                    <button type="submit"
+                                            class="block text-center text-white bg-yellow-600 p-3 duration-300 rounded-xl hover:bg-yellow-800 w-full mr-2"
+                                            id="btn">
                                         Thêm mới
                                     </button>
                                     <button type="reset"
-                                        class="block text-center text-white bg-green-600 p-3 duration-300 rounded-xl hover:bg-green-800 w-full ml-2">
+                                            class="block text-center text-white bg-green-600 p-3 duration-300 rounded-xl hover:bg-green-800 w-full ml-2">
                                         Nhập lại
                                     </button>
                                 </div>
                             </div>
                         </form>
                     </div>
-                    {{/room}}
+                {{/room}}
 
-                </main>
-            </div>
+            </main>
         </div>
     </div>
+</div>
 </body>
 
 </html>
