@@ -280,7 +280,7 @@ router.post('/ThemHoaDon', function (req, res, next) {
 });
 // tim kiem bill 
 router.get('/search_bill', function (req, res) {
-    // var title = req.query.name;
+    var title = req.query.name;
     // var allDate = null
     // let startDay = null;
     // let endDay = null;
