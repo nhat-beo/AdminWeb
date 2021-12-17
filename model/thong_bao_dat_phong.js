@@ -18,5 +18,6 @@ const ThongBaoDatPhong = new Schema({
     gioNhanPhong: String,
     gioTra: String,
     giaPhong: Number,
+    tokenUser: String
 })
 module.exports = mongoose.model('ThongBaoDatPhong', ThongBaoDatPhong)
