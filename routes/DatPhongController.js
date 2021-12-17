@@ -58,6 +58,7 @@ class DatPhongController {
                     gioNhanPhong: req.body.gioNhanPhong,
                     gioTra: req.body.gioTra,
                     giaPhong: req.body.giaPhong,
+                    tokenUser: req.body.tokenUser
                 }).save()
                 res.json({
                     message: 'post thành công',
