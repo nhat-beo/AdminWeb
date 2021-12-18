@@ -4,6 +4,30 @@ var datPhong = require('../model/dat_phong/Dat_phong');
 var lichSuDatPhong = require('../model/lich_su_dat_phong');
 var Rooms = require('../model/room');
 var ThongBaoDatPhong = require('../model/thong_bao_dat_phong');
+
+
+//con me may
+
+
+var FCM = require('fcm-node');
+var serverKey = 'AAAA5zhfLos:APA91bHUP5R25rIF7OtGEOlJB26BgNCyBUv1JKBShz6wmr9yLnJZqIlF4GBi4qdPgfIskibob7z1UHz42kOilxhvp2YHYOv_8nszalz2lukvjGgu8xRd_El8WE-ynhg0mgix-uruduig'; //put your server key here
+var fcm = new FCM(serverKey);
+// var thongBaoDatPhong = await ThongBaoDatPhong.find({})
+// var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+//     to: 'fLOsTLcTTha2PhwP_7vD-G:APA91bHUmMPurTdMk_LQpKvvIS4XUwbrJfRB0jriJxqAVbhVGIWm_k1NEXJJIOukazgCu1std0X30mTMBwz9aqqzDMV5_HZylCACmf0rYojhPZZeLJypoCzTDrrQaB6NygNEtM_imj-2',
+//     collapse_key: 'your_collapse_key',
+//
+//     notification: {
+//         title: 'FBooking Hotel',
+//         body: 'Xin chào, Khách sạn đã xác nhận đơn đặt phòng của bạn'
+//     },
+//
+//     data: {  //you can send only notification or only data(or include both)
+//         my_key: 'my value',
+//         my_another_key: 'my another value'
+//     }
+// };
+
 //Multer
 var multer = require('multer');
 
@@ -148,8 +172,11 @@ router.get('/', function (req, res, next) {
     res.render('index')
 });
 router.post('/Login', function (req, res, next) {
+
     if (req.body.email == 'admin' && req.body.password == 'admin') {
         res.redirect('/ThongKe')
+
+
     } else {
         res.render('index', {
             message: 'Username or Password Invalid',
@@ -296,7 +323,7 @@ router.get('/search_bill', function (req, res) {
     // console.log('endDay>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + endDay)
     lichSuDatPhong.find({
         // ngayTra: {$gte: startDay, $lt: endDay}
-        
+
     }, function (error, datPhong) {
         if (error) {
             res.send(error.message)
@@ -620,8 +647,6 @@ router.get('/ThongKe', async function (req, res, next) {
                         tongLuotHuy += value.countCancel
                         tiLeThanhCong = (tongLuotDat * 100) / (Number(tongLuotDat) + Number(tongLuotHuy))
                         tiLeHuy = (tongLuotHuy * 100) / (Number(tongLuotDat) + Number(tongLuotHuy))
-                        console.log('tongLuotDat.......................'+tongLuotDat)
-                        console.log('countCancel.......................'+tongLuotHuy)
                     }))
                 }
                 var index = 0;
@@ -842,15 +867,11 @@ router.get('/delete_phong_sap_het.id=:id', function (req, res, next) {
 router.get('/xacNhan_thong_bao', function (req, res, next) {
     var room_model = db.model('room', room_schema);
     var today = new Date()
-    var time = today.getFullYear() + "/" + today.getMonth() + "/" + today.getDay() + " " + today.getHours() + ":" + (today.getMinutes() +10) ;
-    console.log('timmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmme'+time)
+    var time = today.getFullYear() + "/" + today.getMonth() + "/" + today.getDay() + " " + today.getHours() + ":" + (today.getMinutes() + 10);
     room_model.findOne({_id: req.query.Roomid}).then(r => {
         r.statusRoom = 'Hết phòng';
         r.countAccept = Number(r.countAccept) + 1;
-
-
         r.save().then(r => {
-
         }).catch(e => res.send('Lỗi ' + e.message))
     })
     thong_bao_dat_phong.findOne({_id: req.query.id}).then(tb => {
@@ -872,7 +893,6 @@ router.get('/xacNhan_thong_bao', function (req, res, next) {
             acceptDate: time,
 
         }).save(function (err) {
-            console.log('timmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmeFinish'+time)
             if (err) {
                 res.send("Thêm hoá đơn k thành công " + err);
             } else {
@@ -881,14 +901,36 @@ router.get('/xacNhan_thong_bao', function (req, res, next) {
                         res.send("Lỗi xóa thông tin");
                     } else {
                         res.redirect("/DatPhong");
+                        console.log('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn:' + room.tokenUser)
+                        fcm.send({ //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+                            to: room.tokenUser,
+                            collapse_key: 'your_collapse_key',
+
+                            notification: {
+                                title: 'FBooking Hotel',
+                                body: 'Chào ' + room.hoten
+                                    + '\nKhách sạn đã xác nhận đơn đặt phòng của bạn'
+                                    + '\nSố phòng: ' + room.soPhong
+                                    + '\nNgày nhận phòng: ' + room.ngaynhan
+                            },
+
+                            data: {  //you can send only notification or only data(or include both)
+                                my_key: 'my value',
+                                my_another_key: 'my another value'
+                            }
+                        }, function (err, response) {
+                            if (err) {
+                                console.log("Something has gone wrong!");
+                            } else {
+                                console.log("Successfully sent with response: ", response);
+                            }
+                        });
                     }
                 })
 
             }
         })
     })
-
-
 });
 // huy thong bao
 router.get('/delete_thong_bao', function (req, res, next) {
@@ -909,6 +951,9 @@ router.get('/delete_thong_bao', function (req, res, next) {
     })
 });
 router.use('/api', require('./api_router'))
+
+// router.use('/notification', require('./PushNotification'))
+
 
 router.get('*', function (req, res) {
     res.render('error')
