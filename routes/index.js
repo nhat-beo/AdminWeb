@@ -901,7 +901,7 @@ router.get('/xacNhan_thong_bao', function (req, res, next) {
                         res.send("Lỗi xóa thông tin");
                     } else {
                         res.redirect("/DatPhong");
-                        console.log('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn:' + room.tokenUser)
+//                         console.log('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn:' + room.tokenUser)
                         fcm.send({ //this may vary according to the message type (single recipient, multicast, topic, et cetera)
                             to: room.tokenUser,
                             collapse_key: 'your_collapse_key',
@@ -909,7 +909,7 @@ router.get('/xacNhan_thong_bao', function (req, res, next) {
                             notification: {
                                 title: 'FBooking Hotel',
                                 body: 'Chào ' + room.hoten
-                                    + '\nKhách sạn đã xác nhận đơn đặt phòng của bạn'
+                                    + '\nKhách sạn đã xác nhận đơn đặt phòng của bạn lúc'+time
                                     + '\nSố phòng: ' + room.sophong
                                     + '\nNgày nhận phòng: ' + room.ngaynhan
                             },
