@@ -4,7 +4,7 @@ class UserController {
     //insert user:
     insertAcount(req, res, next) {
         if (req.body.gmail == null) {
-            res.json({ message: 'gmail không được trống' })
+            res.json({message: 'gmail không được trống'})
             return
         }
         var name = ''
@@ -35,14 +35,23 @@ class UserController {
 
     //update
     updateAcount(req, res, next) {
-        if (req.body.id == null) {
-            res.json({ message: 'Cân truyền id' })
+        if (req.body.gmail == null) {
+            res.json({message: 'Cân truyền gmail'})
             return
         }
-        User.findOne({ id: req.body.id }).then(user => {
+        User.findOne({gmail: req.body.gmail}).then(user => {
             if (user == null) {
-                res.json({ message: "Acount không tồn tại, kiểm tra lại id", isSuccess: false })
+                res.json({message: "Acount không tồn tại, kiểm tra lại gmail", isSuccess: false})
             }
+            user({
+                gmail: req.body.gmail,
+                name: req.body.name,
+                password: req.body.password,
+                birthday: req.body.birthday,
+                phoneNumber: req.body.phoneNumber,
+                cccd: req.body.cccd,
+            })
+
             user.save().then(user => res.json(
                 {
                     message: "success",
@@ -71,7 +80,7 @@ class UserController {
                 code: 404
             })
         }
-        User.findOne({ gmail: req.query.gmail }).then(user => {
+        User.findOne({gmail: req.query.gmail}).then(user => {
             res.json({
                 message: "success",
                 isSuccess: true,
