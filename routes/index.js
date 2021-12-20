@@ -872,6 +872,7 @@ router.get('/xacNhan_thong_bao', function (req, res, next) {
         r.statusRoom = 'Hết phòng';
         r.countAccept = Number(r.countAccept) + 1;
         r.save().then(r => {
+            //nothing todo
         }).catch(e => res.send('Lỗi ' + e.message))
     })
     thong_bao_dat_phong.findOne({_id: req.query.id}).then(tb => {
