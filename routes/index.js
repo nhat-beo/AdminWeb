@@ -864,7 +864,8 @@ router.get('/delete_phong_sap_het.id=:id', function (req, res, next) {
 // xac nhan thong bao
 router.get('/xacNhan_thong_bao', function (req, res, next) {
     var room_model = db.model('room', room_schema);
-    var today = new Date()
+    // var today = new Date()
+    var today = Date.now();
     var time = today.getHours() + ":" + (today.getMinutes());
     room_model.findOne({_id: req.query.Roomid}).then(r => {
         r.statusRoom = 'Hết phòng';
