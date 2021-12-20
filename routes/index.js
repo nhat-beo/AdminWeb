@@ -6,8 +6,6 @@ var Rooms = require('../model/room');
 var ThongBaoDatPhong = require('../model/thong_bao_dat_phong');
 
 
-//con me may
-
 
 var FCM = require('fcm-node');
 var serverKey = 'AAAA5zhfLos:APA91bHUP5R25rIF7OtGEOlJB26BgNCyBUv1JKBShz6wmr9yLnJZqIlF4GBi4qdPgfIskibob7z1UHz42kOilxhvp2YHYOv_8nszalz2lukvjGgu8xRd_El8WE-ynhg0mgix-uruduig'; //put your server key here
@@ -866,8 +864,9 @@ router.get('/delete_phong_sap_het.id=:id', function (req, res, next) {
 // xac nhan thong bao
 router.get('/xacNhan_thong_bao', function (req, res, next) {
     var room_model = db.model('room', room_schema);
-    var today = new Date
-    var time = (today.getHours() - 8) + ":" + (today.getMinutes());
+    const today = new Date()
+    var time = (today.getHours() + 15) + ":" + today.getMinutes();
+    console.log("<<<<<<<<<<<<<<<<<" + time)
     room_model.findOne({_id: req.query.Roomid}).then(r => {
         r.statusRoom = 'Hết phòng';
         r.countAccept = Number(r.countAccept) + 1;
