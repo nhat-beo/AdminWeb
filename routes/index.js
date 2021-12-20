@@ -867,7 +867,7 @@ router.get('/delete_phong_sap_het.id=:id', function (req, res, next) {
 router.get('/xacNhan_thong_bao', function (req, res, next) {
     var room_model = db.model('room', room_schema);
     var today = new Date()
-    var time = today.getFullYear() + "/" + today.getMonth() + "/" + today.getDay() + " " + today.getHours() + ":" + (today.getMinutes() + 10);
+    var time = today.getDay() + "/" + today.getMonth() + "/" + today.getFullYear() + "-" + today.getHours() + ":" + (today.getMinutes() + 10);
     room_model.findOne({_id: req.query.Roomid}).then(r => {
         r.statusRoom = 'Hết phòng';
         r.countAccept = Number(r.countAccept) + 1;
@@ -902,7 +902,7 @@ router.get('/xacNhan_thong_bao', function (req, res, next) {
                         res.send("Lỗi xóa thông tin");
                     } else {
                         res.redirect("/DatPhong");
-                        console.log('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn:' + room.tokenUser)
+//                         console.log('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn:' + room.tokenUser)
                         fcm.send({ //this may vary according to the message type (single recipient, multicast, topic, et cetera)
                             to: room.tokenUser,
                             collapse_key: 'your_collapse_key',
@@ -910,8 +910,8 @@ router.get('/xacNhan_thong_bao', function (req, res, next) {
                             notification: {
                                 title: 'FBooking Hotel',
                                 body: 'Chào ' + room.hoten
-                                    + '\nKhách sạn đã xác nhận đơn đặt phòng của bạn'
-                                    + '\nSố phòng: ' + room.soPhong
+                                    + '\nKhách sạn đã xác nhận đơn đặt phòng của bạn lúc '+time
+                                    + '\nSố phòng: ' + room.sophong
                                     + '\nNgày nhận phòng: ' + room.ngaynhan
                             },
 
