@@ -909,7 +909,7 @@ router.get('/xacNhan_thong_bao', function (req, res, next) {
                             notification: {
                                 title: 'FBooking Hotel',
                                 body: 'Chào ' + room.hoten
-                                    + '\nKhách sạn đã xác nhận đơn đặt phòng của bạn lúc '+time
+                                    + '\nKhách sạn đã xác nhận đơn đặt phòng của bạn.'
                                     + '\nSố phòng: ' + room.sophong
                                     + '\nNgày nhận phòng: ' + room.ngaynhan
                             },
