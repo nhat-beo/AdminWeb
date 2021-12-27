@@ -164,21 +164,68 @@
                             <div class="w-1/3">
                                 <div class="my-5 text-sm">
                                     <label class="block text-gray-500">Ngày Nhận Phòng</label>
-                                    <input type="date" autofocus
+                                    <input type="date" autofocus id="hvn"
                                         class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
                                         placeholder="Ngày Nhận Phòng" name="ngayNhan" required />
                                 </div>
                                 <div class="my-5 text-sm">
                                     <label class="block text-gray-500">Ngày Trả Phòng</label>
-                                    <input type="date"
+                                    <input type="date" id="hvm" onchange="subTime()"
                                         class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
                                         placeholder="Ngày Trả Phòng" name="ngayTra" required>
                                 </div>
+                                <script>
+
+
+                                    var today = Date.now();
+                                    var time = new Date(today);
+
+                                    //   document.getElementById('datePicker').valueAsDate = new Date();
+                                    //document.getElementById("hvn").min = time;
+
+                                    //
+                                    var dd = time.getDate();
+                                    var mm = time.getMonth() + 1; //January is 0 so need to add 1 to make it 1!
+                                    var yyyy = time.getFullYear();
+                                    if (dd < 10) {
+                                        dd = '0' + dd
+                                    }
+                                    if (mm < 10) {
+                                        mm = '0' + mm
+                                    }
+
+                                    today = yyyy + '-' + mm + '-' + dd;
+                                    document.getElementById("hvn").setAttribute("min", today)
+                                    document.getElementById("hvm").setAttribute("min", today)
+                                    console.log(time.getFullYear() + "-" + (time.getMonth() + 1) + "-" + time.getDate())
+
+                                    //
+                                    function subTime() {
+                                      //  document.getElementById("hvn").value = today
+                                       // document.getElementById("hvm").value = today
+                                        const date1 = new Date(document.getElementById("hvn").value);
+                                        const date2 = new Date(document.getElementById("hvm").value);
+                                        const diffTime = date2 - date1;
+                                        var diffDays
+                                        
+                                        if (diffTime < 0) {
+                                            document.getElementById("hvm").value = document.getElementById("hvn").value
+                                            diffDays= 0
+                                        }
+                                        else {
+                                             diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                                        }
+                                        document.getElementById('sodem').value = diffDays
+                                        console.log(diffTime + " milliseconds");
+                                        console.log(diffDays + " days");
+                                    }
+
+                                </script>
                                 <div class="my-5 text-sm">
                                     <label class="block text-gray-500">Số Đêm</label>
-                                    <input type="number"
+                                    <input type="number" id="sodem"
                                         class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                        placeholder="Số đêm" name="soDem" required />
+                                        placeholder="Số đêm" name="soDem" value="{{room.soDem}}" readonly />
                                 </div>
                                 <div class="my-5 text-sm">
                                     <label class="block text-gray-500">Số Người</label>
