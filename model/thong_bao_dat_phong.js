@@ -9,7 +9,7 @@ const ThongBaoDatPhong = new Schema({
     sdt: String,
     loaiPhong: String,
     hangPhong:String,
-    cccd: Number,
+    cccd: String,
     email: String,
     ngaynhan: String,
     ngayTra: String,
