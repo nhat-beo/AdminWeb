@@ -891,6 +891,7 @@ router.get('/xacNhan_thong_bao', function (req, res, next) {
             gioTraPhong: tb.gioTra,
             sdt: tb.sdt,
             acceptDate: time,
+            isTheUserDelete: true
 
         }).save(function (err) {
             if (err) {
