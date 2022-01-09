@@ -49,15 +49,6 @@ class UserController {
                 user.birthday = req.body.birthday,
                 user.phoneNumber = req.body.phoneNumber,
                 user.cccd = req.body.cccd
-
-            // user({
-            //     gmail: req.body.gmail,
-            //     name: req.body.name,
-            //     password: req.body.password,
-            //     birthday: req.body.birthday,
-            //     phoneNumber: req.body.phoneNumber,
-            //     cccd: req.body.cccd,
-            // })
             user.save().then(user => res.json(
                 {
                     message: "success",

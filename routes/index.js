@@ -893,6 +893,7 @@ router.get('/xacNhan_thong_bao', function (req, res, next) {
             sdt: tb.sdt,
             tongTien: tb.tongTien,
             acceptDate: time,
+            isTheUserDelete: true
 
         }).save(function (err) {
             if (err) {

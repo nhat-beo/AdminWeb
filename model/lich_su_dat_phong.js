@@ -18,6 +18,8 @@ const LichSuDatPhong = new Schema({
     gioTraPhong: String,
     sdt: String,
     tongTien: Number,
-    acceptDate: {type: String, default: ''}
+    acceptDate: {type: String, default: ''},
+    isTheUserDelete: {type: Boolean, default: true}
+
 })
 module.exports = mongoose.model('LichSuDatPhongs', LichSuDatPhong)

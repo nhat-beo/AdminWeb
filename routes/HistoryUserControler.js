@@ -12,7 +12,8 @@ class HistoryUserControler {
             return;
         }
         ListHistoryUser.find({
-            email: req.query.email
+            email: req.query.email,
+            isTheUserDelete: true
         }).then(History => res.json({
             isSuccess: true,
             count: History.length,
@@ -31,35 +32,57 @@ class HistoryUserControler {
             res.json({message: 'Cần truyền params id', status: false, code: 200,})
             return
         }
-        ListHistoryUser.deleteOne({_id: req.body.id}, function (err) {
-            if (err) {
-                res.json({message: 'Delete failed', status: false, err: err})
-                return
+        ListHistoryUser.findOne({_id: req.body.id}).then(history => {
+            if (history == null) {
+                res.json({message: "không có lịch sử này", isSuccess: false})
             }
-            res.json({
-                message: 'Delete success',
-                status: true,
-                code: 200
-            });
-        })
+            history.isTheUserDelete = false,
+            history.save().then(user => res.json(
+                {
+                    message: "success",
+                    isSuccess: true,
+                    code: 200,
+                    user: user
+                })).catch(e => res.json(
+                {
+                    isSuccess: false,
+                    message: e.message,
+                    code: 404
+                }))
+        }).catch(e => res.json({
+            isSuccess: false,
+            message: e.message,
+            code: 404
+        }))
     }
 
     deleteAllHistory(req, res) {
         if (req.body.email == null) {
-            res.json({message: 'Cần truyền params id', status: false, code: 200,})
+            res.json({message: 'Cần truyền params email', status: false, code: 200,})
             return
         }
-        ListHistoryUser.deleteMany({email: req.body.email}, function (err) {
-            if (err) {
-                res.json({message: 'Delete failed', status: false, err: err})
-                return
+        ListHistoryUser.find({email: req.body.email}).then(history => {
+            if (history == null) {
+                res.json({message: "không có lịch sử này", isSuccess: false})
             }
-            res.json({
-                message: 'Delete success',
-                status: true,
-                code: 200
-            });
-        })
+            history.isTheUserDelete = false,
+                history.save().then(user => res.json(
+                    {
+                        message: "success",
+                        isSuccess: true,
+                        code: 200,
+                        user: user
+                    })).catch(e => res.json(
+                    {
+                        isSuccess: false,
+                        message: e.message,
+                        code: 404
+                    }))
+        }).catch(e => res.json({
+            isSuccess: false,
+            message: e.message,
+            code: 404
+        }))
     }
 
 }
