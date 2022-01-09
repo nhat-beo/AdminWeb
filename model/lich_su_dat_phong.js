@@ -8,7 +8,7 @@ const LichSuDatPhong = new Schema({
     loaiPhong: String,
     cmnd: String,
     email: String,
-    soPhong:String,
+    soPhong: String,
     giaPhong: Number,
     ngayNhan: String,
     ngayTra: String,
@@ -17,7 +17,9 @@ const LichSuDatPhong = new Schema({
     gioNhanPhong: String,
     gioTraPhong: String,
     sdt: String,
+    tongTien: Number,
     acceptDate: {type: String, default: ''},
     isTheUserDelete: {type: Boolean, default: true}
+
 })
 module.exports = mongoose.model('LichSuDatPhongs', LichSuDatPhong)
