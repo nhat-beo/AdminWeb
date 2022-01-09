@@ -6,7 +6,6 @@ var Rooms = require('../model/room');
 var ThongBaoDatPhong = require('../model/thong_bao_dat_phong');
 
 
-
 var FCM = require('fcm-node');
 var serverKey = 'AAAA5zhfLos:APA91bHUP5R25rIF7OtGEOlJB26BgNCyBUv1JKBShz6wmr9yLnJZqIlF4GBi4qdPgfIskibob7z1UHz42kOilxhvp2YHYOv_8nszalz2lukvjGgu8xRd_El8WE-ynhg0mgix-uruduig'; //put your server key here
 var fcm = new FCM(serverKey);
@@ -273,6 +272,7 @@ router.post('/ThemHoaDon', function (req, res, next) {
         soNguoi: req.body.soNguoi,
         gioNhanPhong: req.body.gioNhanPhong,
         gioTraPhong: req.body.gioTraPhong,
+        tongTien: req.body.tongTien,
         sdt: req.body.sdt,
     }).save(function (err) {
         if (err) {
@@ -292,6 +292,7 @@ router.post('/ThemHoaDon', function (req, res, next) {
                 soNguoi: req.body.soNguoi,
                 gioNhanPhong: req.body.gioNhanPhong,
                 gioTraPhong: req.body.gioTraPhong,
+                tongTien: req.body.tongTien,
                 sdt: req.body.sdt,
             }).save(function (err) {
                 if (err) {
@@ -890,6 +891,7 @@ router.get('/xacNhan_thong_bao', function (req, res, next) {
             gioNhanPhong: tb.gioNhanPhong,
             gioTraPhong: tb.gioTra,
             sdt: tb.sdt,
+            tongTien: tb.tongTien,
             acceptDate: time,
 
         }).save(function (err) {

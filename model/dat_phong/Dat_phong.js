@@ -16,6 +16,7 @@ const DatPhong = new Schema({
     soNguoi: Number,
     gioNhanPhong: String,
     gioTraPhong: String,
+    tongTien: Number,
     sdt: String,
 })
 module.exports = mongoose.model('DatPhong', DatPhong)
