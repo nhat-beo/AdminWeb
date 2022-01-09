@@ -157,7 +157,8 @@
                                     <label class="block text-gray-500">Giá Phòng</label>
                                     <input type="number" id="giaPhong"
                                            class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                           placeholder="Giá Phòng" name="giaPhong" value="{{this.priceRoom}}" required/>
+                                           placeholder="Giá Phòng" name="giaPhong" value="{{this.priceRoom}}" required
+                                           readonly/>
                                 </div>
                             </div>
 
@@ -205,6 +206,9 @@
                                         // document.getElementById("hvm").value = today
                                         const date1 = new Date(document.getElementById("hvn").value);
                                         const date2 = new Date(document.getElementById("hvm").value);
+                                        //
+                                        const giaPhong = document.getElementById("giaPhong").value;
+                                        //
                                         const diffTime = date2 - date1;
                                         var diffDays
 
@@ -215,16 +219,22 @@
                                             diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                                         }
                                         document.getElementById('sodem').value = diffDays
+                                        const tongTien = giaPhong * diffDays;
+                                        document.getElementById('tongTien').value = tongTien;
+
                                         console.log(diffTime + " milliseconds");
                                         console.log(diffDays + " days");
+                                        console.log("sssssssssss" + tongTien);
+
                                     }
+
 
                                 </script>
                                 <div class="my-5 text-sm">
                                     <label class="block text-gray-500">Số Đêm</label>
-                                    <input type="number" id="sodem" onchange="tongTien()"
+                                    <input type="number" id="sodem"
                                            class="border-2 border-gray-300 rounded-xl px-4 py-3 mt-3 focus:outline-none bg-gray-100 w-full"
-                                           placeholder="Số đêm" name="soDem" value="{{room.soDem}}"/>
+                                           placeholder="Số đêm" name="soDem" value="{{room.soDem}}" readonly/>
                                 </div>
                                 <div class="my-5 text-sm">
                                     <label class="block text-gray-500">Số Người</label>
@@ -258,13 +268,7 @@
                                     <p id="err" style="color: red"></p>
                                 </div>
                                 <script>
-                                    function tongTien() {
-                                        var giaPhong = document.getElementById("giaPhong").value;
-                                        var soDem = document.getElementById("sodem").value;
-                                        var tongTien = giaPhong * soDem;
-                                        document.getElementById('tongTien').value = tongTien;
-                                        console.log("sssssssssss" + tongTien);
-                                    }
+
                                 </script>
                                 <script>
                                     function is_phonenumber() {
@@ -286,7 +290,7 @@
                                 </script>
 
                                 <div class="mt-10 flex">
-                                    <button type="submit" onsubmit="return tongTien()"
+                                    <button type="submit"
                                             class="block text-center text-white bg-yellow-600 p-3 duration-300 rounded-xl hover:bg-yellow-800 w-full mr-2"
                                             id="btn">
                                         Thêm mới
