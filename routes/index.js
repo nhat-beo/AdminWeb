@@ -951,6 +951,27 @@ router.get('/delete_thong_bao', function (req, res, next) {
         }).catch(e => res.send('Lỗi ' + e.message))
     })
 });
+router.get('/delete_phong_het.id=:id', function (req, res, next) {
+    datPhong.findOne({_id: req.params.id}).then(dp => {
+        if (dp != null) {
+            var room_model = db.model('room', room_schema);
+            room_model.findOne({_id: dp.maPhong}).then(r => {
+                r.statusRoom = 'Còn phòng'
+                r.save().then(r => {
+                    datPhong.findByIdAndRemove(req.params.id, function (error, account) {
+                        if (error) {
+                            res.send("Xoá không thành công" + error);
+                        } else {
+                            res.redirect('delete_phong_het');
+                        }
+                    })
+                }).catch(e => res.send('Lỗi ' + e.message))
+            })
+        }
+    })
+
+
+});
 router.use('/api', require('./api_router'))
 
 // router.use('/notification', require('./PushNotification'))
