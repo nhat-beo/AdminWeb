@@ -21,8 +21,9 @@ const Rooms = new Schema({
     wheelChairWay: Boolean,
     shuttle: Boolean,
     other: Boolean,
+    tongTien: Number,
     countCancel: Number,
     countAccept: Number,
-    favorite: {type: Array, default :[]}
+    favorite: {type: Array, default: []}
 })
 module.exports = mongoose.model('rooms', Rooms)

@@ -130,30 +130,30 @@
                             <button type="submit">Search</button>
                         </form>
 
-    <!--                        <form class="lg:ml-0 ml-6" action="/search_bill" method="get">-->
+                        <!--                        <form class="lg:ml-0 ml-6" action="/search_bill" method="get">-->
                         <!--                            <input type="text" class="border-2 border-gray-300 pl-2 w-60" name="datefilter2"/>-->
                         <!--                            <button type="submit">Search</button>-->
                         <!--                        </form>-->
-<!--                        <script type="text/javascript">-->
-<!--                            $(function () {-->
+                        <!--                        <script type="text/javascript">-->
+                        <!--                            $(function () {-->
 
-<!--                                $('input[name="datefilter2"]').daterangepicker({-->
-<!--                                    autoUpdateInput: false,-->
-<!--                                    locale: {-->
-<!--                                        cancelLabel: 'Clear'-->
-<!--                                    }-->
-<!--                                });-->
+                        <!--                                $('input[name="datefilter2"]').daterangepicker({-->
+                        <!--                                    autoUpdateInput: false,-->
+                        <!--                                    locale: {-->
+                        <!--                                        cancelLabel: 'Clear'-->
+                        <!--                                    }-->
+                        <!--                                });-->
 
-<!--                                $('input[name="datefilter2"]').on('apply.daterangepicker', function (ev, picker) {-->
-<!--                                    $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));-->
-<!--                                });-->
+                        <!--                                $('input[name="datefilter2"]').on('apply.daterangepicker', function (ev, picker) {-->
+                        <!--                                    $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));-->
+                        <!--                                });-->
 
-<!--                                $('input[name="datefilter2"]').on('cancel.daterangepicker', function (ev, picker) {-->
-<!--                                    $(this).val('');-->
-<!--                                });-->
+                        <!--                                $('input[name="datefilter2"]').on('cancel.daterangepicker', function (ev, picker) {-->
+                        <!--                                    $(this).val('');-->
+                        <!--                                });-->
 
-<!--                            });-->
-<!--                        </script>-->
+                        <!--                            });-->
+                        <!--                        </script>-->
                     </div>
                     <div class="flex flex-col mt-4">
                         <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
@@ -201,6 +201,10 @@
                                             id="trs-hd">
                                             Ngày trả
                                         </th>
+                                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 "
+                                            id="trs-hd">
+                                            Tổng tiền
+                                        </th>
                                         <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
                                     </tr>
                                     </thead>
@@ -242,7 +246,7 @@
 
                                             <td
                                                     class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-xs leading-5 text-red-500 ">
-                                                {{this.data.giaPhong}}
+                                                {{this.data.giaPhong}} đồng
                                             </td>
 
                                             <td
@@ -254,7 +258,10 @@
                                                     class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-xs leading-5 text-gray-700 ">
                                                 {{this.data.ngayTra}}
                                             </td>
-
+                                            <td
+                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-xs leading-5 text-gray-700 ">
+                                                {{this.data.tongTien}} đồng
+                                            </td>
                                             <td
                                                     class="flex items-center h-20 px-4 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium ">
                                                 <!--<a href="" class="text-green-600 hover:text-green-900">Chi tiết</a>--->
