@@ -609,15 +609,23 @@ router.get('/update_bill.id=:id', function (req, res, next) {
 
 //thong kê
 router.get('/ThongKe', async function (req, res, next) {
-    // var allDate = req.query.datefilter;
-    // console.log('allDate>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + allDate)
-    //
-    // // let startDay = allDate.slice(0, 10);
-    // // let endDay = allDate.slice(-10);
-    // let startDay = ''
-    // let endDay = ''
-    // console.log('startDay>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + startDay)
-    // console.log('endDay>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + endDay)
+    var allDate = req.query.datefilter;
+    console.log('allDate>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + allDate)
+    let startDay = '';
+    let endDay = '';
+    if (allDate == null || allDate == '') {
+        startDay = '2000-1-01'
+        endDay = '2050-01-01'
+    } else {
+        startDay = allDate.slice(0, 10);
+        endDay = allDate.slice(-10);
+    }
+    // let startDay = allDate.slice(0, 10);
+    // let endDay = allDate.slice(-10);
+    // let startDay = '2013-01-01'
+    // let endDay = '2023-01-01'
+    console.log('startDay>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + startDay)
+    console.log('endDay>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + endDay)
     let listPhongDaDat = [];
     let Revenue = 0;
     let RevPAR = 0;
@@ -626,31 +634,39 @@ router.get('/ThongKe', async function (req, res, next) {
     var tongLuotDat = 0
     var tongLuotHuy = 0
     var tiLeThanhCong = 0
-    var tiLeHuy = 0// ngayTra: {$gte: startDay, $lt: endDay}
+    var tiLeHuy = 0
+    // ngayTra: {$gte: startDay, $lt: endDay}
     var listPhong = await Rooms.find({})
     var thongBaoDatPhong = await ThongBaoDatPhong.find({})
     lich_su_dat_phong.find({
-        // ngayTra: {$gte: startDay, $lt: endDay}
+        ngayTra: {$gte: startDay, $lt: endDay}
     }, function (err, lichSuDatPhong) {
         if (err) {
             res.send('Lỗi lấy thông tin: ' + err.message);
         } else {
-            Rooms.find({}, function (err, listAllRoom) {
+            lich_su_dat_phong.find({
+                isTheCancel: true,
+                ngayTra: {$gte: startDay, $lt: endDay}
+            }, function (err, listAllRoom) {
                 if (err) {
                     res.send('Lỗi lấy thông tin: ' + err.message);
                 } else {
                     var index = 0;
                     listAllRoom.forEach((value => {
-                        index++
-                        tongLuotDat += value.countAccept
-                        tongLuotHuy += value.countCancel
-                        tiLeThanhCong = (tongLuotDat * 100) / (Number(tongLuotDat) + Number(tongLuotHuy))
-                        tiLeHuy = (tongLuotHuy * 100) / (Number(tongLuotDat) + Number(tongLuotHuy))
+                        // index++
+                        tongLuotHuy += value.length
+                        // tiLeThanhCong = (tongLuotDat * 100) / (Number(tongLuotDat) + Number(tongLuotHuy))
+                        // tiLeHuy = (tongLuotHuy * 100) / (Number(tongLuotDat) + Number(tongLuotHuy))
                     }))
                 }
                 var index = 0;
                 lichSuDatPhong.forEach((value) => {
                     index++
+                    //todo
+
+                    tongLuotDat = value.length - tiLeHuy
+                    tiLeThanhCong = (tongLuotDat * 100) / (Number(tongLuotDat) + Number(tongLuotHuy))
+                    tiLeHuy = (tongLuotHuy * 100) / (Number(tongLuotDat) + Number(tongLuotHuy))
                     Revenue += (value.soDem * value.giaPhong + (value.soDem * value.giaPhong * 0.1)) / 100000;
                     LuotKhach += Number(value.soNguoi)
                     RevPAR = Revenue / listPhong.length;
@@ -674,25 +690,51 @@ router.get('/ThongKe', async function (req, res, next) {
 });
 //
 router.get('/delete_phong_het.id=:id', function (req, res, next) {
-
     Rooms.findOne({_id: req.params.id}).then(dp => {
-        dp.statusRoom = 'Còn phòng';
         if (dp != null) {
-            var room_model = db.model('lichsudatphongs', room_schema);
-            room_model.findOne({maphong: dp.maPhong}).then(r => {
+            dp.statusRoom = 'Còn phòng';
+            dp.save()
+            console.log('trạng thái' + dp.statusRoom)
+            lich_su_dat_phong.findOne({maphong: dp.maPhong}).then(r => {
+                let giaPhong = r.tongTien / r.soDem
+                var curDate = new Date();
                 let timeTraPhong = new Date(r.ngayTra);
-                let onlyNgayTraPhong = timeTraPhong.getDay()
-                let dayNow = today.getDay();
+                let onlyNgayTraPhong = timeTraPhong.getDate()
+                let dayNow = curDate.getDate();
+                let gioTraPhongReal = curDate.getHours()
                 let soNgayConLai = onlyNgayTraPhong - dayNow;
-                if ()
+                let tongTien;
+                console.log('ngày hiện tại:' + dayNow)
+                console.log('thời gian trả phòng:' + timeTraPhong)
+                console.log('ngày trả phòng:' + onlyNgayTraPhong)
+                console.log('Số ngày Còn lại:' + soNgayConLai)
+                console.log('Tổng tiền trên mong:' + r.tongTien)
+                console.log('giờ trả phòng:' + gioTraPhongReal)
+                if (soNgayConLai >= 0 || soNgayConLai < r.soDem) {
+                    tongTien = r.tongTien - giaPhong * soNgayConLai
+                    res.redirect('/HetHanTrongNgay')
+                    r.tongTien = tongTien;
+                    console.log("before" + tongTien)
+                    if (gioTraPhongReal > 12 || gioTraPhongReal < 15) {
+                        r.tongTien = tongTien + 0.3 * giaPhong
+                    } else if (gioTraPhongReal >= 15 || gioTraPhongReal < 18) {
+                        r.tongTien = tongTien + 0.5 * giaPhong
+                    } else {
+                        r.tongTien = tongTien + giaPhong
+                    }
+                } else {
+                    res.redirect('/HetHanTrongNgay')
+                }
+                console.log("after" + r.tongTien)
+
                 r.save().then(r => {
-                    datPhong.findByIdAndRemove(req.params.id, function (error, account) {
-                        if (error) {
-                            res.send("Xoá không thành công" + error);
-                        } else {
-                            res.redirect('/HetHanTrongNgay');
-                        }
-                    })
+                    // ThongBaoDatPhong.findByIdAndRemove(req.params.id, function (error, account) {
+                    //     if (error) {
+                    //         res.send("Xoá không thành công" + error);
+                    //     } else {
+                    //         res.redirect('/HetHanTrongNgay');
+                    //     }
+                    // })
                 }).catch(e => res.send('Lỗi ' + e.message))
             })
         }
@@ -827,11 +869,10 @@ router.get('/SapHetHan', function (req, res, next) {
         for (var p of value) {
             var date = new Date(p.ngayTra).getTime();
             var dateExpired = date - dateNow;
-            console.log("1>>>" + date)
-            console.log("2>>>" + dateNow)
-            console.log("3>>>" + dateExpired)
+            // console.log("1>>>" + date)
+            // console.log("2>>>" + dateNow)
+            // console.log("3>>>" + dateExpired)
             console.log("\n \n \n \n\n \n\n \n\n \n\n \n")
-
             if (dateExpired < 0) {
                 listRoomExpired.push(p)
             }
@@ -921,7 +962,8 @@ router.get('/xacNhan_thong_bao', function (req, res, next) {
             sdt: tb.sdt,
             tongTien: tb.tongTien,
             acceptDate: time,
-            isTheUserDelete: true
+            isTheUserDelete: true,
+            isTheCancel: false
 
         }).save(function (err) {
             if (err) {
@@ -965,22 +1007,93 @@ router.get('/xacNhan_thong_bao', function (req, res, next) {
 });
 // huy thong bao
 router.get('/delete_thong_bao', function (req, res, next) {
-    console.log(req.query)
     var room_model = db.model('room', room_schema);
+    const today = new Date()
+    var time = (today.getHours() + 15) + ":" + today.getMinutes();
+    console.log("<<<<<<<<<<<<<<<<<" + time)
     room_model.findOne({_id: req.query.Roomid}).then(r => {
-        r.statusRoom = 'Còn phòng',
-            r.countCancel = Number(r.countCancel) + 1
+        r.statusRoom = 'Còn phòng';
+        r.countCancel = Number(r.countCancel) + 1;
         r.save().then(r => {
-            ThongBaoDatPhong.findByIdAndRemove(req.query.id, function (error, room) {
-                if (error) {
-                    res.send("Lỗi xóa thông tin");
-                } else {
-                    res.redirect('/ThongKe');
-                }
-            })
+            //nothing todo
         }).catch(e => res.send('Lỗi ' + e.message))
     })
+    thong_bao_dat_phong.findOne({_id: req.query.id}).then(tb => {
+        lichSuDatPhong({
+            maPhong: tb.id,
+            hoten: tb.hoten,
+            loaiPhong: tb.loaiPhong,
+            cmnd: tb.cccd,
+            email: tb.email,
+            soPhong: tb.sophong,
+            giaPhong: tb.giaPhong,
+            ngayNhan: tb.ngaynhan,
+            ngayTra: tb.ngayTra,
+            soDem: tb.sodem,
+            soNguoi: tb.soNguoi,
+            gioNhanPhong: tb.gioNhanPhong,
+            gioTraPhong: tb.gioTra,
+            sdt: tb.sdt,
+            tongTien: tb.tongTien,
+            acceptDate: time,
+            isTheUserDelete: true,
+            iisTheCancel: true
+
+        }).save(function (err) {
+            if (err) {
+                res.send("Thêm hoá đơn k thành công " + err);
+            } else {
+                ThongBaoDatPhong.findByIdAndRemove(req.query.id, function (error, room) {
+                    if (error) {
+                        res.send("Lỗi xóa thông tin");
+                    } else {
+                        res.redirect("/DatPhong");
+//                         console.log('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn:' + room.tokenUser)
+                        fcm.send({ //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+                            to: room.tokenUser,
+                            collapse_key: 'your_collapse_key',
+                            notification: {
+                                title: 'FBooking Hotel',
+                                body: 'Chào ' + room.hoten
+                                    + '\nKhách sạn đã Hủy đơn đặt phòng của bạn.'
+                                    + '\nSố phòng: ' + room.sophong
+                                    + '\nNgày nhận phòng: ' + room.ngaynhan
+                            },
+                            data: {  //you can send only notification or only data(or include both)
+                                my_key: 'my value',
+                                my_another_key: 'my another value'
+                            }
+                        }, function (err, response) {
+                            if (err) {
+                                console.log("Something has gone wrong!");
+                            } else {
+                                console.log("Successfully sent with response: ", response);
+                            }
+                        });
+                    }
+                })
+
+            }
+        })
+    })
 });
+// router.get('/delete_thong_bao', function (req, res, next) {
+//     console.log(req.query)
+//     var room_model = db.model('room', room_schema);
+//     room_model.findOne({_id: req.query.Roomid}).then(r => {
+//         r.statusRoom = 'Còn phòng',
+//             r.countCancel = Number(r.countCancel) + 1
+//         r.save().then(r => {
+//             ThongBaoDatPhong.findByIdAndRemove(req.query.id, function (error, room) {
+//                 if (error) {
+//                     res.send("Lỗi xóa thông tin");
+//                 } else {
+//                     res.redirect('/ThongKe');
+//                 }
+//             })
+//         }).catch(e => res.send('Lỗi ' + e.message))
+//     })
+// });
 
 router.use('/api', require('./api_router'))
 
