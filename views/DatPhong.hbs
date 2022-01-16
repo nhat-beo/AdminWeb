@@ -124,36 +124,57 @@
                     <h3 class="text-gray-700 text-3xl font-medium">Thông tin đặt phòng</h3>
 
                     <div class="flex items-end justify-between">
+                        <div>
+                            <a href="LichSuDatPhong">
+                                <button
+                                        class="bg-blue-900 px-2 py-2 rounded-lg text-white font-bold mt-4 hover:bg-indigo-700">
+                                    Lịch sử đặt phòng
+                                </button>
+                            </a>
+                            <a href="LichSuHuyPhong">
+                                <button
+                                        class="bg-blue-900 px-2 py-2 rounded-lg text-white font-bold mt-4 ml-2 hover:bg-indigo-700">
+                                    Lịch sử hủy phòng
+                                </button>
+                            </a>
+                        </div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
                         <div></div>
                         <form class="lg:ml-0 ml-6" action="/search_bill" method="get">
                             <input type="date" autofocus class="border-2 border-gray-300 pl-2 w-60" name="name"/>
                             <button type="submit">Search</button>
                         </form>
+                        <form class="lg:ml-0 ml-6" action="/search_bill" method="get">
+                            <input type="search" class="border-2 border-gray-300 pl-2 w-60" name="datefilter2"/>
+                            <button type="submit">Search</button>
+                        </form>
+                        <script type="text/javascript">
+                            $(function () {
 
-                        <!--                        <form class="lg:ml-0 ml-6" action="/search_bill" method="get">-->
-                        <!--                            <input type="text" class="border-2 border-gray-300 pl-2 w-60" name="datefilter2"/>-->
-                        <!--                            <button type="submit">Search</button>-->
-                        <!--                        </form>-->
-                        <!--                        <script type="text/javascript">-->
-                        <!--                            $(function () {-->
+                                $('input[name="datefilter2"]').daterangepicker({
+                                    autoUpdateInput: false,
+                                    locale: {
+                                        cancelLabel: 'Clear'
+                                    }
+                                });
 
-                        <!--                                $('input[name="datefilter2"]').daterangepicker({-->
-                        <!--                                    autoUpdateInput: false,-->
-                        <!--                                    locale: {-->
-                        <!--                                        cancelLabel: 'Clear'-->
-                        <!--                                    }-->
-                        <!--                                });-->
+                                $('input[name="datefilter2"]').on('apply.daterangepicker', function (ev, picker) {
+                                    $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+                                });
 
-                        <!--                                $('input[name="datefilter2"]').on('apply.daterangepicker', function (ev, picker) {-->
-                        <!--                                    $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));-->
-                        <!--                                });-->
+                                $('input[name="datefilter2"]').on('cancel.daterangepicker', function (ev, picker) {
+                                    $(this).val('');
+                                });
 
-                        <!--                                $('input[name="datefilter2"]').on('cancel.daterangepicker', function (ev, picker) {-->
-                        <!--                                    $(this).val('');-->
-                        <!--                                });-->
-
-                        <!--                            });-->
-                        <!--                        </script>-->
+                            });
+                        </script>
                     </div>
                     <div class="flex flex-col mt-4">
                         <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
@@ -265,11 +286,11 @@
                                             <td
                                                     class="flex items-center h-20 px-4 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium ">
                                                 <!--<a href="" class="text-green-600 hover:text-green-900">Chi tiết</a>--->
-                                                <a href="sua_hoadon?id={{this.data._id}}&Roomid={{this.data.Roomid}}"
-                                                class="text-indigo-600 hover:text-indigo-900">Sửa</a>
-                                                <a href="delete_bill_datPhong.id={{this.data._id}}" class="ml-5
-                                                text-red-600
-                                                hover:text-red-700">Xóa</a>
+                                                <!--                                                <a href="sua_hoadon?id={{this.data._id}}&Roomid={{this.data.Roomid}}"-->
+                                                <!--                                                class="text-indigo-600 hover:text-indigo-900">Sửa</a>-->
+                                                <!--                                                <a href="delete_bill_datPhong.id={{this.data._id}}" class="ml-5-->
+                                                <!--                                                text-red-600-->
+                                                <!--                                                hover:text-red-700">Xóa</a>-->
                                             </td>
                                         </tr>
                                     {{/each}}

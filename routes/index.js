@@ -307,21 +307,19 @@ router.post('/ThemHoaDon', function (req, res, next) {
 });
 // tim kiem bill 
 router.get('/search_bill', function (req, res) {
-    var title = req.query.name.trim();
-    // var allDate = null
-    // let startDay = null;
-    // let endDay = null;
-    // if (allDate != null) {
-    //     allDate = req.query.datefilter2;
-    //     console.log('allDate1>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + allDate)
-    //     startDay = allDate.slice(0, 10)
-    //     endDay = allDate.slice(-10)
-    // }
-    // console.log('allDate2>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + allDate)
-    // console.log('startDay>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + startDay)
-    // console.log('endDay>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + endDay)
+    var title = req.query.name
+    var allDate = req.query.datefilter;
+    console.log('allDate>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + allDate)
+    let startDay = '';
+    let endDay = '';
+
+    // let startDay = allDate.slice(0, 10);
+    // let endDay = allDate.slice(-10);
+    // let startDay = '2013-01-01'
+    // let endDay = '2023-01-01'
+
     lichSuDatPhong.find({
-        // ngayTra: {$gte: startDay, $lt: endDay}
+        ngayTra: {$gte: startDay, $lt: endDay}
 
     }, function (error, datPhong) {
         if (error) {
@@ -331,12 +329,21 @@ router.get('/search_bill', function (req, res) {
         var data = datPhong.filter(function (item) {
             return item.ngayNhan.toLowerCase().indexOf(title.toLowerCase()) !== -1
         });
-        if (data.length == 0) {
-            res.render('DatPhong', {
-                message: 'Không có dữ liệu ...'
-            });
-            return
+        if (allDate == null || allDate == '') {
+            startDay = '2000-1-01'
+            endDay = '2050-01-01'
+            if (data.length == 0) {
+                res.render('DatPhong', {
+                    message: 'Không có dữ liệu ...'
+                });
+                return
+            }
+        } else {
+            startDay = allDate.slice(0, 10);
+            endDay = allDate.slice(-10);
         }
+        console.log('startDay>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + startDay)
+        console.log('endDay>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + endDay)
         var dataSearch = [];
         for (var i = 0; i < data.length; i++) {
             dataSearch.push({data: data[i], index: i});
@@ -637,7 +644,7 @@ router.get('/ThongKe', async function (req, res, next) {
     var tiLeHuy = 0
     // ngayTra: {$gte: startDay, $lt: endDay}
     var listPhong = await Rooms.find({})
-    var listPhongDat = await lich_su_dat_phong.find({})
+    var listPhongDat = await lich_su_dat_phong.find({ngayTra: {$gte: startDay, $lt: endDay}, isTheCancel: true,})
     var thongBaoDatPhong = await ThongBaoDatPhong.find({})
     lich_su_dat_phong.find({
         ngayTra: {$gte: startDay, $lt: endDay}
@@ -646,7 +653,7 @@ router.get('/ThongKe', async function (req, res, next) {
             res.send('Lỗi lấy thông tin: ' + err.message);
         } else {
             lich_su_dat_phong.find({
-                isTheCancel: true,
+                // isTheCancel: false,
                 ngayTra: {$gte: startDay, $lt: endDay}
             }, function (err, lichsu) {
                 if (err) {
@@ -655,16 +662,17 @@ router.get('/ThongKe', async function (req, res, next) {
                     var index = 0;
                     lichsu.forEach((value => {
                         // index++
-                        tongLuotHuy = Number(value.length)
+                        tongLuotHuy = listPhongDat.length
+                        // tongLuotDat = lichsu.length
                         // tiLeThanhCong = (tongLuotDat * 100) / (Number(tongLuotDat) + Number(tongLuotHuy))
                         // tiLeHuy = (tongLuotHuy * 100) / (Number(tongLuotDat) + Number(tongLuotHuy))
                     }))
                 }
                 var index = 0;
-                lichSuDatPhong.forEach((value) => {
+                lichsu.forEach((value) => {
                     index++
                     //todo
-                    tongLuotDat = listPhongDat.length - tongLuotHuy
+                    tongLuotDat = lichsu.length - tongLuotHuy
                     console.log('tong luot dat:' + tongLuotDat)
                     console.log('tong luot huy:' + tongLuotHuy)
                     tiLeThanhCong = (tongLuotDat * 100) / (Number(tongLuotDat) + Number(tongLuotHuy))
@@ -842,7 +850,7 @@ router.get('/delete_room_het.id=:id', function (req, res, next) {
         }
     })
 });
-//
+// PhongTrong
 router.get('/PhongTrong', function (req, res, next) {
     var room_model = db.model('room', room_schema);
     room_model.find({statusRoom: 'Còn phòng'}).then((room) => {
@@ -858,7 +866,44 @@ router.get('/PhongTrong', function (req, res, next) {
     )
 });
 
-// search phong trong 
+// lichSuDatphong
+router.get('/LichSuDatPhong', function (req, res, next) {
+    lichSuDatPhong.find({isTheCancel: false}, function (err, datPhong) {
+        var index = 0;
+        if (err) {
+            res.send('Lỗi lấy thông tin: ' + err.message);
+        } else {
+            var data = []
+            for (var i = 0; i < datPhong.length; i++) {
+
+                data.push({data: datPhong[i], index: index});
+                index++;
+            }
+            res.render('DatPhong', {datPhong: data})
+        }
+    })
+});
+
+// lichSuHuyphong
+router.get('/lichSuHuyphong', function (req, res, next) {
+    lichSuDatPhong.find({isTheCancel: true}, function (err, datPhong) {
+        var index = 0;
+        if (err) {
+            res.send('Lỗi lấy thông tin: ' + err.message);
+        } else {
+            var data = []
+            for (var i = 0; i < datPhong.length; i++) {
+
+                data.push({data: datPhong[i], index: index});
+                index++;
+            }
+            res.render('DatPhong', {datPhong: data})
+        }
+    })
+});
+
+
+// search phong trong
 router.get('/search_phong_trong', function (req, res) {
     var room_model = db.model('room', room_schema);
     var title = req.query.name.trim();
@@ -1143,7 +1188,7 @@ router.get('/delete_thong_bao', function (req, res, next) {
             sdt: tb.sdt,
             tongTien: tb.tongTien,
             acceptDate: time,
-            isTheUserDelete: true,
+            isTheUserDelete: false,
             iisTheCancel: true
 
         }).save(function (err) {
