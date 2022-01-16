@@ -106,7 +106,7 @@ var room_schema = new mongoose.Schema({
     countCancel: {type: Number, default: 0},
     countAccept: {type: Number, default: 0},
     favorite: {type: Array, default: []},
-
+    tang: Number,
 });
 // định nghĩa schmema account
 
@@ -392,7 +392,8 @@ router.post('/add_room', upload, function (req, res, next) {
             wheelChairWay: req.body.wheelChairWay === 'on' ? true : false,
             shuttle: req.body.shuttle === 'on' ? true : false,
             other: req.body.other === 'on' ? true : false,
-            otherText: req.body.otherText
+            otherText: req.body.otherText,
+            tang: req.body.tang,
         }).save(function (error, r) {
             if (error) {
                 res.send("Lỗi thêm thông tin");
