@@ -638,6 +638,7 @@ router.get('/ThongKe', async function (req, res, next) {
     var tiLeHuy = 0
     // ngayTra: {$gte: startDay, $lt: endDay}
     var listPhong = await Rooms.find({})
+    var listPhongDat = await lich_su_dat_phong.find({})
     var thongBaoDatPhong = await ThongBaoDatPhong.find({})
     lich_su_dat_phong.find({
         ngayTra: {$gte: startDay, $lt: endDay}
@@ -648,14 +649,14 @@ router.get('/ThongKe', async function (req, res, next) {
             lich_su_dat_phong.find({
                 isTheCancel: true,
                 ngayTra: {$gte: startDay, $lt: endDay}
-            }, function (err, listAllRoom) {
+            }, function (err, lichsu) {
                 if (err) {
                     res.send('Lỗi lấy thông tin: ' + err.message);
                 } else {
                     var index = 0;
-                    listAllRoom.forEach((value => {
+                    lichsu.forEach((value => {
                         // index++
-                        tongLuotHuy += value.length
+                        tongLuotHuy = Number(value.length)
                         // tiLeThanhCong = (tongLuotDat * 100) / (Number(tongLuotDat) + Number(tongLuotHuy))
                         // tiLeHuy = (tongLuotHuy * 100) / (Number(tongLuotDat) + Number(tongLuotHuy))
                     }))
@@ -664,8 +665,9 @@ router.get('/ThongKe', async function (req, res, next) {
                 lichSuDatPhong.forEach((value) => {
                     index++
                     //todo
-
-                    tongLuotDat = value.length - tiLeHuy
+                    tongLuotDat = listPhongDat.length - tongLuotHuy
+                    console.log('tong luot dat:' + tongLuotDat)
+                    console.log('tong luot huy:' + tongLuotHuy)
                     tiLeThanhCong = (tongLuotDat * 100) / (Number(tongLuotDat) + Number(tongLuotHuy))
                     tiLeHuy = (tongLuotHuy * 100) / (Number(tongLuotDat) + Number(tongLuotHuy))
                     Revenue += (value.soDem * value.giaPhong + (value.soDem * value.giaPhong * 0.1)) / 100000;
@@ -725,8 +727,40 @@ router.get('/delete_phong_het.id=:id', function (req, res, next) {
                     }
                 } else {
                     res.redirect('/HetHanTrongNgay')
+
                 }
                 console.log("after" + r.tongTien)
+                ThongBaoDatPhong.findByIdAndRemove(req.query.id, function (error, room) {
+                    if (error) {
+                        res.send("Lỗi xóa thông tin");
+                    } else {
+                        res.redirect("/HetHanTrongNgay");
+//                         console.log('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn:' + room.tokenUser)
+                        fcm.send({ //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+                            to: room.tokenUser,
+                            collapse_key: 'your_collapse_key',
+
+                            notification: {
+                                title: 'FBooking Hotel',
+                                body: 'Chào ' + room.hoten
+                                    + '\nBạn đã trả phòng lúc' + gioTraPhongReal
+                                    + '\nSố phòng: ' + room.sophong
+                                    + '\nNgày nhận phòng: ' + room.ngaynhan
+                            },
+
+                            data: {  //you can send only notification or only data(or include both)
+                                my_key: 'my value',
+                                my_another_key: 'my another value'
+                            }
+                        }, function (err, response) {
+                            if (err) {
+                                console.log("Something has gone wrong!");
+                            } else {
+                                console.log("Successfully sent with response: ", response);
+                            }
+                        });
+                    }
+                })
 
                 r.save().then(r => {
                     // ThongBaoDatPhong.findByIdAndRemove(req.params.id, function (error, account) {
@@ -912,7 +946,81 @@ router.get('/search_phong_het_han', function (req, res) {
 })
 //xoa phong het
 router.get('/delete_phong_sap_het.id=:id', function (req, res, next) {
+
     datPhong.findOne({_id: req.params.id}).then(dp => {
+        lich_su_dat_phong.findOne({maphong: dp.maPhong}).then(r => {
+            let giaPhong = r.tongTien / r.soDem
+            var curDate = new Date();
+            let timeTraPhong = new Date(r.ngayTra);
+            let onlyNgayTraPhong = timeTraPhong.getDate()
+            let dayNow = curDate.getDate();
+            let gioTraPhongReal = curDate.getHours()
+            let soNgayMuon = onlyNgayTraPhong - dayNow;
+            let tongTien;
+            console.log('ngày hiện tại:' + dayNow)
+            console.log('thời gian trả phòng:' + timeTraPhong)
+            console.log('ngày trả phòng:' + onlyNgayTraPhong)
+            console.log('Số ngày Còn lại:' + soNgayMuon)
+            console.log('Tổng tiền trên mong:' + r.tongTien)
+            console.log('giờ trả phòng:' + gioTraPhongReal)
+            if (soNgayMuon >= 0 || soNgayMuon > r.soDem) {
+                tongTien = r.tongTien - giaPhong * soNgayMuon
+                res.redirect('/SapHetHan')
+                r.tongTien = tongTien;
+                console.log("before" + tongTien)
+                if (gioTraPhongReal > 12 || gioTraPhongReal < 15) {
+                    r.tongTien = tongTien + 0.3 * giaPhong
+                } else if (gioTraPhongReal >= 15 || gioTraPhongReal < 18) {
+                    r.tongTien = tongTien + 0.5 * giaPhong
+                } else {
+                    r.tongTien = tongTien + giaPhong
+                }
+            } else {
+                res.redirect('/SapHetHan')
+            }
+            console.log("after" + r.tongTien)
+            ThongBaoDatPhong.findByIdAndRemove(req.query.id, function (error, room) {
+                if (error) {
+                    res.send("Lỗi xóa thông tin");
+                } else {
+                    res.redirect("/HetHanTrongNgay");
+//                         console.log('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn:' + room.tokenUser)
+                    fcm.send({ //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+                        to: room.tokenUser,
+                        collapse_key: 'your_collapse_key',
+
+                        notification: {
+                            title: 'FBooking Hotel',
+                            body: 'Chào ' + room.hoten
+                                + '\nBạn đã trả phòng lúc' + gioTraPhongReal
+                                + '\nSố phòng: ' + room.sophong
+                                + '\nNgày nhận phòng: ' + room.ngaynhan
+                        },
+
+                        data: {  //you can send only notification or only data(or include both)
+                            my_key: 'my value',
+                            my_another_key: 'my another value'
+                        }
+                    }, function (err, response) {
+                        if (err) {
+                            console.log("Something has gone wrong!");
+                        } else {
+                            console.log("Successfully sent with response: ", response);
+                        }
+                    });
+                }
+            })
+            r.save().then(r => {
+                // ThongBaoDatPhong.findByIdAndRemove(req.params.id, function (error, account) {
+                //     if (error) {
+                //         res.send("Xoá không thành công" + error);
+                //     } else {
+                //         res.redirect('/HetHanTrongNgay');
+                //     }
+                // })
+            }).catch(e => res.send('Lỗi ' + e.message))
+        })
+
         if (dp != null) {
             var room_model = db.model('room', room_schema);
             room_model.findOne({_id: dp.maPhong}).then(r => {
@@ -965,7 +1073,6 @@ router.get('/xacNhan_thong_bao', function (req, res, next) {
             acceptDate: time,
             isTheUserDelete: true,
             isTheCancel: false
-
         }).save(function (err) {
             if (err) {
                 res.send("Thêm hoá đơn k thành công " + err);
