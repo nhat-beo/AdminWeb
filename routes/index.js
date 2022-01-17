@@ -307,19 +307,21 @@ router.post('/ThemHoaDon', function (req, res, next) {
 });
 // tim kiem bill 
 router.get('/search_bill', function (req, res) {
-    var title = req.query.name
-    var allDate = req.query.datefilter;
-    console.log('allDate>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + allDate)
-    let startDay = '';
-    let endDay = '';
-
-    // let startDay = allDate.slice(0, 10);
-    // let endDay = allDate.slice(-10);
-    // let startDay = '2013-01-01'
-    // let endDay = '2023-01-01'
-
+    var title = req.query.name.trim();
+    // var allDate = null
+    // let startDay = null;
+    // let endDay = null;
+    // if (allDate != null) {
+    //     allDate = req.query.datefilter2;
+    //     console.log('allDate1>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + allDate)
+    //     startDay = allDate.slice(0, 10)
+    //     endDay = allDate.slice(-10)
+    // }
+    // console.log('allDate2>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + allDate)
+    // console.log('startDay>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + startDay)
+    // console.log('endDay>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + endDay)
     lichSuDatPhong.find({
-        ngayTra: {$gte: startDay, $lt: endDay}
+        // ngayTra: {$gte: startDay, $lt: endDay}
 
     }, function (error, datPhong) {
         if (error) {
@@ -329,21 +331,12 @@ router.get('/search_bill', function (req, res) {
         var data = datPhong.filter(function (item) {
             return item.ngayNhan.toLowerCase().indexOf(title.toLowerCase()) !== -1
         });
-        if (allDate == null || allDate == '') {
-            startDay = '2000-1-01'
-            endDay = '2050-01-01'
-            if (data.length == 0) {
-                res.render('DatPhong', {
-                    message: 'Không có dữ liệu ...'
-                });
-                return
-            }
-        } else {
-            startDay = allDate.slice(0, 10);
-            endDay = allDate.slice(-10);
+        if (data.length == 0) {
+            res.render('DatPhong', {
+                message: 'Không có dữ liệu ...'
+            });
+            return
         }
-        console.log('startDay>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + startDay)
-        console.log('endDay>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:' + endDay)
         var dataSearch = [];
         for (var i = 0; i < data.length; i++) {
             dataSearch.push({data: data[i], index: i});
@@ -463,7 +456,8 @@ router.post('/update_room.id=:id', upload, function (req, res, next) {
         wheelChairWay: req.body.wheelChairWay === 'on' ? true : false,
         shuttle: req.body.shuttle === 'on' ? true : false,
         other: req.body.other === 'on' ? true : false,
-        otherText: req.body.otherText
+        otherText: req.body.otherText,
+        tang: req.body.tang
     }, function (error) {
         if (error) {
             res.send("Lỗi sửa thông tin " + error.message);
