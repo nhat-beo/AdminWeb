@@ -22,7 +22,7 @@ class APi_all_list {
     getAllRooms(req, res, next) {
 
         Rooms.find({
-            statusRoom: ['Còn Phòng', 'Hết phòng']
+            statusRoom: ['Còn phòng', 'Hết phòng']
         }).sort({'statusRoom': 1}).then(Rooms => res.json({
             isSuccess: true,
             code: 200,
