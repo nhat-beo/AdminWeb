@@ -35,21 +35,21 @@ class APi_all_list {
         }))
     }
 
-    getAllRooms(req, res, next) {
-
-        Rooms.find({
-            statusRoom: ['Còn phòng','Hết phòng']
-        }).sort({'statusRoom': 1}).then(Rooms => res.json({
-            isSuccess: true,
-            code: 200,
-            message: "success",
-            data: Rooms,
-        })).catch(e => res.json({
-            status: false,
-            message: e.message,
-            code: 404
-        }))
-    }
+    // getAllRooms(req, res, next) {
+    //
+    //     Rooms.find({
+    //         statusRoom: ['Còn phòng','Hết phòng']
+    //     }).sort({'statusRoom': 1}).then(Rooms => res.json({
+    //         isSuccess: true,
+    //         code: 200,
+    //         message: "success",
+    //         data: Rooms,
+    //     })).catch(e => res.json({
+    //         status: false,
+    //         message: e.message,
+    //         code: 404
+    //     }))
+    // }
 
     FilterRoom(req, res, next) {
 
