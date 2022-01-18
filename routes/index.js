@@ -702,23 +702,26 @@ router.get('/delete_phong_het.id=:id', function (req, res, next) {
             dp.save()
             console.log('trạng thái' + dp.statusRoom)
             lich_su_dat_phong.findOne({maphong: dp.maPhong}).then(r => {
-                let giaPhong = r.tongTien / r.soDem
-                var curDate = new Date();
-                let timeTraPhong = new Date(r.ngayTra);
-                let onlyNgayTraPhong = timeTraPhong.getDate()
-                let dayNow = curDate.getDate();
-                let gioTraPhongReal = curDate.getHours()
-                let soNgayConLai = onlyNgayTraPhong - dayNow;
-                let tongTien;
+                const giaPhong = r.tongTien / r.soDem
+                const curDate = new Date();
+                const timeTraPhong = new Date(r.ngayTra);
+                const onlyNgayTraPhong = timeTraPhong.getDate()
+                const timeNhanPhong = new Date(r.ngayNhan);
+                const onlyNgayNhanPhong = timeNhanPhong.getDate()
+                const dayNow = curDate.getDate();
+                const gioTraPhongReal = curDate.getHours()
+                const soNgayConLai = onlyNgayTraPhong - dayNow;
+                // const tongTien;
                 console.log('ngày hiện tại:' + dayNow)
-                console.log('thời gian trả phòng:' + timeTraPhong)
-                console.log('ngày trả phòng:' + onlyNgayTraPhong)
-                console.log('Số ngày Còn lại:' + soNgayConLai)
+                // console.log('thời gian trả phòng:' + timeTraPhong)
+                // console.log('ngày trả phòng:' + onlyNgayTraPhong)
+                // console.log('Số ngày Còn lại:' + soNgayConLai)
                 console.log('Tổng tiền trên mong:' + r.tongTien)
                 console.log('giờ trả phòng:' + gioTraPhongReal)
+                console.log('ngày nhận phòng:' + onlyNgayNhanPhong)
                 if (soNgayConLai >= 0 || soNgayConLai < r.soDem) {
-                    tongTien = r.tongTien - giaPhong * soNgayConLai
-                    res.redirect('/HetHanTrongNgay')
+                    const tongTien = r.tongTien - giaPhong * soNgayConLai
+                    // res.redirect('/DatPhong')
                     r.tongTien = tongTien;
                     console.log("before" + tongTien)
                     if (gioTraPhongReal > 12 || gioTraPhongReal < 15) {
@@ -728,8 +731,11 @@ router.get('/delete_phong_het.id=:id', function (req, res, next) {
                     } else {
                         r.tongTien = tongTien + giaPhong
                     }
-                } else {
-                    res.redirect('/HetHanTrongNgay')
+                }else if(dayNow < onlyNgayNhanPhong){
+                    r.tongTien = 0
+                }else {
+                    r.tongTien = 0
+                    res.redirect('/DatPhong')
 
                 }
                 console.log("after" + r.tongTien)
@@ -737,34 +743,9 @@ router.get('/delete_phong_het.id=:id', function (req, res, next) {
                     if (error) {
                         res.send("Lỗi xóa thông tin");
                     } else {
-                        res.redirect("/HetHanTrongNgay");
-//                         console.log('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn:' + room.tokenUser)
-                        fcm.send({ //this may vary according to the message type (single recipient, multicast, topic, et cetera)
-                            to: room.tokenUser,
-                            collapse_key: 'your_collapse_key',
-
-                            notification: {
-                                title: 'FBooking Hotel',
-                                body: 'Chào ' + room.hoten
-                                    + '\nBạn đã trả phòng lúc' + gioTraPhongReal
-                                    + '\nSố phòng: ' + room.sophong
-                                    + '\nNgày nhận phòng: ' + room.ngaynhan
-                            },
-
-                            data: {  //you can send only notification or only data(or include both)
-                                my_key: 'my value',
-                                my_another_key: 'my another value'
-                            }
-                        }, function (err, response) {
-                            if (err) {
-                                console.log("Something has gone wrong!");
-                            } else {
-                                console.log("Successfully sent with response: ", response);
-                            }
-                        });
+                        res.redirect("/DatPhong");
                     }
                 })
-
                 r.save().then(r => {
                     // ThongBaoDatPhong.findByIdAndRemove(req.params.id, function (error, account) {
                     //     if (error) {
@@ -773,6 +754,7 @@ router.get('/delete_phong_het.id=:id', function (req, res, next) {
                     //         res.redirect('/HetHanTrongNgay');
                     //     }
                     // })
+                    console.log("tongtiencuoi" + r.tongTien)
                 }).catch(e => res.send('Lỗi ' + e.message))
             })
         }
@@ -1025,29 +1007,29 @@ router.get('/delete_phong_sap_het.id=:id', function (req, res, next) {
                 } else {
                     res.redirect("/HetHanTrongNgay");
 //                         console.log('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn:' + room.tokenUser)
-                    fcm.send({ //this may vary according to the message type (single recipient, multicast, topic, et cetera)
-                        to: room.tokenUser,
-                        collapse_key: 'your_collapse_key',
-
-                        notification: {
-                            title: 'FBooking Hotel',
-                            body: 'Chào ' + room.hoten
-                                + '\nBạn đã trả phòng lúc' + gioTraPhongReal
-                                + '\nSố phòng: ' + room.sophong
-                                + '\nNgày nhận phòng: ' + room.ngaynhan
-                        },
-
-                        data: {  //you can send only notification or only data(or include both)
-                            my_key: 'my value',
-                            my_another_key: 'my another value'
-                        }
-                    }, function (err, response) {
-                        if (err) {
-                            console.log("Something has gone wrong!");
-                        } else {
-                            console.log("Successfully sent with response: ", response);
-                        }
-                    });
+//                     fcm.send({ //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+//                         to: room.tokenUser,
+//                         collapse_key: 'your_collapse_key',
+//
+//                         notification: {
+//                             title: 'FBooking Hotel',
+//                             body: 'Chào ' + room.hoten
+//                                 + '\nBạn đã trả phòng lúc' + gioTraPhongReal
+//                                 + '\nSố phòng: ' + room.sophong
+//                                 + '\nNgày nhận phòng: ' + room.ngaynhan
+//                         },
+//
+//                         data: {  //you can send only notification or only data(or include both)
+//                             my_key: 'my value',
+//                             my_another_key: 'my another value'
+//                         }
+//                     }, function (err, response) {
+//                         if (err) {
+//                             console.log("Something has gone wrong!");
+//                         } else {
+//                             console.log("Successfully sent with response: ", response);
+//                         }
+//                     });
                 }
             })
             r.save().then(r => {
