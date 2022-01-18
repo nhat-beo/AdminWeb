@@ -291,7 +291,7 @@ router.post('/ThemHoaDon', function (req, res, next) {
                 soDem: req.body.soDem,
                 soNguoi: req.body.soNguoi,
                 gioNhanPhong: req.body.gioNhanPhong,
-                gioTraPhong: req.body.gioTraPhong,
+                gioTraPhong: '12:00 PM',
                 tongTien: req.body.tongTien,
                 sdt: req.body.sdt,
             }).save(function (err) {
