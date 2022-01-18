@@ -19,12 +19,15 @@ class APi_all_list {
         }))
     }
 
-    getAllAccount(req, res, next) {
-        Taikhoans.find({}).then(taikhoans => res.json({
+    getAllRooms(req, res, next) {
+
+        Rooms.find({
+            statusRoom: ['Còn phòng', 'Hết Phòng']
+        }).sort({'statusRoom': 1}).then(Rooms => res.json({
             isSuccess: true,
             code: 200,
             message: "success",
-            data: taikhoans,
+            data: Rooms,
         })).catch(e => res.json({
             status: false,
             message: e.message,
