@@ -37,35 +37,6 @@ class HistoryUserControler {
                 res.json({message: "không có lịch sử này", isSuccess: false})
             }
             history.isTheUserDelete = false,
-            history.save().then(user => res.json(
-                {
-                    message: "success",
-                    isSuccess: true,
-                    code: 200,
-                    user: user
-                })).catch(e => res.json(
-                {
-                    isSuccess: false,
-                    message: e.message,
-                    code: 404
-                }))
-        }).catch(e => res.json({
-            isSuccess: false,
-            message: e.message,
-            code: 404
-        }))
-    }
-
-    deleteAllHistory(req, res) {
-        if (req.body.email == null) {
-            res.json({message: 'Cần truyền params email', status: false, code: 200,})
-            return
-        }
-        ListHistoryUser.find({email: req.body.email}).then(history => {
-            if (history == null) {
-                res.json({message: "không có lịch sử này", isSuccess: false})
-            }
-            history.isTheUserDelete = false,
                 history.save().then(user => res.json(
                     {
                         message: "success",
@@ -78,6 +49,37 @@ class HistoryUserControler {
                         message: e.message,
                         code: 404
                     }))
+        }).catch(e => res.json({
+            isSuccess: false,
+            message: e.message,
+            code: 404
+        }))
+    }
+
+    deleteAllHistory(req, res) {
+        if (req.body.email == null) {
+            res.json({message: 'Cần truyền params email', status: false, code: 200,})
+            return
+        }
+        ListHistoryUser.findOne({email: req.body.email}).then(history => {
+            if (history == null) {
+                res.json({message: "không có lịch sử này", isSuccess: false})
+            } else {
+                history.isTheUserDelete = false,
+                    history.save().then(user => res.json(
+                        {
+                            message: "success",
+                            isSuccess: true,
+                            code: 200,
+                            user: user
+                        })).catch(e => res.json(
+                        {
+                            isSuccess: false,
+                            message: e.message,
+                            code: 404
+                        }))
+            }
+
         }).catch(e => res.json({
             isSuccess: false,
             message: e.message,
