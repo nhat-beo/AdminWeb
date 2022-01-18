@@ -713,30 +713,38 @@ router.get('/delete_phong_het.id=:id', function (req, res, next) {
                 const soNgayConLai = onlyNgayTraPhong - dayNow;
                 // const tongTien;
                 console.log('ngày hiện tại:' + dayNow)
-                // console.log('thời gian trả phòng:' + timeTraPhong)
-                // console.log('ngày trả phòng:' + onlyNgayTraPhong)
-                // console.log('Số ngày Còn lại:' + soNgayConLai)
+                console.log('thời gian trả phòng:' + timeTraPhong)
+                console.log('ngày trả phòng:' + onlyNgayTraPhong)
+                console.log('Số ngày Còn lại:' + soNgayConLai)
                 console.log('Tổng tiền trên mong:' + r.tongTien)
                 console.log('giờ trả phòng:' + gioTraPhongReal)
                 console.log('ngày nhận phòng:' + onlyNgayNhanPhong)
-                if (soNgayConLai >= 0 || soNgayConLai < r.soDem) {
+                if (soNgayConLai < r.soDem) {
                     const tongTien = r.tongTien - giaPhong * soNgayConLai
                     // res.redirect('/DatPhong')
+                    r.isTheCancel = false
                     r.tongTien = tongTien;
                     console.log("before" + tongTien)
                     if (gioTraPhongReal > 12 || gioTraPhongReal < 15) {
                         r.tongTien = tongTien + 0.3 * giaPhong
+                        r.isTheCancel = false
                     } else if (gioTraPhongReal >= 15 || gioTraPhongReal < 18) {
                         r.tongTien = tongTien + 0.5 * giaPhong
+                        r.isTheCancel = false
                     } else {
                         r.tongTien = tongTien + giaPhong
+                        r.isTheCancel = false
                     }
-                }else if(dayNow < onlyNgayNhanPhong){
-                    r.tongTien = 0
-                }else {
-                    r.tongTien = 0
-                    res.redirect('/DatPhong')
-
+                } else if (soNgayConLai == r.soDem || gioTraPhongReal >= r.gioNhanPhong) {
+                    r.tongTien = giaPhong
+                    r.isTheCancel = false
+                } else if (soNgayConLai == r.soDem || gioTraPhongReal < r.gioNhanPhong) {
+                    r.tongTien = 1000000
+                    r.isTheCancel = true
+                    // res.redirect('/DatPhong')
+                } else {
+                    r.tongTien = 1000000
+                    r.isTheCancel = true
                 }
                 console.log("after" + r.tongTien)
                 ThongBaoDatPhong.findByIdAndRemove(req.query.id, function (error, room) {
@@ -971,67 +979,42 @@ router.get('/delete_phong_sap_het.id=:id', function (req, res, next) {
 
     datPhong.findOne({_id: req.params.id}).then(dp => {
         lich_su_dat_phong.findOne({maphong: dp.maPhong}).then(r => {
-            let giaPhong = r.tongTien / r.soDem
-            var curDate = new Date();
-            let timeTraPhong = new Date(r.ngayTra);
-            let onlyNgayTraPhong = timeTraPhong.getDate()
-            let dayNow = curDate.getDate();
-            let gioTraPhongReal = curDate.getHours()
-            let soNgayMuon = onlyNgayTraPhong - dayNow;
-            let tongTien;
+            const giaPhong = r.tongTien / r.soDem
+            const curDate = new Date();
+            const timeTraPhong = new Date(r.ngayTra);
+            const onlyNgayTraPhong = timeTraPhong.getDate()
+            const timeNhanPhong = new Date(r.ngayNhan);
+            const onlyNgayNhanPhong = timeNhanPhong.getDate()
+            const dayNow = curDate.getDate();
+            const gioTraPhongReal = curDate.getHours()
+            const soNgayConLai = onlyNgayTraPhong - dayNow;
+            const soNgayTraMuon = dayNow - onlyNgayTraPhong;
+            // const tongTien;
             console.log('ngày hiện tại:' + dayNow)
             console.log('thời gian trả phòng:' + timeTraPhong)
             console.log('ngày trả phòng:' + onlyNgayTraPhong)
-            console.log('Số ngày Còn lại:' + soNgayMuon)
+            console.log('Số ngày Còn lại:' + soNgayConLai)
             console.log('Tổng tiền trên mong:' + r.tongTien)
             console.log('giờ trả phòng:' + gioTraPhongReal)
-            if (soNgayMuon >= 0 || soNgayMuon > r.soDem) {
-                tongTien = r.tongTien - giaPhong * soNgayMuon
-                res.redirect('/SapHetHan')
+            console.log('ngày nhận phòng:' + onlyNgayNhanPhong)
+            if (soNgayConLai > r.soDem) {
+                const tongTien = r.tongTien + giaPhong * soNgayTraMuon
+                // res.redirect('/DatPhong')
+                r.isTheCancel = false
                 r.tongTien = tongTien;
                 console.log("before" + tongTien)
                 if (gioTraPhongReal > 12 || gioTraPhongReal < 15) {
                     r.tongTien = tongTien + 0.3 * giaPhong
+                    r.isTheCancel = false
                 } else if (gioTraPhongReal >= 15 || gioTraPhongReal < 18) {
                     r.tongTien = tongTien + 0.5 * giaPhong
+                    r.isTheCancel = false
                 } else {
                     r.tongTien = tongTien + giaPhong
+                    r.isTheCancel = false
                 }
-            } else {
-                res.redirect('/SapHetHan')
             }
             console.log("after" + r.tongTien)
-            ThongBaoDatPhong.findByIdAndRemove(req.query.id, function (error, room) {
-                if (error) {
-                    res.send("Lỗi xóa thông tin");
-                } else {
-                    res.redirect("/HetHanTrongNgay");
-//                         console.log('Tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn:' + room.tokenUser)
-//                     fcm.send({ //this may vary according to the message type (single recipient, multicast, topic, et cetera)
-//                         to: room.tokenUser,
-//                         collapse_key: 'your_collapse_key',
-//
-//                         notification: {
-//                             title: 'FBooking Hotel',
-//                             body: 'Chào ' + room.hoten
-//                                 + '\nBạn đã trả phòng lúc' + gioTraPhongReal
-//                                 + '\nSố phòng: ' + room.sophong
-//                                 + '\nNgày nhận phòng: ' + room.ngaynhan
-//                         },
-//
-//                         data: {  //you can send only notification or only data(or include both)
-//                             my_key: 'my value',
-//                             my_another_key: 'my another value'
-//                         }
-//                     }, function (err, response) {
-//                         if (err) {
-//                             console.log("Something has gone wrong!");
-//                         } else {
-//                             console.log("Successfully sent with response: ", response);
-//                         }
-//                     });
-                }
-            })
             r.save().then(r => {
                 // ThongBaoDatPhong.findByIdAndRemove(req.params.id, function (error, account) {
                 //     if (error) {
