@@ -46,7 +46,7 @@ class APi_all_list {
             })
         }
         Rooms.findOne({
-            idRoom: req.query.idRoom,
+            _id: req.query.idRoom,
         }).then(Rooms => res.json({
             isSuccess: true,
             code: 200,
