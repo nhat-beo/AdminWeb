@@ -22,16 +22,42 @@ class APi_all_list {
     getAllRooms(req, res, next) {
 
         Rooms.find({
-            statusRoom: ['Còn phòng', 'Hết phòng']
-        }).sort({'statusRoom': 1}).then(Rooms => res.json({
+            // statusRoom: ['Còn phòng', 'Hết phòng']
+        }).sort({ 'statusRoom': 1 }).then(Rooms => res.json({
             isSuccess: true,
             code: 200,
             message: "success",
             data: Rooms,
         })).catch(e => res.json({
-            status: false,
+            isSuccess: false,
             message: e.message,
-            code: 404
+            code: 404,
+            data: [],
+        }))
+    }
+
+    getDetailRoom(req, res, next) {
+        var id = req.query.gmail
+        if (id == null) {
+            res.json({
+                isSuccess: true,
+                code: 200,
+                message: "Ông chưa truyền id rồi",
+                data: [],
+            })
+        }
+        Rooms.find({
+            idRoom: req.body.idRoom,
+        }).then(Rooms => res.json({
+            isSuccess: true,
+            code: 200,
+            message: "success",
+            data: Rooms,
+        })).catch(e => res.json({
+            isSuccess: false,
+            message: e.message,
+            code: 404,
+            data: [],
         }))
     }
 
@@ -54,16 +80,16 @@ class APi_all_list {
     FilterRoom(req, res, next) {
 
         Rooms.find({
-            wifi: req.query.wifi == null ? {$in: [true, false]} : req.query.wifi,
-            receptionist: req.query.receptionist == null ? {$in: [true, false]} : req.query.receptionist,
-            gym: req.query.gym == null ? {$in: [true, false]} : req.query.gym,
-            roomMeeting: req.query.roomMeeting == null ? {$in: [true, false]} : req.query.roomMeeting,
-            laundry: req.query.laundry == null ? {$in: [true, false]} : req.query.laundry,
-            pool: req.query.pool == null ? {$in: [true, false]} : req.query.pool,
-            restaurant: req.query.restaurant == null ? {$in: [true, false]} : req.query.restaurant,
-            elevator: req.query.elevator == null ? {$in: [true, false]} : req.query.elevator,
-            wheelChairWay: req.query.wheelChairWay == null ? {$in: [true, false]} : req.query.wheelChairWay,
-            shuttle: req.query.shuttle == null ? {$in: [true, false]} : req.query.shuttle,
+            wifi: req.query.wifi == null ? { $in: [true, false] } : req.query.wifi,
+            receptionist: req.query.receptionist == null ? { $in: [true, false] } : req.query.receptionist,
+            gym: req.query.gym == null ? { $in: [true, false] } : req.query.gym,
+            roomMeeting: req.query.roomMeeting == null ? { $in: [true, false] } : req.query.roomMeeting,
+            laundry: req.query.laundry == null ? { $in: [true, false] } : req.query.laundry,
+            pool: req.query.pool == null ? { $in: [true, false] } : req.query.pool,
+            restaurant: req.query.restaurant == null ? { $in: [true, false] } : req.query.restaurant,
+            elevator: req.query.elevator == null ? { $in: [true, false] } : req.query.elevator,
+            wheelChairWay: req.query.wheelChairWay == null ? { $in: [true, false] } : req.query.wheelChairWay,
+            shuttle: req.query.shuttle == null ? { $in: [true, false] } : req.query.shuttle,
         }).then(Rooms => res.json({
             isSuccess: true,
             code: 200,
@@ -84,7 +110,7 @@ class APi_all_list {
             })
             return
         }
-        Rooms.findOne({_id: req.body.idRoom}).then(rooms => {
+        Rooms.findOne({ _id: req.body.idRoom }).then(rooms => {
             if (rooms != null) {
                 var arr = rooms.favorite
                 if (rooms.favorite.includes(req.body.userEmail)) {
@@ -125,11 +151,11 @@ class APi_all_list {
 
     getListFavoriteByUser(req, res, next) {
         if (req.query.email == null) {
-            res.json({message: 'Cần truyền params email', status: false, code: 200,})
+            res.json({ message: 'Cần truyền params email', status: false, code: 200, })
             return
         }
         Rooms.find({
-            favorite: {$all: [req.query.email]}
+            favorite: { $all: [req.query.email] }
         }).then(Rooms => res.json({
             isSuccess: true,
             code: 200,

@@ -10,13 +10,13 @@ const TopFavorrite = require('./GetTopRoom')
 
 
 // todo some api
-route.get('/get-all-list-room-finish',apiController.getAlllistromed)
+route.get('/get-all-list-room-finish', apiController.getAlllistromed)
 
 // route.get('/get-all-list-account',apiController.getAllRooms)
 
-route.get('/get-all-list-room',apiController.getAllRooms)
+route.get('/get-all-list-room', apiController.getAllRooms)
 
-route.get('/get-one-acount',AcountController.getAcount)
+route.get('/get-one-acount', AcountController.getAcount)
 
 route.post('/insert-acount', AcountController.insertAcount)
 
@@ -41,5 +41,7 @@ route.post('/cancel-wait-to-accept', UpdateRoomController.canceWaitlRoom)
 route.get('/get-list-wait-to-accept-room', UpdateRoomController.getWaitToAcceptUser)
 
 route.get('/get-list-favorite-by-user', apiController.getListFavoriteByUser)
+
+route.get('/get-detail-room', apiController.getDetailRoom)
 
 module.exports = route
