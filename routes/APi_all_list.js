@@ -77,7 +77,14 @@ class APi_all_list {
     // }
 
     FilterRoom(req, res, next) {
-
+        if (req.query.roomNumber == null) {
+            res.json({
+                isSuccess: true,
+                code: 200,
+                message: "Ông chưa truyền số phòng rồi",
+                data: [],
+            })
+        }
         Rooms.find({
             wifi: req.query.wifi == null ? { $in: [true, false] } : req.query.wifi,
             receptionist: req.query.receptionist == null ? { $in: [true, false] } : req.query.receptionist,
@@ -89,6 +96,7 @@ class APi_all_list {
             elevator: req.query.elevator == null ? { $in: [true, false] } : req.query.elevator,
             wheelChairWay: req.query.wheelChairWay == null ? { $in: [true, false] } : req.query.wheelChairWay,
             shuttle: req.query.shuttle == null ? { $in: [true, false] } : req.query.shuttle,
+            roomNumber: req.query.roomNumber,
         }).then(Rooms => res.json({
             isSuccess: true,
             code: 200,
