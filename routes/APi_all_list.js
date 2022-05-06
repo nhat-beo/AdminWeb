@@ -37,8 +37,7 @@ class APi_all_list {
     }
 
     getDetailRoom(req, res, next) {
-        var id = req.query.idRoom
-        if (id == null) {
+        if (req.query.idRoom == null) {
             res.json({
                 isSuccess: true,
                 code: 200,
@@ -47,7 +46,7 @@ class APi_all_list {
             })
         }
         Rooms.findOne({
-            idRoom: id,
+            idRoom: req.query.idRoom,
         }).then(Rooms => res.json({
             isSuccess: true,
             code: 200,
