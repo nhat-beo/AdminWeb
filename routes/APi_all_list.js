@@ -46,7 +46,7 @@ class APi_all_list {
                 data: [],
             })
         }
-        Rooms.find({
+        Rooms.findOne({
             idRoom: req.body.idRoom,
         }).then(Rooms => res.json({
             isSuccess: true,
