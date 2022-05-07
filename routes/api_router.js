@@ -44,6 +44,4 @@ route.get('/get-list-favorite-by-user', apiController.getListFavoriteByUser)
 
 route.get('/get-detail-room', apiController.getDetailRoom)
 
-
-
 module.exports = route
